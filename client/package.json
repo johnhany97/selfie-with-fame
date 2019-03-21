@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-router-dom": "^5.0.0",
@@ -26,15 +27,10 @@
   ],
   "proxy": "http://localhost:3001",
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "eslint": "^5.15.3",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
     "pre-commit": "^1.2.2"
-  },
-  "pre-commit": [
-    "lint"
-  ]
+  }
 }
