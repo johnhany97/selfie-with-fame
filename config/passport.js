@@ -49,7 +49,6 @@ passport.use(
       session: false,
     },
     (username, password, done) => {
-      console.log('here');
       try {
         User.findOne({
           username: username,

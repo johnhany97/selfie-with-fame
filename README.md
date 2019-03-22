@@ -16,6 +16,18 @@ npm i
 cd client
 npm i
 ```
+You'll lastly need to add to the `config` folder a configuration json file names `config.json` which should follow the following format and fill the following fields:
+```
+{
+  "development": {
+    "MONGODB_URI": "mongodb://localhost:27017/selfie-with-fame",
+    "JWT_SECRET": "someSecret",
+    "EMAIL_ADDRESS": "email@gmail.com",
+    "EMAIL_PASSWORD": "thatEmailsPassword"
+  }
+}
+
+```
 
 ## Running instructions
 
