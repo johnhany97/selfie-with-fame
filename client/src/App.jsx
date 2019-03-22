@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Layout from './components/Layout';
 
 class App extends Component {
-  componentWillMount() {
+  async componentWillMount() {
     fetch('/api')
       .then(res => res.json());
     // .then((json) => {
@@ -14,7 +14,7 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        some content
+        test
       </Layout>
     );
   }

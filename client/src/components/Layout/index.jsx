@@ -5,10 +5,10 @@ import Header from '../Header';
 import Footer from '../Footer';
 
 const Layout = (props) => {
-  const { children } = props;
+  const { title, children } = props;
   return (
     <React.Fragment>
-      <Header />
+      <Header title={title} />
       {children}
       <Footer />
     </React.Fragment>
@@ -16,10 +16,12 @@ const Layout = (props) => {
 };
 
 Layout.propTypes = {
+  title: PropTypes.string,
   children: PropTypes.node,
 };
 
 Layout.defaultProps = {
+  title: '',
   children: null,
 };
 
