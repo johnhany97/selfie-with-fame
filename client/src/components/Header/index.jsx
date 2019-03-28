@@ -5,7 +5,7 @@ const Header = (props) => {
     const {title} = props;
     return(
         <Navbar collapseOnSelect expand="lg" variant="light" className="shadow-sm p-3 mb-5 bg-white rounded">
-            <div className="lg-container">
+            <div className="container-lg">
                 <Navbar.Brand href="#home">{title}</Navbar.Brand>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" id="burger-icon"/>
                 <Navbar.Collapse id="responsive-navbar-nav">
