@@ -8,7 +8,7 @@ const Layout = (props) => {
   const { children } = props;
   return (
     <React.Fragment>
-      <Header />
+      <Header title={'Festival'}/>
       {children}
       <Footer />
     </React.Fragment>
