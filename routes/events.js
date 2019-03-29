@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 var eventController = require('../controllers/eventController');
 
-router.post('/createEvent', eventController.createEvent);
+//router.route('/').all(authMiddleware.authenticate).get(eventController.getEvents);
+router.route('/').all(authMiddleware.authenticate).post(eventController.createEvents);
+// router.route('/story/:id').all(authMiddleware.authenticate).post(eventController.getEvent);
+// router.route('/story/:id').all(authMiddleware.authenticate).delete(eventController.deleteEvent);
 // router.post('/login', userController.login);
 // router.post('/register', userController.register);
 // router.get('/find', userController.findUser);
