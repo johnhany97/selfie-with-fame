@@ -31,7 +31,7 @@ app.use(passport.initialize());
 //app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
 
-app.use('api/events',eventsRouter );
+app.use('/api/events',eventsRouter );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -34,6 +34,13 @@ class CreateEventPage extends Component {
   };
 
   createEvent = (event) => {
+    const token = localStorage.getItem('JWT');
+    if (token === null) {
+      this.setState({
+        showError: true,
+      });
+      return;
+    }
     event.preventDefault();
     const {
       event_name,
@@ -49,10 +56,15 @@ class CreateEventPage extends Component {
       return;
     }
     axios.post('/api/events/createEvent', {
-      event_name,
-      information,
-      date_time,
-      location,
+      params: {
+        event_name,
+        information,
+        date_time,
+        location,
+      },
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
     }).then((res) => {
       this.setState({
         messageFromServer: res.data.message,
@@ -60,13 +72,13 @@ class CreateEventPage extends Component {
         createEventError: false,
       });
     }).catch((err) => {
-    //   if (err.response.data === 'username or email already taken') {
-    //     this.setState({
-    //       showError: true,
-    //       loginError: true,
-    //       registerError: false,
-    //     });
-    //   }
+      //   if (err.response.data === 'username or email already taken') {
+      //     this.setState({
+      //       showError: true,
+      //       loginError: true,
+      //       registerError: false,
+      //     });
+      //   }
     });
   }
 
@@ -116,7 +128,7 @@ class CreateEventPage extends Component {
               label="Date and Time of Event"
               type="datetime-local"
               onChange={this.handleChange('date_time')}
-              value= {date_time}
+              value={date_time}
               InputLabelProps={{
                 shrink: true,
               }}

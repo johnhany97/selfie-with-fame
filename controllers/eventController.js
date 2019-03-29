@@ -14,7 +14,7 @@ module.exports.createEvent = (req, res, next) => {
   const information = req.body.information;
   const date_time = req.body.date_time;
   const location = req.body.location;
-  if (!event_name || !information || !email || !date_time || !location) {
+  if (!event_name || !information || !date_time || !location) {
     res.send('Missing parameters')
     return;
   }
