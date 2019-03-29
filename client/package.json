@@ -18,6 +18,7 @@
   },
   "scripts": {
     "start": "HTTPS=true react-scripts start",
+    "startW": "set HTTPS=true && react-scripts start",
     "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -38,6 +39,7 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
-    "pre-commit": "^1.2.2"
+    "pre-commit": "^1.2.2",
+    "nodemon": "^1.18.10"
   }
 }

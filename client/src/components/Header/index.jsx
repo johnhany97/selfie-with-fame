@@ -2,11 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Header = (props) => {
-  const { title } = props;
+  const { title, bio} = props;
   return (
-    <h1>
-      {title}
-    </h1>
+    <div>
+      <h1>
+        {title}
+      </h1>
+      <p>
+        {bio}
+      </p>
+    </div>
   );
 };
 

@@ -14,6 +14,8 @@ import ProfilePage from './pages/ProfilePage';
 import UpdateProfilePage from './pages/UpdateProfilePage';
 import UpdatePasswordPage from './pages/UpdatePasswordPage';
 
+import CreateEventPage from './pages/CreateEventPage';
+
 import * as serviceWorker from './serviceWorker';
 
 
@@ -28,6 +30,8 @@ const routing = (
       <Route exact path="/userProfile/:username" component={ProfilePage} />
       <Route exact path="/updateUser/:username" component={UpdateProfilePage} />
       <Route exact path="/updatePassword/:username" component={UpdatePasswordPage} />
+      <Route exact path="/createEvent" component={CreateEventPage} />
+
       <Route component={NotFound} />
     </Switch>
   </Router>
