@@ -1,6 +1,7 @@
 /* Footer Styles */
 footer{
     padding: .5rem 0.75rem;
+    max-height: 50px;
 }
 
 footer .container-lg{

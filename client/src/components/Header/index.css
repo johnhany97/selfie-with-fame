@@ -1,6 +1,7 @@
 
 .navbar {
     background-color: #fff;
+    padding: .5rem 1rem;
 }
 
 .navbar .navbar-brand{
@@ -49,11 +50,13 @@
     display: inline-block;
     margin-left: 10px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .square-btn:hover{
     background-color: #FF9800;
     color: #fff;
+    text-decoration: none;
 }
 
 .btn-text{

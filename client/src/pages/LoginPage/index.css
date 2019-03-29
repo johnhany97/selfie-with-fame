@@ -1,0 +1,68 @@
+.row{
+    flex-direction: column;
+    height: 90vh;
+}
+.login-panel-form{
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+}
+
+.login-panel-title{
+    color: #FF9800;
+}
+
+.login-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.forgot-pass-txt{
+    margin-bottom: 0;
+    text-align: left;
+    font-size: 0.90rem;  
+    margin-left: 10px;  
+}
+.no-acc-text{
+    margin-bottom: 0;
+}
+
+.login-btn{
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #FF9800;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.login-panel-img{
+    background-image: url("./audience.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+.login-panel-img{
+    flex: 1;
+}
+
+@media(min-width: 992px){
+    .row{
+        flex-direction: row;
+    }
+    .login-panel-img{
+        display: block;
+    }
+}
