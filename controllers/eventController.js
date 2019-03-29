@@ -1,12 +1,12 @@
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const bcrypt = require('bcrypt');
+// const jwt = require('jsonwebtoken');
+// const nodemailer = require('nodemailer');
+// const crypto = require('crypto');
+// const bcrypt = require('bcrypt');
 
 var Event = require('../models/event');
 
-const BCRYPT_SALT_ROUNDS = 12;
+//const BCRYPT_SALT_ROUNDS = 12;
 
 
 // module.exports.createEvent = (req, res, next) => {
@@ -37,13 +37,22 @@ const BCRYPT_SALT_ROUNDS = 12;
 //   })(req, res, next);
 // }
 
+module.exports.getEvents = (req, res, next) => {
+    Event.find({})
+      .sort({ createdAt: -1 })
+      .then((events) => {
+        res.status(200).send({
+          events,
+        });
+      });
+  }
 
 module.exports.createEvent = (req, res, next) => {
     const event = new Event({
-        event_name = req.body.event_name,
-        information = req.body.information,
-        date_time = req.body.date_time,
-        location = req.body.location
+        event_name: req.body.event_name,
+        information:  req.body.information,
+        date_time: req.body.date_time,
+        location: req.body.location
     });
   
     event.save()

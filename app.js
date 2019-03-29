@@ -8,12 +8,9 @@ let bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-<<<<<<< HEAD
 var storiesRouter = require('./routes/stories');
-=======
 var eventsRouter = require('./routes/events');
 
->>>>>>> t1
 var app = express();
 
 require('./config/config.js');
@@ -34,7 +31,6 @@ app.use(passport.initialize());
 
 //app.use('/api', indexRouter);
 app.use('/api/users', usersRouter);
-
 
 app.use('/api/stories', storiesRouter);
 app.use('/api/events',eventsRouter );

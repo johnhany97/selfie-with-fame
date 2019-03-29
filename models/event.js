@@ -1,5 +1,6 @@
 let mongoose = require('mongoose');
 // let validator = require('validator');
+const { Schema } = mongoose;
 
 let eventSchema = new mongoose.Schema({
   event_name: {
