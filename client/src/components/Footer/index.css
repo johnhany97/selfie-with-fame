@@ -1,0 +1,17 @@
+/* Footer Styles */
+footer{
+    padding: .5rem 0.75rem;
+}
+
+footer .container-lg{
+    justify-content: center;
+}
+.footer-shadow{
+    box-shadow: 0 -.25rem .25rem -.125rem rgba(0,0,0,.075)!important;
+}
+
+.copyright{
+    color: #FF9800;
+    text-align: center;
+    font-size: 0.75rem;
+}
