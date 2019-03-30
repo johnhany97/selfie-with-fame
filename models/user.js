@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 let validator = require('validator');
-const { Schema }  = require('mongoose');
+const { Schema } = require('mongoose');
 
 let userSchema = new Schema({
   first_name: {
@@ -40,10 +40,28 @@ let userSchema = new Schema({
   ],
   resetPasswordToken: String,
   resetPasswordExpires: Date
-});
+},
+  {
+    toObject: {
+      virtuals: true
+    },
+    toJSON: {
+      virtuals: true
+    },
+    timestamps: true
+  }
+);
 
 userSchema.virtual('name').get(function () {
-  return this.first_name + ' ' + this.last_name;
+  return [this.first_name, this.last_name].join(' ');
+}).set(function (fullName) {
+  const split = fullName.split(' ');
+
+  const firstName = split[0];
+  const lastName = split[1];
+
+  this.set('first_name', firstName);
+  this.set('last_name', lastName);
 });
 
 userSchema.virtual('stories', {

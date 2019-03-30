@@ -14,7 +14,7 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name') // TODO: _id to be changed!!!!
+    .populate('postedBy', '_id first_name last_name') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
       res.status(200).send({
         stories,
@@ -34,13 +34,12 @@ module.exports.getStoriesByUser = (req, res) => {
   const query = {
     postedBy: req.user._id
   }
-
   // no need to populate as current user is poster
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
     .then((stories) => {
       res.status(200).send({
-        stories,
+        stories
       });
     });
 }
