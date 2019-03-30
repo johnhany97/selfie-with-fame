@@ -163,8 +163,8 @@ class ProfilePage extends Component {
               <h5>BIO</h5>
               <p>Morbi ornare risus interdum nibh vestibulum placerat. Curabitur auctor sem eget volutpat bibendum. 
                 Fusce convallis ipsum sit amet tellus bibendum varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              <a href="" className="update-btn">Update</a>
-              <a href="" className="delete-btn">Delete</a>
+              <a href={'/updateUser/' + username} className="update-btn">Update</a>
+              <button onClick={this.deleteUser} className="delete-btn">Delete</button>
             </div>
           </div>
           <h3 className="profile-title">STORIES</h3>
