@@ -171,12 +171,12 @@ class RegisterPage extends Component {
     if (messageFromServer === 'user created') {
       return (
         <Layout title="Register">
-          <h3>Successfully registered</h3>
-          <LinkButton
-            buttonText="Login"
-            buttonStyle={loginButton}
-            link="/login"
-          />
+          <div className="container-lg">
+            <div className="register-success">
+              <h3 className="register-panel-title">Successfully registered</h3>
+              <a href="/login">Login</a>
+            </div>
+          </div>
         </Layout>
       );
     }

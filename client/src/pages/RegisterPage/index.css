@@ -45,6 +45,13 @@
     display: none;
 }
 
+.register-success{
+    margin-left: 20px;
+    margin-top: 2rem;
+    height: 90vh;
+    min-height: 700px;
+}
+
 @media(min-width: 992px){
     .row{
         flex-direction: row;
