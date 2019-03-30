@@ -38,38 +38,38 @@ var Event = require('../models/event');
 // }
 
 module.exports.getEvents = (req, res, next) => {
-    Event.find({})
-      .sort({ createdAt: -1 })
-      .then((events) => {
-        res.status(200).send({
-          events,
-        });
+  Event.find({})
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events,
       });
-  }
+    });
+}
 
 module.exports.createEvent = (req, res, next) => {
-    const event = new Event({
-        event_name: req.body.event_name,
-        information:  req.body.information,
-        date_time: req.body.date_time,
-        location: req.body.location
+  const event = new Event({
+    event_name: req.body.event_name,
+    information: req.body.information,
+    date_time: req.body.date_time,
+    location: req.body.location
+  });
+
+  event.save()
+    .then((event) => {
+      res.send(event);
+    })
+    .catch((e) => {
+      res.status(400).send(e);
     });
-  
-    event.save()
-      .then((event) => {
-        res.send(event);
-      })
-      .catch((e) => {
-        res.status(400).send(e);
-      });
-  }
+}
 
 module.exports.getStory = (req, res, next) => {
-    res.status(500).send('Not implemented yet');
+  res.status(500).send('Not implemented yet');
 }
-  
+
 module.exports.deleteStory = (req, res, next) => {
-    res.status(500).send('Not implemented yet');
+  res.status(500).send('Not implemented yet');
 }
 
 // module.exports.findUser = (req, res, next) => {

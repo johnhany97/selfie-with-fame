@@ -55,17 +55,20 @@ class CreateEventPage extends Component {
       });
       return;
     }
-    axios.post('/api/events/createEvent', {
-      params: {
+    axios.post(
+      '/api/events/createEvent',
+      {
         event_name,
         information,
         date_time,
         location,
       },
-      headers: {
-        Authorization: `JWT ${token}`,
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        },
       },
-    }).then((res) => {
+    ).then((res) => {
       this.setState({
         messageFromServer: res.data.message,
         showError: false,
