@@ -93,71 +93,74 @@ class RegisterPage extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-6" className="register-panel-form">
-                <h3 className="register-panel-title">Sign Up</h3>
-                <form onSubmit={this.registerUser} className="register-form">
-                  <TextField
-                    style={inputStyle}
-                    id="first_name"
-                    label="First Name"
-                    value={first_name}
-                    onChange={this.handleChange('first_name')}
-                    placeholder="First Name"
-                  />
-                  <TextField
-                    style={inputStyle}
-                    id="last_name"
-                    label="Last Name"
-                    value={last_name}
-                    onChange={this.handleChange('last_name')}
-                    placeholder="Last Name"
-                  />
-                  <TextField
-                    style={inputStyle}
-                    id="email"
-                    label="Email"
-                    value={email}
-                    onChange={this.handleChange('email')}
-                    placeholder="Email"
-                  />
-                  <TextField
-                    style={inputStyle}
-                    id="username"
-                    label="Username"
-                    value={username}
-                    onChange={this.handleChange('username')}
-                    placeholder="Username"
-                  />
-                  <TextField
-                    style={inputStyle}
-                    id="password"
-                    label="Password"
-                    value={password}
-                    onChange={this.handleChange('password')}
-                    placeholder="Password"
-                    type="password"
-                  />
-                  <button className="register-btn" type="submit">Sign Up</button>
-                  <a href="/login">Already have an account? Login</a>
-                </form>
-                {showError === true && registerError === true && (
-                  <div>
-                    <p>Username, password and email are required fields.</p>
-                  </div>
-                )}
-                {showError === true && loginError === true && (
-                  <div>
-                    <p>
-                      That username or email is already taken. Please choose another or login.
-                      </p>
-                    <a href="/login">Login</a>
-                  </div>
-                )}
+                <div className="register-form-container">
+                  <h3 className="register-panel-title">Sign Up</h3>
+                  <hr className="register-divider"/>
+                  <form onSubmit={this.registerUser} className="register-form">
+                    <TextField
+                      style={inputStyle}
+                      id="first_name"
+                      label="First Name"
+                      value={first_name}
+                      onChange={this.handleChange('first_name')}
+                      placeholder="First Name"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="last_name"
+                      label="Last Name"
+                      value={last_name}
+                      onChange={this.handleChange('last_name')}
+                      placeholder="Last Name"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="email"
+                      label="Email"
+                      value={email}
+                      onChange={this.handleChange('email')}
+                      placeholder="Email"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="username"
+                      label="Username"
+                      value={username}
+                      onChange={this.handleChange('username')}
+                      placeholder="Username"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="password"
+                      label="Password"
+                      value={password}
+                      onChange={this.handleChange('password')}
+                      placeholder="Password"
+                      type="password"
+                    />
+                    <button className="register-btn" type="submit">Sign Up</button>
+                    <a href="/login">Already have an account? Login</a>
+                  </form>
+                  {showError === true && registerError === true && (
+                    <div>
+                      <p>Username, password and email are required fields.</p>
+                    </div>
+                  )}
+                  {showError === true && loginError === true && (
+                    <div>
+                      <p>
+                        That username or email is already taken. Please choose another or login.
+                          </p>
+                      <a href="/login">Login</a>
+                    </div>
+                  )}
+                </div>
               </div>
               <div className="col-md-6" className="register-panel-img">
               </div>
             </div>
           </div>
-        </Layout>
+        </Layout >
       );
     }
     if (messageFromServer === 'user created') {

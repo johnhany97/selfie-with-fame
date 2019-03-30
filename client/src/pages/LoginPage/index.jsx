@@ -76,43 +76,46 @@ class LoginPage extends Component {
           <div className="container-fluid">
             <div className="row">
               <div className="col-md-6" className="login-panel-form">
-                <h3 className="login-panel-title">Log In</h3>
-                <form onSubmit={this.loginUser} className="login-form">
-                  <TextField
-                    id="username"
-                    label="Username"
-                    value={username}
-                    style={inputStyle}
-                    onChange={this.handleChange('username')}
-                    placeholder="Username"
-                  />
-                  <TextField
-                    id="password"
-                    label="Password"
-                    value={password}
-                    style={inputStyle}
-                    onChange={this.handleChange('password')}
-                    placeholder="Password"
-                    type="password"
-                  />
-                  <a href="/forgotPassword" className="forgot-pass-txt">Forgot your password?</a>
-                  <button className="login-btn" type="submit">Log In</button>
-                </form>
-                {showNullError && (
-                  <div>
-                    <p>The username or password cannot be empty.</p>
-                  </div>
-                )}
-                {showError && (
-                  <div>
-                    <p>
-                      That username or password isn&apos;t recognized. Please try
-                      again or register now.
-                    </p>
-                  </div>
-                )}
-                <p className="no-acc-text">Don't have an account?</p>
-                <a href="/register">Register</a>
+                <div className="login-form-container">
+                  <h3 className="login-panel-title">Log In</h3>
+                  <hr className="login-divider"/>
+                  <form onSubmit={this.loginUser} className="login-form">
+                    <TextField
+                      id="username"
+                      label="Username"
+                      value={username}
+                      style={inputStyle}
+                      onChange={this.handleChange('username')}
+                      placeholder="Username"
+                    />
+                    <TextField
+                      id="password"
+                      label="Password"
+                      value={password}
+                      style={inputStyle}
+                      onChange={this.handleChange('password')}
+                      placeholder="Password"
+                      type="password"
+                    />
+                    <a href="/forgotPassword" className="forgot-pass-txt">Forgot your password?</a>
+                    <button className="login-btn" type="submit">Log In</button>
+                  </form>
+                  {showNullError && (
+                    <div>
+                      <p>The username or password cannot be empty.</p>
+                    </div>
+                  )}
+                  {showError && (
+                    <div>
+                      <p>
+                        That username or password isn&apos;t recognized. Please try
+                        again or register now.
+                      </p>
+                    </div>
+                  )}
+                  <p className="no-acc-text">Don't have an account?</p>
+                  <a href="/register">Register</a>
+                </div>
               </div>
               <div className="col-md-6" className="login-panel-img">
               </div>
