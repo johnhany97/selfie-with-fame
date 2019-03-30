@@ -3,7 +3,7 @@
     height: 90vh;
     min-height: 700px;
 }
-.login-panel-form{
+.register-panel-form{
     flex: 1;
     text-align: center;
     align-items: center;
@@ -12,28 +12,18 @@
     padding: 2rem 1rem;
 }
 
-.login-panel-title{
+.register-panel-title{
     color: #FF9800;
 }
 
-.login-form{
+.register-form{
     display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 500px;
 }
 
-.forgot-pass-txt{
-    margin-bottom: 0;
-    text-align: left;
-    font-size: 0.90rem;  
-    margin-left: 10px;  
-}
-.no-acc-text{
-    margin-bottom: 0;
-}
-
-.login-btn{
+.register-btn{
     width: 100%;
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -48,8 +38,8 @@
     cursor: pointer;
 }
 
-.login-panel-img{
-    background-image: url("./audience.jpg");
+.register-panel-img{
+    background-image: url("../LoginPage/audience.jpg");
     background-position: center center;
     background-repeat: no-repeat;
     display: none;
@@ -59,7 +49,7 @@
     .row{
         flex-direction: row;
     }
-    .login-panel-img{
+    .register-panel-img{
         display: block;
         flex: 1;
     }
