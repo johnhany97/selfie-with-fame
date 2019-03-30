@@ -113,7 +113,7 @@ class DisplayEventsPage extends Component {
 
 
 
-  deleteEvent = (id) => {
+  deleteEvent = (_id) => {
     const token = localStorage.getItem('JWT');
     if (token === null) {
       this.setState({
@@ -124,7 +124,7 @@ class DisplayEventsPage extends Component {
     }
     axios.delete('/api/events/deleteEvent', {
       params: {
-        id: id,
+        _id: _id,
       },
       headers: {
         Authorization: `JWT ${token}`,
@@ -174,7 +174,7 @@ class DisplayEventsPage extends Component {
     return (
       <Layout title="Events">
         {events.map(event_iter => (
-          <Table key={event_iter.id} >
+          <Table key={event_iter._id} >
             <TableBody>
               <TableRow>
                 <TableCell>Event Name</TableCell>
@@ -197,15 +197,20 @@ class DisplayEventsPage extends Component {
                   style={deleteButton}
                   variant="contained"
                   color="primary"
-                  onClick={() => this.deleteEvent(event_iter.id)}
+                  onClick={() => this.deleteEvent(event_iter._id)}
                 >
-                  Delete Event
-                  </Button>
-                {/* <LinkButton
+                DELETE
+                </Button>
+                <LinkButton
                   buttonStyle={updateButton}
                   buttonText="Update Event"
-                  link={`/updateEvent/${event_name}`}
-                /> */}
+                  link={`/updateEvent/${event_iter._id}`}
+                />
+                <LinkButton
+                  buttonStyle={updateButton}
+                  buttonText="View Event"
+                  link={`/EventPage/${event_iter._id}`}
+                />
               </TableRow>
             </TableBody>
           </Table>

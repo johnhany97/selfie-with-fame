@@ -42,9 +42,9 @@ module.exports.getStory = (req, res, next) => {
 
 
 module.exports.deleteEvent = (req, res, next) => {
-  console.log("ATTEMPTED TO DELETE EVENT")
+  console.log("ATTEMPTED TO DELETE EVENT WITH ID" + req.query._id);
   Event.remove({
-    id: req.query.id,
+    _id: req.query._id,
   }).then((eventInfo) => {
     if (eventInfo) {
       console.log('event deleted from db');
@@ -56,5 +56,42 @@ module.exports.deleteEvent = (req, res, next) => {
   }).catch((error) => {
     console.error('problem communicating with db');
     res.status(500).send(error);
+  });
+}
+
+
+module.exports.findEvent = (req, res, next) => {
+  Event.findOne({
+    _id: req.query._id,
+  }).then((event) => {
+    if (event != null) {
+      res.status(200).send(
+        event
+      );
+    } else {
+      res.status(401).send('no event exists in db to find');
+    }
+  });
+}
+
+
+module.exports.updateEvent = (req, res, next) => {
+  Event.findOne({
+    _id: req.body._id,
+  }).then((eventInfo) => {
+    if (eventInfo != null) {
+      eventInfo.update({
+        event_name: req.body.event_name,
+        information: req.body.information,
+        location: req.body.location,
+        date_time: req.body.date_time,
+      }).then(() => {
+        res.status(200).send({
+          message: 'event updated'
+        });
+      });
+    } else {
+      res.status(401).send('no event exists in db to update');
+    }
   });
 }

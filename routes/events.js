@@ -8,6 +8,11 @@ router.route('/getEvents').all(authMiddleware.authenticate).get(eventController.
 router.route('/createEvent').all(authMiddleware.authenticate).post(eventController.createEvent);
 router.route('/deleteEvent').all(authMiddleware.authenticate).delete(eventController.deleteEvent);
 
+router.route('/findEvent').all(authMiddleware.authenticate).get(eventController.findEvent);
+
+router.route('/eventPage/:id').all(authMiddleware.authenticate).get(eventController.findEvent);
+router.route('/updateEvent/').all(authMiddleware.authenticate).put(eventController.updateEvent);
+
 // router.route('/story/:id').all(authMiddleware.authenticate).post(eventController.getEvent);
 // router.route('/story/:id').all(authMiddleware.authenticate).delete(eventController.deleteEvent);
 // router.post('/login', userController.login);
