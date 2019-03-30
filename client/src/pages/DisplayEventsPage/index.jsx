@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+import { Link, Redirect } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import {
@@ -16,6 +17,8 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
+
 
 
 class DisplayEventsPage extends Component {
@@ -27,10 +30,50 @@ class DisplayEventsPage extends Component {
       showError: false,
       isLoading: true,
       error: false,
+      event_deleted: false,
     };
   }
 
   async componentDidMount() {
+    this.getEvents();
+    // const token = localStorage.getItem('JWT');
+    // if (token == null) {
+    //   this.setState({
+    //     error: true,
+    //     isLoading: false,
+    //   });
+    //   return;
+    // }
+    // await axios.get('/api/events/getEvents', {
+    //   params: {
+    //   },
+    //   headers: {
+    //     Authorization: `JWT ${token}`,
+    //   },
+    // }).then((res) => {
+    //   const { data } = res;
+    //   const {
+    //     events,
+    //     showError,
+    //     isLoading,
+    //     error,
+    //     event_deleted,
+    //   } = data;
+    //   this.setState({
+    //     events,
+    //     isLoading: false,
+    //     error: false,
+    //     event_deleted,
+    //   });
+    // }).catch((err) => {
+    //   console.error(err.response.data);
+    //   this.setState({
+    //     error: true,
+    //   });
+    // });
+  }
+
+  getEvents = (event) => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
@@ -39,7 +82,7 @@ class DisplayEventsPage extends Component {
       });
       return;
     }
-    await axios.get('/api/events/getEvents', {
+    axios.get('/api/events/getEvents', {
       params: {
       },
       headers: {
@@ -52,11 +95,13 @@ class DisplayEventsPage extends Component {
         showError,
         isLoading,
         error,
+        event_deleted,
       } = data;
       this.setState({
         events,
         isLoading: false,
         error: false,
+        event_deleted,
       });
     }).catch((err) => {
       console.error(err.response.data);
@@ -67,7 +112,8 @@ class DisplayEventsPage extends Component {
   }
 
 
-  deleteEvent = (event) => {
+
+  deleteEvent = (id) => {
     const token = localStorage.getItem('JWT');
     if (token === null) {
       this.setState({
@@ -76,20 +122,16 @@ class DisplayEventsPage extends Component {
       });
       return;
     }
-    event.preventDefault();
-    axios.delete('/api/events/delete', {
+    axios.delete('/api/events/deleteEvent', {
       params: {
-        id: this.events.match.params.username,
+        id: id,
       },
       headers: {
         Authorization: `JWT ${token}`,
       },
     }).then((res) => {
       console.log(res);
-      localStorage.removeItem('JWT');
-      this.setState({
-        deleted: true,
-      });
+      this.getEvents();
     }).catch((err) => {
       console.error(err.response.data);
       this.setState({
@@ -105,6 +147,7 @@ class DisplayEventsPage extends Component {
       showErro,
       isLoading,
       error,
+      event_deleted
     } = this.state;
 
     if (error) {
@@ -112,7 +155,7 @@ class DisplayEventsPage extends Component {
         <Layout title="Events">
           <div>
             Problem fetching events data. Please try to login again.
-          </div>
+            </div>
           <LinkButton
             buttonText="Login"
             buttonStyle={loginButton}
@@ -121,7 +164,13 @@ class DisplayEventsPage extends Component {
         </Layout>
       );
     }
-    console.log("these are the events: " + events)
+
+    // if (event_deleted) {
+    //   console.log("event delted  render check");
+    //   return ( 
+    //     <Redirect to="/events" />
+    //   );
+    // }
     return (
       <Layout title="Events">
         {events.map(event_iter => (
@@ -144,17 +193,19 @@ class DisplayEventsPage extends Component {
                 <TableCell>{event_iter.date_time}}</TableCell>
               </TableRow>
               <TableRow>
-                <LinkButton
-                  buttonStyle={deleteButton}
-                  buttonText="Delete Event"
-                  onClick={`/deleteEvent/${event_iter.id}`}
-                />
-                Delete Event
-                <LinkButton
+                <Button
+                  style={deleteButton}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.deleteEvent(event_iter.id)}
+                >
+                  Delete Event
+                  </Button>
+                {/* <LinkButton
                   buttonStyle={updateButton}
                   buttonText="Update Event"
                   link={`/updateEvent/${event_name}`}
-                />
+                /> */}
               </TableRow>
             </TableBody>
           </Table>
