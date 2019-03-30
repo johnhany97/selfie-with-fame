@@ -57,7 +57,9 @@ module.exports.createEvent = (req, res, next) => {
 
   event.save()
     .then((event) => {
-      res.send(event);
+      //res.send(event);
+      res.status(200).send({ message: 'event created' });
+
     })
     .catch((e) => {
       res.status(400).send(e);

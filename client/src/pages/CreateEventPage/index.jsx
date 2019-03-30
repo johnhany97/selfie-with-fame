@@ -153,6 +153,7 @@ class CreateEventPage extends Component {
       return (
         <Layout title="Event Creation">
           <h3>Successfully created event</h3>
+          <p>{information}</p>
           <LinkButton
             buttonText="Login"
             buttonStyle={loginButton}
