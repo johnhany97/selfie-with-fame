@@ -1,0 +1,22 @@
+.profile_img-header{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-right: 0.5rem;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    display: none;
+}
+
+.logged-in-nav{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+@media(min-width: 992px){
+    .profile_img-header{
+        display: block;
+    } 
+}

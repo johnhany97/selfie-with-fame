@@ -125,14 +125,17 @@ class UpdateProfilePage extends Component {
     if (error) {
       return (
         <Layout title="Update Profile">
-          <p>
-            There was a problem accessing your data. Please try to login again.
-          </p>
-          <LinkButton
-            style={loginButton}
-            buttonText="Login"
-            link="/login"
-          />
+          <div className="container-lg">
+            <p>
+              There was a problem accessing your data. Please try to login again.
+            </p>
+            <LinkButton
+              style={loginButton}
+              buttonText="Login"
+              link="/login"
+            />
+            <a href="/login" className="update-profile-btn">Login</a>
+          </div>
         </Layout>
       );
     }
@@ -207,54 +210,6 @@ class UpdateProfilePage extends Component {
               </div>
             </div>
           </div>
-          {/*
-            <TextField
-              style={inputStyle}
-              id="first_name"
-              label="first_name"
-              value={first_name}
-              onChange={this.handleChange('first_name')}
-              placeholder="First Name"
-            />
-            <TextField
-              style={inputStyle}
-              id="last_name"
-              label="last_name"
-              value={last_name}
-              onChange={this.handleChange('last_name')}
-              placeholder="Last Name"
-            />
-            <TextField
-              style={inputStyle}
-              id="email"
-              label="email"
-              value={email}
-              onChange={this.handleChange('email')}
-              placeholder="Email"
-            />
-            <TextField
-              style={inputStyle}
-              id="username"
-              label="username"
-              value={username}
-              readOnly
-              disabled
-            />
-            <TextField
-              style={inputStyle}
-              id="password"
-              label="password"
-              value={password}
-              readOnly
-              disabled
-              type="password"
-            />
-            <SubmitButton
-              buttonStyle={saveButton}
-              buttonText="Save Changes"
-            />
-          </form>
-          */}
         </Layout>
       );
     }
