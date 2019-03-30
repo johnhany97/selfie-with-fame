@@ -34,6 +34,9 @@ const routing = (
       <Route exact path="/updatePassword/:username" component={UpdatePasswordPage} />
       <Route exact path="/createEvent" component={CreateEventPage} />
       <Route exact path="/events" component={DisplayEventsPage} />
+      {/* <Route exact path="/updateEvent/:id" component={DisplayEventsPage} />
+      <Route exact path="/deleteEvent/:id" component={DisplayEventsPage} /> */}
+
 
 
       <Route component={NotFound} />

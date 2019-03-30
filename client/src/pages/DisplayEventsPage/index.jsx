@@ -8,6 +8,8 @@ import {
   registerButton,
   loginButton,
   inputStyle,
+  deleteButton,
+  updateButton
 } from '../../styles/buttonStyles';
 import LinkButton from '../../components/LinkButton';
 import Table from '@material-ui/core/Table';
@@ -65,6 +67,37 @@ class DisplayEventsPage extends Component {
   }
 
 
+  deleteEvent = (event) => {
+    const token = localStorage.getItem('JWT');
+    if (token === null) {
+      this.setState({
+        isLoading: false,
+        error: true,
+      });
+      return;
+    }
+    event.preventDefault();
+    axios.delete('/api/events/delete', {
+      params: {
+        id: this.events.match.params.username,
+      },
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }).then((res) => {
+      console.log(res);
+      localStorage.removeItem('JWT');
+      this.setState({
+        deleted: true,
+      });
+    }).catch((err) => {
+      console.error(err.response.data);
+      this.setState({
+        error: true,
+      });
+    });
+  }
+
   // eslint-disable-next-line consistent-return
   render() {
     const {
@@ -110,10 +143,23 @@ class DisplayEventsPage extends Component {
                 <TableCell>Date/Time</TableCell>
                 <TableCell>{event_iter.date_time}}</TableCell>
               </TableRow>
+              <TableRow>
+                <LinkButton
+                  buttonStyle={deleteButton}
+                  buttonText="Delete Event"
+                  onClick={`/deleteEvent/${event_iter.id}`}
+                />
+                Delete Event
+                <LinkButton
+                  buttonStyle={updateButton}
+                  buttonText="Update Event"
+                  link={`/updateEvent/${event_name}`}
+                />
+              </TableRow>
             </TableBody>
           </Table>
-          ))}
-        </Layout>
+        ))}
+      </Layout>
     )
   }
 }
