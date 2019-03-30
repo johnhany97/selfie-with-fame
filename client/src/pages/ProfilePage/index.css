@@ -1,0 +1,94 @@
+.profile-title{
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #616161;
+}
+.profile-card{
+    background-color: #fff;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 2px; /* 5px rounded corners */
+    margin-bottom: 3rem;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.profile-img{
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    min-width: 200px;
+}
+
+.profile-user-info{
+    text-align: center;
+}
+
+.profile-user-info h4{
+    color: #424242;
+    font-weight: 700;
+    margin-top: 1rem;
+}
+
+.profile-user-info h5{
+    color: #424242;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+.profile-user-info p{
+    color: #757575;
+}
+
+.update-btn{
+    background-color: #FF9800;
+    border: none;
+    color: #FF9800;
+    background-color: inherit;
+    border: 2px solid #FF9800;
+    font-weight: 500;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.delete-btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #FF9800;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 0.4rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.update-btn:hover{
+    text-decoration: none;
+    color: #FF9800;
+}
+
+.delete-btn:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
+@media(min-width: 992px){
+    .profile-card{
+        flex-direction: row;
+    }
+    .profile-user-info{
+        text-align: left;
+        padding-left: 3rem;
+    }
+
+}
