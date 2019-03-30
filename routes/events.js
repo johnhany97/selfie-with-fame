@@ -4,7 +4,7 @@ var eventController = require('../controllers/eventController');
 const authMiddleware = require('../middleware/auth');
 
 
-router.route('/').all(authMiddleware.authenticate).get(eventController.getEvents);
+router.route('/getEvents').all(authMiddleware.authenticate).get(eventController.getEvents);
 router.route('/createEvent').all(authMiddleware.authenticate).post(eventController.createEvent);
 // router.route('/story/:id').all(authMiddleware.authenticate).post(eventController.getEvent);
 // router.route('/story/:id').all(authMiddleware.authenticate).delete(eventController.deleteEvent);

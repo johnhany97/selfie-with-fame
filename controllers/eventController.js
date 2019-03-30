@@ -6,43 +6,13 @@ const passport = require('passport');
 
 var Event = require('../models/event');
 
-//const BCRYPT_SALT_ROUNDS = 12;
-
-
-// module.exports.createEvent = (req, res, next) => {
-//   const event_name = req.body.event_name;
-//   const information = req.body.information;
-//   const date_time = req.body.date_time;
-//   const location = req.body.location;
-//   if (!event_name || !information || !email || !date_time || !location) {
-//     res.send('Missing parameters')
-//     return;
-//   }
-//   passport.authenticate('jwt', { session: false }, (err, user, info) => {
-//     if (err) {
-//       console.log(err);
-//     }
-//     if (info !== undefined) {
-//       console.log(info.message);
-//       res.status(401).send(info.message);
-//     } else {
-//       console.log('user found in db from route');
-//       Event.create({ event_name: event_name, information: information, date_time: date_time, location: location}).then(event => {
-//         console.log('event created');
-//         // note the return needed with passport local - remove this return for passport JWT to work
-//         //return done(null, event);
-//         res.status(200).send({ message: 'event created' });
-//       });
-//     }
-//   })(req, res, next);
-// }
 
 module.exports.getEvents = (req, res, next) => {
   Event.find({})
     .sort({ createdAt: -1 })
     .then((events) => {
       res.status(200).send({
-        events,
+        events
       });
     });
 }
