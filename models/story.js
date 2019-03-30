@@ -3,7 +3,7 @@ let validator = require('validator');
 
 const { Schema } = mongoose;
 
-let storySchema = new mongoose.Schema({
+let storySchema = new Schema({
   text: {
     type: String
   },
@@ -12,6 +12,7 @@ let storySchema = new mongoose.Schema({
   },
   postedBy: {
     type: Schema.Types.ObjectId,
+    ref: 'User',
     required: true
   },
 }, { timestamps: true });
