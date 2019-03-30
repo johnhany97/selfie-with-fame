@@ -1,0 +1,13 @@
+.update-pass-btn{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #FF9800;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
