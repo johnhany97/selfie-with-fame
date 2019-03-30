@@ -6,12 +6,8 @@ import axios from 'axios';
 import Layout from '../../components/Layout';
 import './index.css';
 import {
-  registerButton,
-  loginButton,
   inputStyle,
 } from '../../styles/buttonStyles';
-import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -153,11 +149,7 @@ class RegisterPage extends Component {
                     <p>
                       That username or email is already taken. Please choose another or login.
                       </p>
-                    <LinkButton
-                      buttonText="Login"
-                      buttonStyle={loginButton}
-                      link="/login"
-                    />
+                    <a href="/login">Login</a>
                   </div>
                 )}
               </div>
