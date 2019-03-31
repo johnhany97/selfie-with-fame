@@ -6,22 +6,13 @@ import { Link, Redirect } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import {
-  registerButton,
   loginButton,
-  inputStyle,
-  deleteButton,
-  updateButton
 } from '../../styles/buttonStyles';
 
 import {
-  cardPanel,
+  mTop,
 } from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
 import Event from '../../components/Event';
 
 
@@ -137,7 +128,7 @@ class DisplayEventsPage extends Component {
 
     return (
       <Layout title="Events">
-        <div className="container">
+        <div className="container" style={mTop}>
           {events.map(event_iter => (
             <Event 
               key={event_iter._id}

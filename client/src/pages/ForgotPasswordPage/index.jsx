@@ -4,11 +4,9 @@ import axios from 'axios';
 
 import {
   registerButton,
-  forgotButton,
   inputStyle,
 } from '../../styles/buttonStyles';
 import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
 import './index.css';
 

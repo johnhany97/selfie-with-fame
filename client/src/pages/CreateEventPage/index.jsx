@@ -6,16 +6,14 @@ import axios from 'axios';
 
 import Layout from '../../components/Layout';
 import {
-  registerButton,
-  loginButton,
   inputStyle,
 } from '../../styles/buttonStyles';
 import {
   formTitle, 
   formDividor,
   formSubmitButton,
+  mTop,
 } from '../../styles/formStyles';
-import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 
 class CreateEventPage extends Component {
@@ -103,7 +101,7 @@ class CreateEventPage extends Component {
     if (messageFromServer === '') {
       return (
         <Layout title="Create Event">
-          <div className="container">
+          <div className="container" style={mTop}>
             <h3 style={formTitle}>Create Event</h3>
             <hr style={formDividor}/>
             <form onSubmit={this.createEvent} className="panel-center">
@@ -161,7 +159,6 @@ class CreateEventPage extends Component {
       return (
         <Redirect to={`/events`} />
       );
-     return null;
     }
   }
 }

@@ -55,6 +55,15 @@ export const cardPanel = {
     flexDirection: 'column',
 }
 
+export const cancelLink = {
+    textDecoration: 'none',
+    textAlign: 'center',
+}
+
+export const mTop = {
+    marginTop: '2rem',
+}
+
 
 export default {
     formTitle,
@@ -62,4 +71,6 @@ export default {
     formSubmitButton,
     cardPanel,
     crudButton,
+    cancelLink,
+    mTop,
   };

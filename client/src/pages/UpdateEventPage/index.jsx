@@ -17,6 +17,8 @@ import {
   formTitle,
   formDividor,
   formSubmitButton,
+  cancelLink,
+  mTop,
 } from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
@@ -153,7 +155,7 @@ class UpdateEventPage extends Component {
     if (loadingEvent === false) {
       return (
         <Layout title="Update Event">
-          <div className="container">
+          <div className="container" style={mTop}>
             <h3 style={formTitle}>Update Event</h3>
             <hr style={formDividor}/>
             <form className="panel-center" onSubmit={this.updateEvent}>
@@ -196,12 +198,8 @@ class UpdateEventPage extends Component {
                 buttonStyle={formSubmitButton}
                 buttonText="Save Changes"
               />
+              <a href={"/eventPage/" + this.props.match.params._id} style={cancelLink}>Cancel</a>
             </form>
-            <LinkButton
-              buttonStyle={cancelButton}
-              buttonText="Cancel Changes"
-              link={`/eventPage/${this.props.match.params._id}`}
-            />
           </div>
         </Layout>
       );
