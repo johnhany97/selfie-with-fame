@@ -5,7 +5,7 @@ const mapStyles = {
   map: {
     position: 'absolute',
     width: '100%',
-    height: '100%'
+    height: '60%'
   }
 };
 
@@ -75,23 +75,6 @@ export class CurrentLocation extends React.Component {
     }
   }
 
-  // handleMarkerDragEnd(mouseEvent) {
-  //   //const { onChange } = this.props;
-  //   // Get latitude and longitude
-  //   const lat = mouseEvent.latLng.lat();
-  //   const lng = mouseEvent.latLng.lng();
-  //   const marker = { lat, lng };
-  //   this.setState({ marker});
-  //   this.geocodePosition(marker)
-  //     .then(places => {
-  //       this.notify(marker, places);
-  //     })
-  //     .catch(err => {
-  //       console.error(err);
-  //       this.notify(marker, []);
-  //     });
-  // }
-
   recenterMap() {
     const map = this.map;
     const current = this.state.currentLocation;
@@ -130,6 +113,7 @@ export class CurrentLocation extends React.Component {
         </div>
         {this.renderChildren()}
       </div>
+     
     );
   }
 }

@@ -4,6 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 import Layout from '../../components/Layout';
+import GoogleMap from '../GoogleMap';
+
 import {
   registerButton,
   loginButton,
@@ -32,6 +34,11 @@ class CreateEventPage extends Component {
       [name]: event.target.value,
     });
   };
+
+
+  openMap = (event) => {
+
+  }
 
   createEvent = (event) => {
     const token = localStorage.getItem('JWT');
@@ -114,14 +121,16 @@ class CreateEventPage extends Component {
               onChange={this.handleChange('information')}
               placeholder="Info"
             />
-            <TextField
+            
+            {/* <TextField
               style={inputStyle}
               id="location"
               label="Location"
               value={location}
               onChange={this.handleChange('location')}
               placeholder="Location"
-            />
+            /> */}
+            
             <TextField
               style={inputStyle}
               id="date_time"
@@ -133,10 +142,16 @@ class CreateEventPage extends Component {
                 shrink: true,
               }}
             />
+            
             <SubmitButton
               buttonStyle={loginButton}
               buttonText="Create Event"
             />
+            <GoogleMap
+              value={location}
+              location = {this.state.location}
+              handleChange={this.handleChange}
+            ></GoogleMap>
           </form>
           {showError === true && createEventError === true && (
             <div>
