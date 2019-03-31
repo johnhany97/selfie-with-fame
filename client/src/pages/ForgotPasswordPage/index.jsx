@@ -10,6 +10,7 @@ import {
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
+import './index.css';
 
 class ForgotPasswordPage extends Component {
   constructor() {
@@ -75,43 +76,42 @@ class ForgotPasswordPage extends Component {
 
     return (
       <Layout title="Forgot Password">
-        <form onSubmit={this.sendEmail}>
-          <TextField
-            style={inputStyle}
-            id="email"
-            label="email"
-            value={email}
-            onChange={this.handleChange('email')}
-            placeholder="Email Address"
-          />
-          <SubmitButton
-            buttonStyle={forgotButton}
-            buttonText="Send Password Reset Email"
-          />
-        </form>
-        {showNullError && (
-          <div>
-            <p>The email address cannot be empty.</p>
-          </div>
-        )}
-        {showError && (
-          <div>
-            <p>
-              That email address isn&apos;t recognized. Please try again or
-              register for a new account.
-            </p>
-            <LinkButton
-              buttonText="Register"
-              buttonStyle={registerButton}
-              link="/register"
+        <div className="container-lg">
+          <form onSubmit={this.sendEmail} className="forgot-password-form">
+            <TextField
+              style={inputStyle}
+              id="email"
+              label="email"
+              value={email}
+              onChange={this.handleChange('email')}
+              placeholder="Email Address"
             />
-          </div>
-        )}
-        {messageFromServer === 'recovery email sent' && (
-          <div>
-            <h3>Password Reset Email Successfully Sent!</h3>
-          </div>
-        )}
+            <button className="pass-reset-btn" type="submit">Send Password Reset Email</button>
+          </form>
+          {showNullError && (
+            <div>
+              <p>The email address cannot be empty.</p>
+            </div>
+          )}
+          {showError && (
+            <div>
+              <p>
+                That email address isn&apos;t recognized. Please try again or
+                register for a new account.
+                </p>
+              <LinkButton
+                buttonText="Register"
+                buttonStyle={registerButton}
+                link="/register"
+              />
+            </div>
+          )}
+          {messageFromServer === 'recovery email sent' && (
+            <div>
+              <h3>Password Reset Email Successfully Sent!</h3>
+            </div>
+          )}
+        </div>
       </Layout>
     );
   }

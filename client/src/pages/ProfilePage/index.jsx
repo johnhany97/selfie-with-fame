@@ -20,6 +20,8 @@ import {
 } from '../../styles/buttonStyles';
 import LinkButton from '../../components/LinkButton';
 import Layout from '../../components/Layout';
+import './index.css';
+import avatar from './placeholder-avatar.jpg';
 
 class ProfilePage extends Component {
   constructor() {
@@ -128,14 +130,14 @@ class ProfilePage extends Component {
     if (error) {
       return (
         <Layout title="Profile Page">
-          <div>
-            Problem fetching user data. Please try to login again.
+          <div className="container-lg">
+            <div className="error-fetching-user-panel">
+              <h6>
+                Problem fetching user data. Please try to login again.
+              </h6>
+              <a href="/login" className="delete-btn">Login</a>
+            </div>
           </div>
-          <LinkButton
-            buttonText="Login"
-            buttonStyle={loginButton}
-            link="/login"
-          />
         </Layout>
       );
     }
@@ -152,6 +154,23 @@ class ProfilePage extends Component {
 
     return (
       <Layout title="Profile page">
+        <div className="container">
+          <h3 className="profile-title">PROFILE</h3>
+          <div className="profile-card">
+            <img src={avatar} className="profile-img" />
+            <div className="profile-user-info">
+              <h4>{username}</h4>
+              <h5>BIO</h5>
+              <p>Morbi ornare risus interdum nibh vestibulum placerat. Curabitur auctor sem eget volutpat bibendum.
+                Fusce convallis ipsum sit amet tellus bibendum varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+              <a href={'/updateUser/' + username} className="update-btn">Update</a>
+              <button onClick={this.deleteUser} className="delete-btn">Delete</button>
+            </div>
+          </div>
+          <h3 className="profile-title">STORIES</h3>
+
+        </div>
+        {/*
         <Table>
           <TableBody>
             <TableRow>
@@ -206,6 +225,7 @@ class ProfilePage extends Component {
             Logout
           </Link>
         </Button>
+        */}
       </Layout>
     );
   }

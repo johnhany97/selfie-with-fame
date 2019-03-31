@@ -15,6 +15,7 @@ import {
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
+import './index.css';
 
 class UpdateProfilePage extends Component {
   constructor(props) {
@@ -90,22 +91,22 @@ class UpdateProfilePage extends Component {
       email: this.state.email,
       username: this.state.username,
     }, {
-      headers: {
-        Authorization: `JWT ${accessString}`,
-      },
-    }).then((res) => {
-      console.log(res.data);
-      this.setState({
-        updated: true,
-        error: false,
+        headers: {
+          Authorization: `JWT ${accessString}`,
+        },
+      }).then((res) => {
+        console.log(res.data);
+        this.setState({
+          updated: true,
+          error: false,
+        });
+      }).catch((err) => {
+        console.log(err.response.data);
+        this.setState({
+          loadingUser: false,
+          error: true,
+        });
       });
-    }).catch((err) => {
-      console.log(err.response.data);
-      this.setState({
-        loadingUser: false,
-        error: true,
-      });
-    });
   };
 
   // eslint-disable-next-line consistent-return
@@ -124,14 +125,17 @@ class UpdateProfilePage extends Component {
     if (error) {
       return (
         <Layout title="Update Profile">
-          <p>
-            There was a problem accessing your data. Please try to login again.
-          </p>
-          <LinkButton
-            style={loginButton}
-            buttonText="Login"
-            link="/login"
-          />
+          <div className="container-lg">
+            <p>
+              There was a problem accessing your data. Please try to login again.
+            </p>
+            <LinkButton
+              style={loginButton}
+              buttonText="Login"
+              link="/login"
+            />
+            <a href="/login" className="update-profile-btn">Login</a>
+          </div>
         </Layout>
       );
     }
@@ -148,58 +152,64 @@ class UpdateProfilePage extends Component {
     if (loadingUser === false) {
       return (
         <Layout title="Update Profile">
-          <form className="profile-form" onSubmit={this.updateUser}>
-            <TextField
-              style={inputStyle}
-              id="first_name"
-              label="first_name"
-              value={first_name}
-              onChange={this.handleChange('first_name')}
-              placeholder="First Name"
-            />
-            <TextField
-              style={inputStyle}
-              id="last_name"
-              label="last_name"
-              value={last_name}
-              onChange={this.handleChange('last_name')}
-              placeholder="Last Name"
-            />
-            <TextField
-              style={inputStyle}
-              id="email"
-              label="email"
-              value={email}
-              onChange={this.handleChange('email')}
-              placeholder="Email"
-            />
-            <TextField
-              style={inputStyle}
-              id="username"
-              label="username"
-              value={username}
-              readOnly
-              disabled
-            />
-            <TextField
-              style={inputStyle}
-              id="password"
-              label="password"
-              value={password}
-              readOnly
-              disabled
-              type="password"
-            />
-            <SubmitButton
-              buttonStyle={saveButton}
-              buttonText="Save Changes"
-            />
-          </form>
-          <LinkButton
-            buttonStyle={cancelButton}
-            buttonText="Cancel Changes"
-            link={`/userProfile/${username}`}
-          />
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-6" className="update-panel-form">
+                <div className="update-form-container">
+                  <h3 className="update-panel-title">Update Profile</h3>
+                  <hr className="update-divider" />
+                  <form onSubmit={this.updateUser} className="update-user-form">
+                    <TextField
+                      style={inputStyle}
+                      id="first_name"
+                      label="first_name"
+                      value={first_name}
+                      onChange={this.handleChange('first_name')}
+                      placeholder="First Name"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="last_name"
+                      label="last_name"
+                      value={last_name}
+                      onChange={this.handleChange('last_name')}
+                      placeholder="Last Name"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="email"
+                      label="email"
+                      value={email}
+                      onChange={this.handleChange('email')}
+                      placeholder="Email"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="username"
+                      label="username"
+                      value={username}
+                      readOnly
+                      disabled
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="password"
+                      label="password"
+                      value={password}
+                      readOnly
+                      disabled
+                      type="password"
+                    />
+                    <a href={"/updatePassword/" + username} className="forgot-pass-txt">Forgot your password?</a>
+                    <button className="update-profile-btn" type="submit">Save Changes</button>
+                  </form>
+                  <a href={"/userProfile/" + username} className="cancel-changes-btn">Cancel</a>
+                </div>
+              </div>
+              <div className="col-md-6" className="update-panel-img">
+              </div>
+            </div>
+          </div>
         </Layout>
       );
     }

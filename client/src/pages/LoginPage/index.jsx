@@ -4,13 +4,10 @@ import { Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 
 import Layout from '../../components/Layout';
-import SubmitButton from '../../components/SubmitButton';
-import LinkButton from '../../components/LinkButton';
+import './index.css';
+
 import {
-  loginButton,
-  registerButton,
   inputStyle,
-  forgotButton,
 } from '../../styles/buttonStyles';
 
 class LoginPage extends Component {
@@ -75,55 +72,57 @@ class LoginPage extends Component {
 
     if (!loggedIn) {
       return (
-        <Layout title="Login">
-          <form onSubmit={this.loginUser}>
-            <TextField
-              id="username"
-              label="Username"
-              value={username}
-              style={inputStyle}
-              onChange={this.handleChange('username')}
-              placeholder="Username"
-            />
-            <TextField
-              id="password"
-              label="Password"
-              value={password}
-              style={inputStyle}
-              onChange={this.handleChange('password')}
-              placeholder="Password"
-              type="password"
-            />
-            <SubmitButton
-              buttonText="Login"
-              buttonStyle={loginButton}
-            />
-          </form>
-          {showNullError && (
-            <div>
-              <p>The username or password cannot be empty.</p>
+        <Layout>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-6" className="login-panel-form">
+                <div className="login-form-container">
+                  <h3 className="login-panel-title">Log In</h3>
+                  <hr className="login-divider"/>
+                  <form onSubmit={this.loginUser} className="login-form">
+                    <TextField
+                      id="username"
+                      label="Username"
+                      value={username}
+                      style={inputStyle}
+                      onChange={this.handleChange('username')}
+                      placeholder="Username"
+                    />
+                    <TextField
+                      id="password"
+                      label="Password"
+                      value={password}
+                      style={inputStyle}
+                      onChange={this.handleChange('password')}
+                      placeholder="Password"
+                      type="password"
+                    />
+                    <a href="/forgotPassword" className="forgot-pass-txt">Forgot your password?</a>
+                    <button className="login-btn" type="submit">Log In</button>
+                  </form>
+                  {showNullError && (
+                    <div>
+                      <p>The username or password cannot be empty.</p>
+                    </div>
+                  )}
+                  {showError && (
+                    <div>
+                      <p>
+                        That username or password isn&apos;t recognized. Please try
+                        again or register now.
+                      </p>
+                    </div>
+                  )}
+                  <p className="no-acc-text">Don't have an account?</p>
+                  <a href="/register">Register</a>
+                </div>
+              </div>
+              <div className="col-md-6" className="login-panel-img">
+              </div>
             </div>
-          )}
-          {showError && (
-            <div>
-              <p>
-                That username or password isn&apos;t recognized. Please try
-                again or register now.
-              </p>
-              <LinkButton
-                buttonText="Register"
-                link="/register"
-                buttonStyle={registerButton}
-              />
-            </div>
-          )}
-          <LinkButton
-            buttonStyle={forgotButton}
-            buttonText="Forgot Password?"
-            link="/forgotPassword"
-          />
+          </div>
         </Layout>
-      );
+      )
     }
     return <Redirect to={`/userProfile/${username}`} />;
   }
