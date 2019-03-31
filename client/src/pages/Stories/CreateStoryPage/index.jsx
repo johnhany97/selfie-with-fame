@@ -65,6 +65,10 @@ class CreateStoryPage extends Component {
     }, { headers: { Authorization: `JWT ${token}` } })
       .then((response) => {
         // TODO: Snackbar of success
+        this.setState({
+          isLoading: false,
+          error: false,
+        });
         this.nextStep();
         // Redirect to other page?
       }).catch((error) => {
