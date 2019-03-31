@@ -12,6 +12,12 @@ import {
   loginButton,
   inputStyle,
 } from '../../styles/buttonStyles';
+
+import {
+  formTitle,
+  formDividor,
+  formSubmitButton,
+} from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
@@ -25,7 +31,7 @@ class UpdateEventPage extends Component {
       information: '',
       date_time: '',
       location: '',
-      event_id: '', 
+      event_id: '',
       loadingEvent: false,
       updated: false,
       error: false,
@@ -147,52 +153,56 @@ class UpdateEventPage extends Component {
     if (loadingEvent === false) {
       return (
         <Layout title="Update Event">
-          <form className="profile-form" onSubmit={this.updateEvent}>
-            <TextField
-              style={inputStyle}
-              id="event_name"
-              label="event_name"
-              value={event_name}
-              onChange={this.handleChange('event_name')}
-              placeholder="Event Name"
+          <div className="container">
+            <h3 style={formTitle}>Update Event</h3>
+            <hr style={formDividor}/>
+            <form className="panel-center" onSubmit={this.updateEvent}>
+              <TextField
+                style={inputStyle}
+                id="event_name"
+                label="event_name"
+                value={event_name}
+                onChange={this.handleChange('event_name')}
+                placeholder="Event Name"
+              />
+              <TextField
+                style={inputStyle}
+                id="information"
+                label="information"
+                value={information}
+                onChange={this.handleChange('information')}
+                placeholder="information"
+              />
+              <TextField
+                style={inputStyle}
+                id="location"
+                label="location"
+                value={location}
+                onChange={this.handleChange('location')}
+                placeholder="Location"
+              />
+              <TextField
+                style={inputStyle}
+                id="date_time"
+                label="Date and Time of Event"
+                type="datetime-local"
+                onChange={this.handleChange('date_time')}
+                value={date_time}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <SubmitButton
+                buttonStyle={formSubmitButton}
+                buttonText="Save Changes"
+              />
+            </form>
+            <LinkButton
+              buttonStyle={cancelButton}
+              buttonText="Cancel Changes"
+              link={`/eventPage/${this.props.match.params._id}`}
             />
-            <TextField
-              style={inputStyle}
-              id="information"
-              label="information"
-              value={information}
-              onChange={this.handleChange('information')}
-              placeholder="information"
-            />
-            <TextField
-              style={inputStyle}
-              id="location"
-              label="location"
-              value={location}
-              onChange={this.handleChange('location')}
-              placeholder="Location"
-            />
-            <TextField
-              style={inputStyle}
-              id="date_time"
-              label="Date and Time of Event"
-              type="datetime-local"
-              onChange={this.handleChange('date_time')}
-              value={date_time}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <SubmitButton
-              buttonStyle={saveButton}
-              buttonText="Save Changes"
-            />
-          </form>
-          <LinkButton
-            buttonStyle={cancelButton}
-            buttonText="Cancel Changes"
-            link={`/eventPage/${this.props.match.params._id}`}
-          />
+          </div>
         </Layout>
       );
     }

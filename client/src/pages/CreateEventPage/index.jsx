@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 import Layout from '../../components/Layout';
@@ -9,6 +10,11 @@ import {
   loginButton,
   inputStyle,
 } from '../../styles/buttonStyles';
+import {
+  formTitle, 
+  formDividor,
+  formSubmitButton,
+} from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -75,10 +81,10 @@ class CreateEventPage extends Component {
         createEventError: false,
       });
     }).catch((err) => {
-        this.setState({
-          showError: true,
-          createEventError: true,
-        });
+      this.setState({
+        showError: true,
+        createEventError: true,
+      });
     });
   }
 
@@ -97,67 +103,65 @@ class CreateEventPage extends Component {
     if (messageFromServer === '') {
       return (
         <Layout title="Create Event">
-          <form onSubmit={this.createEvent}>
-            <TextField
-              style={inputStyle}
-              id="event_name"
-              label="Event Name"
-              value={event_name}
-              onChange={this.handleChange('event_name')}
-              placeholder="Event Name"
-            />
-            <TextField
-              style={inputStyle}
-              id="information"
-              label="Information"
-              value={information}
-              onChange={this.handleChange('information')}
-              placeholder="Info"
-            />
-            <TextField
-              style={inputStyle}
-              id="location"
-              label="Location"
-              value={location}
-              onChange={this.handleChange('location')}
-              placeholder="Location"
-            />
-            <TextField
-              style={inputStyle}
-              id="date_time"
-              label="Date and Time of Event"
-              type="datetime-local"
-              onChange={this.handleChange('date_time')}
-              value={date_time}
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-            <SubmitButton
-              buttonStyle={loginButton}
-              buttonText="Create Event"
-            />
-          </form>
-          {showError === true && createEventError === true && (
-            <div>
-              <p>event name, info, location and date/time are required fields.</p>
-            </div>
-          )}
-        </Layout>
+          <div className="container">
+            <h3 style={formTitle}>Create Event</h3>
+            <hr style={formDividor}/>
+            <form onSubmit={this.createEvent} className="panel-center">
+              <TextField
+                style={inputStyle}
+                id="event_name"
+                label="Event Name"
+                value={event_name}
+                onChange={this.handleChange('event_name')}
+                placeholder="Event Name"
+              />
+              <TextField
+                style={inputStyle}
+                id="information"
+                label="Information"
+                value={information}
+                onChange={this.handleChange('information')}
+                placeholder="Info"
+              />
+              <TextField
+                style={inputStyle}
+                id="location"
+                label="Location"
+                value={location}
+                onChange={this.handleChange('location')}
+                placeholder="Location"
+              />
+              <TextField
+                style={inputStyle}
+                id="date_time"
+                label="Date and Time of Event"
+                type="datetime-local"
+                onChange={this.handleChange('date_time')}
+                value={date_time}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <SubmitButton
+                buttonStyle={formSubmitButton}
+                buttonText="Create Event"
+              />
+            </form>
+            {showError === true && createEventError === true && (
+              <div>
+                <p>event name, info, location and date/time are required fields.</p>
+              </div>
+            )}
+          </div>
+        </Layout >
       );
     }
     if (messageFromServer === 'event created') {
+      
       return (
-        <Layout title="Event Creation">
-          <h3>Successfully created event</h3>
-          <p>{information}</p>
-          <LinkButton
-            buttonText="Login"
-            buttonStyle={loginButton}
-            link="/login"
-          />
-        </Layout>
+        <Redirect to={`/events`} />
       );
+     return null;
     }
   }
 }
