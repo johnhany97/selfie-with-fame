@@ -19,9 +19,8 @@ import DisplayEventsPage from './pages/DisplayEventsPage';
 import UpdateEventPage from './pages/UpdateEventPage';
 import EventPage from './pages/EventPage';
 
-
-
 import * as serviceWorker from './serviceWorker';
+import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
 
 const routing = (
@@ -39,11 +38,7 @@ const routing = (
       <Route exact path="/events" component={DisplayEventsPage} />
       <Route exact path="/updateEvent/:_id" component={UpdateEventPage} />
       <Route exact path="/eventPage/:_id" component={EventPage} />
-
-
-
-
-
+      <Route path="/createStory" component={CreateStoryPage} />
       <Route component={NotFound} />
     </Switch>
   </Router>
@@ -54,4 +49,4 @@ ReactDOM.render(routing, document.getElementById('root'));
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-//serviceWorker.register();
+// serviceWorker.register();
