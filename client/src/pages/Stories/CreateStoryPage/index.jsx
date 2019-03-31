@@ -16,7 +16,7 @@ class CreateStoryPage extends Component {
       step: 1,
       text: '',
       picture: null,
-      eventID: '',
+      event: null,
       isLoading: false,
       error: false,
       errorMessage: '',
@@ -34,6 +34,12 @@ class CreateStoryPage extends Component {
       picture: data,
     });
   };
+
+  handleEventChange = (event) => {
+    this.setState({
+      event,
+    });
+  }
 
   createStory = (event) => {
     this.setState({
@@ -93,9 +99,9 @@ class CreateStoryPage extends Component {
       isLoading,
       error,
       errorMessage,
-      eventID,
+      event,
     } = this.state;
-    const values = { text, picture, eventID };
+    const values = { text, picture, event };
 
     if (isLoading) {
       return (
@@ -130,7 +136,7 @@ class CreateStoryPage extends Component {
             <CreateStoryEvent
               nextStep={this.nextStep}
               previousStep={this.previousStep}
-              handleChange={this.handleChange}
+              handleEventChange={this.handleEventChange}
               values={values}
             />
           </Layout>

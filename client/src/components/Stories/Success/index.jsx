@@ -1,8 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Success extends Component {
-  render() {
-    return (<h1>test</h1>);
-  }
-}
+const Success = () => (<h1>Successfully created story!</h1>);
+
 export default Success;

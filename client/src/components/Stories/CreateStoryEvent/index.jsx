@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+import Event from '../../Event';
+
 class CreateStoryEvent extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +51,7 @@ class CreateStoryEvent extends Component {
     return (
       <div>
         <h1>Select event</h1>
-        {events && events.map((event, index) => (<p key={index}>{event.event_name}</p>))}
+        {events && events.map((event, index) => (<Event key={index} {...event} />))}
         {(events === null || (events && events.length === 0)) && <p>No events available</p>}
       </div>
     );
