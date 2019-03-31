@@ -36,41 +36,6 @@ class DisplayEventsPage extends Component {
 
   async componentDidMount() {
     this.getEvents();
-    // const token = localStorage.getItem('JWT');
-    // if (token == null) {
-    //   this.setState({
-    //     error: true,
-    //     isLoading: false,
-    //   });
-    //   return;
-    // }
-    // await axios.get('/api/events/getEvents', {
-    //   params: {
-    //   },
-    //   headers: {
-    //     Authorization: `JWT ${token}`,
-    //   },
-    // }).then((res) => {
-    //   const { data } = res;
-    //   const {
-    //     events,
-    //     showError,
-    //     isLoading,
-    //     error,
-    //     event_deleted,
-    //   } = data;
-    //   this.setState({
-    //     events,
-    //     isLoading: false,
-    //     error: false,
-    //     event_deleted,
-    //   });
-    // }).catch((err) => {
-    //   console.error(err.response.data);
-    //   this.setState({
-    //     error: true,
-    //   });
-    // });
   }
 
   getEvents = (event) => {
@@ -165,12 +130,6 @@ class DisplayEventsPage extends Component {
       );
     }
 
-    // if (event_deleted) {
-    //   console.log("event delted  render check");
-    //   return ( 
-    //     <Redirect to="/events" />
-    //   );
-    // }
     return (
       <Layout title="Events">
         {events.map(event_iter => (

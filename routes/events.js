@@ -13,16 +13,5 @@ router.route('/findEvent').all(authMiddleware.authenticate).get(eventController.
 router.route('/eventPage/:id').all(authMiddleware.authenticate).get(eventController.findEvent);
 router.route('/updateEvent/').all(authMiddleware.authenticate).put(eventController.updateEvent);
 
-// router.route('/story/:id').all(authMiddleware.authenticate).post(eventController.getEvent);
-// router.route('/story/:id').all(authMiddleware.authenticate).delete(eventController.deleteEvent);
-// router.post('/login', userController.login);
-// router.post('/register', userController.register);
-// router.get('/find', userController.findUser);
-// router.delete('/delete', userController.deleteUser);
-// router.post('/forgotPassword', userController.forgotPassword);
-// router.get('/reset', userController.resetPassword);
-// router.put('/updatePassword', userController.updatePassword);
-// router.put('/updatePasswordViaEmail', userController.updatePasswordViaEmail);
-// router.put('/updateUser', userController.updateUser);
 
 module.exports = router;

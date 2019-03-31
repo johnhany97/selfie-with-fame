@@ -1,9 +1,4 @@
 const passport = require('passport');
-// const jwt = require('jsonwebtoken');
-// const nodemailer = require('nodemailer');
-// const crypto = require('crypto');
-// const bcrypt = require('bcrypt');
-
 var Event = require('../models/event');
 
 

@@ -75,13 +75,10 @@ class CreateEventPage extends Component {
         createEventError: false,
       });
     }).catch((err) => {
-      //   if (err.response.data === 'username or email already taken') {
-      //     this.setState({
-      //       showError: true,
-      //       loginError: true,
-      //       registerError: false,
-      //     });
-      //   }
+        this.setState({
+          showError: true,
+          createEventError: true,
+        });
     });
   }
 
