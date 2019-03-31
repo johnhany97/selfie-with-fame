@@ -81,22 +81,16 @@ const opts = {
 
 passport.use(
   'jwt',
-  new JWTstrategy(opts, (jwt_payload, done) => {
+  new JWTstrategy(opts, async (token, done) => {
     try {
-      User.findOne({
-        username: jwt_payload.id,
-      }).then(user => {
-        if (user) {
-          console.log('user found in db in passport');
-          // note the return removed with passport JWT - add this return for passport local
-          done(null, user);
-        } else {
-          console.log('user not found in db');
-          done(null, false);
-        }
-      });
-    } catch (err) {
-      done(err);
+      const user = await User.findOne({ username: token.id });
+      if (!user) {
+        return done(null, false, { message: 'User not found' });
+      }
+      //Pass the user details to the next middleware
+      return done(null, user);
+    } catch (error) {
+      done(error);
     }
   }),
 );
