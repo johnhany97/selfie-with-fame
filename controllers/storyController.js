@@ -45,7 +45,7 @@ module.exports.getStoriesByUser = (req, res) => {
 }
 
 module.exports.getStoriesTimeline = (req, res) => {
-
+  res.status(500).send('Not implemented yet');
 }
 
 module.exports.createStory = (req, res) => {
@@ -81,6 +81,25 @@ module.exports.getStory = (req, res) => {
     });
 }
 
-module.exports.deleteStory = (req, res) => {
-  res.status(500).send('Not implemented yet');
+module.exports.deleteStory = async (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('Invalid ID');
+  }
+
+  Story.findById(id)
+    .then((story) => {
+      if (!story) {
+        return res.status(404).send();
+      }
+      if (!story.postedBy.equals(req.user._id)) {
+
+        // unauthorized to delete
+        return res.status(401).send('Unauthorized to delete this event');
+      }
+      story.remove(() => {
+        res.send(story);
+      });
+    });
 }
