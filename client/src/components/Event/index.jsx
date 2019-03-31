@@ -10,6 +10,7 @@ const Event = (props) => {
     information,
     date_time,
     location,
+    selected,
   } = props;
 
   return (
@@ -30,6 +31,11 @@ const Event = (props) => {
         Location:
         {location}
       </p>
+      {selected && (
+        <p>
+          Selected
+        </p>
+      )}
     </div>
   );
 };
@@ -39,6 +45,7 @@ Event.propTypes = {
   information: PropTypes.string.isRequired,
   date_time: PropTypes.string.isRequired,
   location: PropTypes.object,
+  selected: PropTypes.bool,
 };
 
 export default Event;

@@ -1,3 +1,5 @@
+/* eslint-disable react/forbid-prop-types */
+/* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -47,12 +49,19 @@ class CreateStoryEvent extends Component {
 
   render() {
     const { events } = this.state;
-    const { values, handleChange } = this.props;
+    const { values, handleEventChange, nextStep, previousStep } = this.props;
     return (
       <div>
         <h1>Select event</h1>
-        {events && events.map((event, index) => (<Event key={index} {...event} />))}
+        {events && events.map((event, index) => (
+          <React.Fragment>
+            <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
+            <button onClick={() => handleEventChange(event)} type="button">Select</button>
+          </React.Fragment>
+        ))}
         {(events === null || (events && events.length === 0)) && <p>No events available</p>}
+        <button onClick={nextStep} type="button" disabled={values.event === null}>Next</button>
+        <button onClick={previousStep} type="button">Back</button>
       </div>
     );
   }
@@ -61,7 +70,8 @@ class CreateStoryEvent extends Component {
 CreateStoryEvent.propTypes = {
   nextStep: PropTypes.func.isRequired,
   previousStep: PropTypes.func.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  handleEventChange: PropTypes.func.isRequired,
+  values: PropTypes.object.isRequired,
 };
 
 export default CreateStoryEvent;

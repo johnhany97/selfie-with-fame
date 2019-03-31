@@ -65,7 +65,7 @@ class CreateStoryPage extends Component {
     }, { headers: { Authorization: `JWT ${token}` } })
       .then((response) => {
         // TODO: Snackbar of success
-        console.log('Successfully created story');
+        this.nextStep();
         // Redirect to other page?
       }).catch((error) => {
         this.setState({
@@ -126,7 +126,6 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handlePhotoChange={this.handlePhotoChange}
-              values={values}
             />
           </Layout>
         );
@@ -148,7 +147,6 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handleChange={this.handleChange}
-              values={values}
             />
           </Layout>
         );
@@ -156,7 +154,7 @@ class CreateStoryPage extends Component {
         return (
           <Layout title="Create Story">
             <Confirmation
-              nextStep={this.nextStep}
+              createStory={this.createStory}
               previousStep={this.previousStep}
               handleChange={this.handleChange}
               values={values}

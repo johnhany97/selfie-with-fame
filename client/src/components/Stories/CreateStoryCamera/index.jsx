@@ -11,7 +11,7 @@ class CreateStoryCamera extends Component {
   }
 
   render() {
-    const { values, handlePhotoChange } = this.props;
+    const { handlePhotoChange } = this.props;
     return (
       <form onSubmit={this.saveAndContinue}>
         <h1>Camera</h1>
@@ -24,8 +24,6 @@ class CreateStoryCamera extends Component {
 
 CreateStoryCamera.propTypes = {
   nextStep: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  values: PropTypes.object.isRequired,
   handlePhotoChange: PropTypes.func.isRequired,
 };
 
