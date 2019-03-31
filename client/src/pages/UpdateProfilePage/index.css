@@ -1,0 +1,85 @@
+.row{
+    flex-direction: column;
+    height: 90vh;
+    min-height: 700px;
+}
+.update-panel-form{
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+}
+
+.update-form-container{
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.update-panel-title{
+    color: #FF9800;
+}
+
+.update-user-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.update-divider{
+    margin-top: 5px;
+    width: 200px;
+    background-color: #FF9800;
+    height: 1px;
+}
+
+.forgot-pass-txt{
+    margin-bottom: 0;
+    text-align: left;
+    font-size: 0.90rem;  
+    margin-left: 10px;  
+}
+.no-acc-text{
+    margin-bottom: 0;
+}
+
+.update-profile-btn{
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #FF9800;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.update-panel-img{
+    background-image: url("../LoginPage/audience.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+@media(min-width: 992px){
+    .row{
+        flex-direction: row;
+    }
+    .update-panel-img{
+        display: block;
+        flex: 1;
+    }
+    .update-form-container{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}

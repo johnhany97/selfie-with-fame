@@ -1,0 +1,82 @@
+.row{
+    flex-direction: column;
+    height: 90vh;
+    min-height: 700px;
+}
+.register-panel-form{
+    flex: 1;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 1rem;
+}
+
+.register-panel-title{
+    color: #FF9800;
+}
+
+.register-form{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 500px;
+}
+
+.register-divider{
+    margin-top: 5px;
+    width: 200px;
+    background-color: #FF9800;
+    height: 1px;
+}
+
+.register-form-container{
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-btn{
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background-color: #FF9800;
+    color: #fff;
+    border: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.register-panel-img{
+    background-image: url("../LoginPage/audience.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    display: none;
+}
+
+.register-success{
+    margin-left: 20px;
+    margin-top: 2rem;
+    height: 90vh;
+    min-height: 700px;
+}
+
+@media(min-width: 992px){
+    .row{
+        flex-direction: row;
+    }
+    .register-panel-img{
+        display: block;
+        flex: 1;
+    }
+    .register-form-container{
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}

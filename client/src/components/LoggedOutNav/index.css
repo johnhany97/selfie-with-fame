@@ -1,0 +1,22 @@
+/* Custom Button Styles */
+.square-btn{
+    background-color: #FF9800;
+    border: none;
+    color: #FF9800;
+    background-color: inherit;
+    border: 2px solid #FF9800;
+    font-weight: 500;
+    padding: 0.25rem 1rem;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin-left: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.square-btn:hover{
+    background-color: #FF9800;
+    color: #fff;
+    text-decoration: none;
+}

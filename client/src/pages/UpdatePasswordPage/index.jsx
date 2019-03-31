@@ -14,6 +14,7 @@ import {
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
+import './index.css';
 
 class UpdatePasswordPage extends Component {
   constructor(props) {
@@ -152,25 +153,20 @@ class UpdatePasswordPage extends Component {
     if (loadingUser === false) {
       return (
         <Layout title="Update Password">
-          <form onSubmit={this.updatePassword}>
-            <TextField
-              style={inputStyle}
-              id="password"
-              label="password"
-              value={password}
-              onChange={this.handleChange('password')}
-              type="password"
-            />
-            <SubmitButton
-              buttonStyle={saveButton}
-              buttonText="Save Changes"
-            />
-          </form>
-          <LinkButton
-            buttonStyle={cancelButton}
-            buttonText="Cancel Changes"
-            link={`/userProfile/${username}`}
-          />
+          <div className="container-lg">
+            <form onSubmit={this.updatePassword} className="update-pass-form">
+              <TextField
+                style={inputStyle}
+                id="password"
+                label="password"
+                value={password}
+                onChange={this.handleChange('password')}
+                type="password"
+              />
+              <button type="submit" className="update-pass-btn">Save Changes</button>
+              <a href={"/userProfile/" + username} className="cancel-update-pass-btn">Cancel</a>
+            </form>
+          </div>
         </Layout>
       );
     }

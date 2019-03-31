@@ -12,6 +12,7 @@ import {
 import LinkButton from '../../components/LinkButton';
 import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
+import './index.css';
 
 class ResetPasswordPage extends Component {
   constructor() {
@@ -104,13 +105,15 @@ class ResetPasswordPage extends Component {
     if (error) {
       return (
         <Layout title="Reset Password">
-          <div>
-            <h4>Problem resetting password. Please send another reset link.</h4>
-            <LinkButton
-              buttonStyle={forgotButton}
-              buttonText="Forgot Password?"
-              link="/forgotPassword"
-            />
+          <div className="container-lg">
+            <div>
+              <h4>Problem resetting password. Please send another reset link.</h4>
+              <LinkButton
+                buttonStyle={forgotButton}
+                buttonText="Forgot Password?"
+                link="/forgotPassword"
+              />
+            </div>
           </div>
         </Layout>
       );
@@ -124,33 +127,32 @@ class ResetPasswordPage extends Component {
     }
     return (
       <Layout title="Reset Password">
-        <form onSubmit={this.updatePassword}>
-          <TextField
-            style={inputStyle}
-            id="password"
-            label="password"
-            onChange={this.handleChange('password')}
-            value={password}
-            type="password"
-          />
-          <SubmitButton
-            buttonStyle={updateButton}
-            buttonText="Update Password"
-          />
-        </form>
-
-        {updated && (
-          <div>
-            <p>
-              Your password has been successfully reset, please try logging in again.
-            </p>
-            <LinkButton
-              buttonStyle={loginButton}
-              buttonText="Login"
-              link="/login"
+        <div className="container-lg">
+          <form onSubmit={this.updatePassword}>
+            <TextField
+              style={inputStyle}
+              id="password"
+              label="password"
+              onChange={this.handleChange('password')}
+              value={password}
+              type="password"
             />
-          </div>
-        )}
+            <button className="update-pass-btn" type="submit">Update Password</button>
+          </form>
+
+          {updated && (
+            <div>
+              <p>
+                Your password has been successfully reset, please try logging in again.
+            </p>
+              <LinkButton
+                buttonStyle={loginButton}
+                buttonText="Login"
+                link="/login"
+              />
+            </div>
+          )}
+        </div>
       </Layout>
     );
   }
