@@ -15,7 +15,7 @@ class GoogleMap extends Component {
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
-      selectedPlace: {},
+      selectedPlace: [],
     }
   }
 
@@ -35,20 +35,20 @@ class GoogleMap extends Component {
     }
   };
 
-  handleMarkerDragEnd(props, marker, e) {
-    console.log("handle");
+  handleMarkerDragEnd(props, marker, coord) {
+    var latitude = coord.latLng.lat();
+    var longitude = coord.latLng.lng();
     this.setState({
-      selectedPlace: props,
+      selectedPlace: [latitude, longitude],
       activeMarker: marker,
       showingInfoWindow: true
     });
-    this.location = this.state.selectedPlace;
-    this.handleChange( this.state.selectedPlace);
+    const { handleLocationChange } = this.props;
+    handleLocationChange(this.state.selectedPlace);
   }
   
   render() {
-    console.log("new place");
-    console.log(this.state.selectedPlace);
+
     return (
       <CurrentLocation centerAroundCurrentLocation google={this.props.google}>
         <Marker 
@@ -81,8 +81,7 @@ GoogleMap.propTypes = {
   // eslint-disable-next-line react/require-default-props
   match: PropTypes.shape({
     params: PropTypes.shape({
-      location: PropTypes.string.isRequired,
-      handleChange: PropTypes.func.isRequired,
+      handleLocationChange: PropTypes.func.isRequired,
     }),
   }),
 };

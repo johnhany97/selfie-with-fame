@@ -22,7 +22,7 @@ class CreateEventPage extends Component {
       event_name: '',
       information: '',
       date_time: '',
-      location: '',
+      location: [],
       messageFromServer: '',
       showError: false,
       createEventError: false,
@@ -36,9 +36,11 @@ class CreateEventPage extends Component {
   };
 
 
-  openMap = (event) => {
-
-  }
+  handleLocationChange = (data) => {
+    this.setState({
+      location: data,
+    });
+  };
 
   createEvent = (event) => {
     const token = localStorage.getItem('JWT');
@@ -100,6 +102,7 @@ class CreateEventPage extends Component {
       showError,
       createEventError,
     } = this.state;
+    console.log("the type of location is " + typeof(location) + ""  + location[0] + " " + location[1]);
 
     if (messageFromServer === '') {
       return (
@@ -148,11 +151,10 @@ class CreateEventPage extends Component {
               buttonText="Create Event"
             />
             <GoogleMap
-              value={location}
-              location = {this.state.location}
-              handleChange={this.handleChange}
+              handleLocationChange={this.handleLocationChange}
             ></GoogleMap>
           </form>
+          
           {showError === true && createEventError === true && (
             <div>
               <p>event name, info, location and date/time are required fields.</p>
