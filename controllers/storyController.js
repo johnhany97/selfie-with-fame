@@ -44,6 +44,29 @@ module.exports.getStoriesByUser = (req, res) => {
     });
 }
 
+module.exports.getStoriesByEvent = (req, res) => {
+  const size = req.query.size || 10;
+  const page = req.query.page || 1;
+
+  const pagination = {
+    limit: size * 1,
+    skip: (page - 1) * size
+  };
+
+  const query = {
+    event: req.params.id,
+  }
+
+  Story.find(query, {}, pagination)
+    .sort({ createdAt: -1 })
+    .populate('postedBy', '_id first_name last_name')
+    .then((stories) => {
+      res.status(200).send({
+        stories
+      });
+    });
+}
+
 module.exports.getStoriesTimeline = (req, res) => {
   res.status(500).send('Not implemented yet');
 }
@@ -52,9 +75,11 @@ module.exports.createStory = (req, res) => {
   const pictureParam = req.body.picture;
   const pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
   const pictureBuffer = new Buffer(pictureBlob, 'base64');
+
   const story = new Story({
     text: req.body.text,
     picture: pictureBuffer,
+    event: req.body.event_id,
     postedBy: req.user._id
   });
 

@@ -9,6 +9,8 @@ var router = express.Router();
 router.route('/all').all(authMiddleware.authenticate).get(storyController.getAllStories);
 // GET all stories by the current logged in user
 router.route('/').all(authMiddleware.authenticate).get(storyController.getStoriesByUser);
+// GET all stories for a given event
+router.route('/event/:id').all(authMiddleware.authenticate).get(storyController.getStoriesByEvent);
 // PUT a new story by the logged in user
 router.route('/').all(authMiddleware.authenticate).put(storyController.createStory);
 // GET a story by it's id, doesn't have to be the user's atm
