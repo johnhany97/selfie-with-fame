@@ -1,27 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Story from '../../../components/Stories/Story';
+
 const StoryDetails = (params) => {
   const { story } = params;
-  const {
-    text,
-    picture,
-    createdAt,
-    updatedAt,
-  } = story;
-  const pic = Buffer.from(picture, 'base64');
-
   return (
-    <div>
-      Image:
-      <img src={pic} alt="Story pic" />
-      Caption:
-      {text}
-      Created at:
-      {createdAt}
-      Last updated at:
-      {updatedAt}
-    </div>
+    <Story {...story} />
   );
 };
 

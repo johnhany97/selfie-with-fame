@@ -3,16 +3,16 @@ import axios from 'axios';
 import { Redirect } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField';
 
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import './index.css';
 
 import {
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 
 import {
   errorMessage,
-} from '../../styles/formStyles';
+} from '../../../styles/formStyles';
 
 class LoginPage extends Component {
   constructor() {
@@ -79,7 +79,7 @@ class LoginPage extends Component {
         <Layout>
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6" className="login-panel-form">
+              <div className="col-md-6 login-panel-form">
                 <div className="login-form-container">
                   <h3 className="login-panel-title">Log In</h3>
                   <hr className="login-divider" />
@@ -113,16 +113,15 @@ class LoginPage extends Component {
                     )}
                     <button className="login-btn" type="submit">Log In</button>
                   </form>
-                  <p className="no-acc-text">Don't have an account?</p>
+                  <p className="no-acc-text">New user?</p>
                   <a href="/register">Register</a>
                 </div>
               </div>
-              <div className="col-md-6" className="login-panel-img">
-              </div>
+              <div className="col-md-6 login-panel-img" />
             </div>
           </div>
         </Layout>
-      )
+      );
     }
     return <Redirect to={`/userProfile/${username}`} />;
   }

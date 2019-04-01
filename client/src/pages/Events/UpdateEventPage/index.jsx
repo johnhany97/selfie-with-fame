@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
@@ -7,11 +8,9 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 import {
-  cancelButton,
-  saveButton,
   loginButton,
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 
 import {
   formTitle,
@@ -19,10 +18,10 @@ import {
   formSubmitButton,
   cancelLink,
   mTop,
-} from '../../styles/formStyles';
-import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/formStyles';
+import LinkButton from '../../../components/LinkButton';
+import SubmitButton from '../../../components/SubmitButton';
+import Layout from '../../../components/Layout';
 
 class UpdateEventPage extends Component {
   constructor(props) {
@@ -97,18 +96,13 @@ class UpdateEventPage extends Component {
       information: this.state.information,
       location: this.state.location,
       date_time: this.state.date_time,
-    }, {
-        headers: {
-          Authorization: `JWT ${token}`,
-        },
-      }).then((res) => {
-        console.log(res.data);
+    }, { headers: { Authorization: `JWT ${token}` } })
+      .then(() => {
         this.setState({
           updated: true,
           error: false,
         });
-      }).catch((err) => {
-        console.log(err.response.data);
+      }).catch(() => {
         this.setState({
           loadingEvent: false,
           error: true,
@@ -157,7 +151,7 @@ class UpdateEventPage extends Component {
         <Layout title="Update Event">
           <div className="container" style={mTop}>
             <h3 style={formTitle}>Update Event</h3>
-            <hr style={formDividor}/>
+            <hr style={formDividor} />
             <form className="panel-center" onSubmit={this.updateEvent}>
               <TextField
                 style={inputStyle}
@@ -198,7 +192,7 @@ class UpdateEventPage extends Component {
                 buttonStyle={formSubmitButton}
                 buttonText="Save Changes"
               />
-              <a href={"/eventPage/" + this.props.match.params._id} style={cancelLink}>Cancel</a>
+              <a href={`/eventPage/${this.props.match.params._id}`} style={cancelLink}>Cancel</a>
             </form>
           </div>
         </Layout>

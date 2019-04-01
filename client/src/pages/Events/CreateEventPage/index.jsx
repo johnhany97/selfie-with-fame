@@ -4,21 +4,21 @@ import TextField from '@material-ui/core/TextField';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
-import Layout from '../../components/Layout';
-import GoogleMap from '../GoogleMap';
+import Layout from '../../../components/Layout';
+import GoogleMap from '../../GoogleMap';
 
 import {
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 import {
-  formTitle, 
+  formTitle,
   formDividor,
   formSubmitButton,
   mTop,
   cancelLink,
   errorMessage,
-} from '../../styles/formStyles';
-import SubmitButton from '../../components/SubmitButton';
+} from '../../../styles/formStyles';
+import SubmitButton from '../../../components/SubmitButton';
 
 class CreateEventPage extends Component {
   constructor(props) {
@@ -91,7 +91,7 @@ class CreateEventPage extends Component {
         createEventError: false,
         eventID: res.data.event_id,
       });
-    }).catch((err) => {
+    }).catch(() => {
       this.setState({
         showError: true,
         createEventError: true,
@@ -111,7 +111,7 @@ class CreateEventPage extends Component {
       showError,
       createEventError,
     } = this.state;
-    console.log("the type of location is " + typeof(location) + ""  + location[0] + " " + location[1]);
+    console.log(`the type of location is ${typeof (location)} ${location[0]} ${location[1]}`);
 
     if (messageFromServer === '') {
       return (
@@ -119,7 +119,7 @@ class CreateEventPage extends Component {
 
           <div className="container" style={mTop}>
             <h3 style={formTitle}>Create Event</h3>
-            <hr style={formDividor}/>
+            <hr style={formDividor} />
             <form onSubmit={this.createEvent} className="panel-center">
               <TextField
                 style={inputStyle}
@@ -149,7 +149,11 @@ class CreateEventPage extends Component {
                 }}
               />
               {showError === true && createEventError === true && (
-                <p style={errorMessage}>*Event name, info, location and date/time are required fields.</p>
+                <p
+                  style={errorMessage}
+                >
+                  *Event name, info, location and date/time are required fields.
+                </p>
               )}
               <SubmitButton
                 buttonStyle={formSubmitButton}
@@ -159,15 +163,14 @@ class CreateEventPage extends Component {
             </form>
             <GoogleMap
               handleLocationChange={this.handleLocationChange}
-            ></GoogleMap>
+            />
           </div>
-        </Layout >
+        </Layout>
       );
     }
     if (messageFromServer === 'event created') {
-      
       return (
-        <Redirect to={`/eventPage/` + eventID} />
+        <Redirect to={`/eventPage/${eventID}`} />
       );
     }
   }

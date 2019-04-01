@@ -3,14 +3,14 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import './index.css';
 import {
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 import {
   errorMessage,
-} from '../../styles/formStyles';
+} from '../../../styles/formStyles';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -95,7 +95,7 @@ class RegisterPage extends Component {
         <Layout title="Register">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6" className="register-panel-form">
+              <div className="col-md-6 register-panel-form">
                 <div className="register-form-container">
                   <h3 className="register-panel-title">Sign Up</h3>
                   <hr className="register-divider" />
@@ -148,7 +148,7 @@ class RegisterPage extends Component {
                       <div>
                         <p style={errorMessage}>
                           *That username or email is already taken. Please choose another or login.
-                      </p>
+                        </p>
                         <a href="/login">Login</a>
                       </div>
                     )}
@@ -157,11 +157,10 @@ class RegisterPage extends Component {
                   </form>
                 </div>
               </div>
-              <div className="col-md-6" className="register-panel-img">
-              </div>
+              <div className="col-md-6 register-panel-img" />
             </div>
           </div>
-        </Layout >
+        </Layout>
       );
     }
     if (messageFromServer === 'user created') {
