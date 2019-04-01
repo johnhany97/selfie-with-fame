@@ -14,7 +14,7 @@ let eventSchema = new mongoose.Schema({
     default: Date.now
   },
   location: {
-    type: String,
+    type: [Number],
     required: true,
   }
 });

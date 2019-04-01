@@ -4,6 +4,8 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 import Layout from '../../components/Layout';
+import GoogleMap from '../GoogleMap';
+
 import {
   registerButton,
   loginButton,
@@ -20,7 +22,7 @@ class CreateEventPage extends Component {
       event_name: '',
       information: '',
       date_time: '',
-      location: '',
+      location: [],
       messageFromServer: '',
       showError: false,
       createEventError: false,
@@ -30,6 +32,13 @@ class CreateEventPage extends Component {
   handleChange = name => (event) => {
     this.setState({
       [name]: event.target.value,
+    });
+  };
+
+
+  handleLocationChange = (data) => {
+    this.setState({
+      location: data,
     });
   };
 
@@ -93,6 +102,7 @@ class CreateEventPage extends Component {
       showError,
       createEventError,
     } = this.state;
+    console.log("the type of location is " + typeof(location) + ""  + location[0] + " " + location[1]);
 
     if (messageFromServer === '') {
       return (
@@ -114,14 +124,16 @@ class CreateEventPage extends Component {
               onChange={this.handleChange('information')}
               placeholder="Info"
             />
-            <TextField
+            
+            {/* <TextField
               style={inputStyle}
               id="location"
               label="Location"
               value={location}
               onChange={this.handleChange('location')}
               placeholder="Location"
-            />
+            /> */}
+            
             <TextField
               style={inputStyle}
               id="date_time"
@@ -133,11 +145,16 @@ class CreateEventPage extends Component {
                 shrink: true,
               }}
             />
+            
             <SubmitButton
               buttonStyle={loginButton}
               buttonText="Create Event"
             />
+            <GoogleMap
+              handleLocationChange={this.handleLocationChange}
+            ></GoogleMap>
           </form>
+          
           {showError === true && createEventError === true && (
             <div>
               <p>event name, info, location and date/time are required fields.</p>
