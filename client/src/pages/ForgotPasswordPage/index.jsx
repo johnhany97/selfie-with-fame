@@ -6,6 +6,9 @@ import {
   registerButton,
   inputStyle,
 } from '../../styles/buttonStyles';
+import {
+  errorMessage,
+} from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import Layout from '../../components/Layout';
 import './index.css';
@@ -87,16 +90,14 @@ class ForgotPasswordPage extends Component {
             <button className="pass-reset-btn" type="submit">Send Password Reset Email</button>
           </form>
           {showNullError && (
-            <div>
-              <p>The email address cannot be empty.</p>
-            </div>
+            <p style={errorMessage}>*The email address cannot be empty.</p>
           )}
           {showError && (
             <div>
-              <p>
+              <p style={errorMessage}>
                 That email address isn&apos;t recognized. Please try again or
                 register for a new account.
-                </p>
+            </p>
               <LinkButton
                 buttonText="Register"
                 buttonStyle={registerButton}

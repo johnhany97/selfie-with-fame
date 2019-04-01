@@ -64,6 +64,12 @@ export const mTop = {
     marginTop: '2rem',
 }
 
+export const errorMessage = {
+    color: 'red',
+    marginLeft: '0.5rem',
+    textAlign: 'start',
+}
+
 
 export default {
     formTitle,
@@ -73,4 +79,5 @@ export default {
     crudButton,
     cancelLink,
     mTop,
+    errorMessage,
   };

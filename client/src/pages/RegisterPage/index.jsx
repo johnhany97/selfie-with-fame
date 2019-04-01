@@ -8,6 +8,9 @@ import './index.css';
 import {
   inputStyle,
 } from '../../styles/buttonStyles';
+import {
+  errorMessage,
+} from '../../styles/formStyles';
 
 class RegisterPage extends Component {
   constructor(props) {
@@ -95,7 +98,7 @@ class RegisterPage extends Component {
               <div className="col-md-6" className="register-panel-form">
                 <div className="register-form-container">
                   <h3 className="register-panel-title">Sign Up</h3>
-                  <hr className="register-divider"/>
+                  <hr className="register-divider" />
                   <form onSubmit={this.registerUser} className="register-form">
                     <TextField
                       style={inputStyle}
@@ -138,22 +141,20 @@ class RegisterPage extends Component {
                       placeholder="Password"
                       type="password"
                     />
+                    {showError === true && registerError === true && (
+                      <p style={errorMessage}>*Username, password and email are required fields.</p>
+                    )}
+                    {showError === true && loginError === true && (
+                      <div>
+                        <p style={errorMessage}>
+                          *That username or email is already taken. Please choose another or login.
+                      </p>
+                        <a href="/login">Login</a>
+                      </div>
+                    )}
                     <button className="register-btn" type="submit">Sign Up</button>
                     <a href="/login">Already have an account? Login</a>
                   </form>
-                  {showError === true && registerError === true && (
-                    <div>
-                      <p>Username, password and email are required fields.</p>
-                    </div>
-                  )}
-                  {showError === true && loginError === true && (
-                    <div>
-                      <p>
-                        That username or email is already taken. Please choose another or login.
-                          </p>
-                      <a href="/login">Login</a>
-                    </div>
-                  )}
                 </div>
               </div>
               <div className="col-md-6" className="register-panel-img">

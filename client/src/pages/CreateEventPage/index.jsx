@@ -14,6 +14,7 @@ import {
   formSubmitButton,
   mTop,
   cancelLink,
+  errorMessage,
 } from '../../styles/formStyles';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -141,17 +142,17 @@ class CreateEventPage extends Component {
                   shrink: true,
                 }}
               />
+              {showError === true && createEventError === true && (
+                <div>
+                  <p style={errorMessage}>*Event name, info, location and date/time are required fields.</p>
+                </div>
+              )}
               <SubmitButton
                 buttonStyle={formSubmitButton}
                 buttonText="Create Event"
               />
               <a href="/events" style={cancelLink}>Cancel</a>
             </form>
-            {showError === true && createEventError === true && (
-              <div>
-                <p>event name, info, location and date/time are required fields.</p>
-              </div>
-            )}
           </div>
         </Layout >
       );
