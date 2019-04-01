@@ -25,6 +25,7 @@ class CreateEventPage extends Component {
     super(props);
 
     this.state = {
+      eventID: '',
       event_name: '',
       information: '',
       date_time: '',
@@ -88,6 +89,7 @@ class CreateEventPage extends Component {
         messageFromServer: res.data.message,
         showError: false,
         createEventError: false,
+        eventID: res.data.event_id,
       });
     }).catch((err) => {
       this.setState({
@@ -100,6 +102,7 @@ class CreateEventPage extends Component {
   // eslint-disable-next-line consistent-return
   render() {
     const {
+      eventID,
       event_name,
       information,
       location,
@@ -146,9 +149,7 @@ class CreateEventPage extends Component {
                 }}
               />
               {showError === true && createEventError === true && (
-                <div>
-                  <p style={errorMessage}>*Event name, info, location and date/time are required fields.</p>
-                </div>
+                <p style={errorMessage}>*Event name, info, location and date/time are required fields.</p>
               )}
               <SubmitButton
                 buttonStyle={formSubmitButton}
@@ -161,13 +162,12 @@ class CreateEventPage extends Component {
             ></GoogleMap>
           </div>
         </Layout >
-
       );
     }
     if (messageFromServer === 'event created') {
       
       return (
-        <Redirect to={`/events`} />
+        <Redirect to={`/eventPage/` + eventID} />
       );
     }
   }

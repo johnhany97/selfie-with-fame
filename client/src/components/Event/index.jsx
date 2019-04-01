@@ -4,12 +4,13 @@ import {
     cardPanel,
     crudButton,
 } from '../../styles/formStyles';
+import './index.css';
 
 class Event extends Component {
     render() {
         return (
             <div style={cardPanel}>
-                <h3>{this.props.name}</h3>
+                <a href={"/eventPage/" + this.props.id}className="event-title">{this.props.name}</a>
                 <p>{this.props.information}</p>
                 <p>{this.props.location}</p>
                 <p>{this.props.dateTime}</p>
