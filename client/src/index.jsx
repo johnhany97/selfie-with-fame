@@ -19,14 +19,23 @@ import DisplayEventsPage from './pages/DisplayEventsPage';
 import UpdateEventPage from './pages/UpdateEventPage';
 import EventPage from './pages/EventPage';
 
-import * as serviceWorker from './serviceWorker';
 import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
+import DB from './db/db';
+
+// check for support indexeddb support;
+let db = null;
+if ('indexedDB' in window) {
+  console.log('another yet');
+  db = new DB();
+} else {
+  console.log('This browser doesn\'t support IndexedDB');
+}
 
 const routing = (
   <Router>
     <Switch>
-      <Route exact path="/" component={App} />
+      <Route exact path="/" component={() => <App db={db} />} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/register" component={RegisterPage} />
       <Route exact path="/reset/:token" component={ResetPasswordPage} />
@@ -45,8 +54,3 @@ const routing = (
 );
 
 ReactDOM.render(routing, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-// serviceWorker.register();
