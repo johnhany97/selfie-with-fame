@@ -24,6 +24,16 @@ code {
   justify-content: space-between;
 }
 
+.panel-center{
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 80vh;
+  min-height: 600px;
+}
+
 @media(min-width: 992px){
   .container-lg{
     padding: 0 75px;

@@ -50,6 +50,7 @@ class GoogleMap extends Component {
   }
   
   render() {
+
     return (
       <CurrentLocation centerAroundCurrentLocation google={this.props.google} handleLocationChange={this.props.handleLocationChange}>
         <Marker 

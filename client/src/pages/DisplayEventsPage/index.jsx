@@ -6,18 +6,16 @@ import { Link, Redirect } from 'react-router-dom';
 
 import Layout from '../../components/Layout';
 import {
-  registerButton,
   loginButton,
-  inputStyle,
-  deleteButton,
-  updateButton
 } from '../../styles/buttonStyles';
+
+import {
+  mTop,
+  crudButton,
+} from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
+import Event from '../../components/Event';
+import './index.css';
 
 
 
@@ -132,48 +130,19 @@ class DisplayEventsPage extends Component {
 
     return (
       <Layout title="Events">
-        {events.map(event_iter => (
-          <Table key={event_iter._id} >
-            <TableBody>
-              <TableRow>
-                <TableCell>Event Name</TableCell>
-                <TableCell>{event_iter.event_name}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>infor</TableCell>
-                <TableCell>{event_iter.information}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Location</TableCell>
-                <TableCell>{event_iter.location}</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>Date/Time</TableCell>
-                <TableCell>{event_iter.date_time}}</TableCell>
-              </TableRow>
-              <TableRow>
-                <Button
-                  style={deleteButton}
-                  variant="contained"
-                  color="primary"
-                  onClick={() => this.deleteEvent(event_iter._id)}
-                >
-                DELETE
-                </Button>
-                <LinkButton
-                  buttonStyle={updateButton}
-                  buttonText="Update Event"
-                  link={`/updateEvent/${event_iter._id}`}
-                />
-                <LinkButton
-                  buttonStyle={updateButton}
-                  buttonText="View Event"
-                  link={`/EventPage/${event_iter._id}`}
-                />
-              </TableRow>
-            </TableBody>
-          </Table>
+        <div className="container" style={mTop}>
+          <a href="/createEvent" style={crudButton} className="add-event-btn">Add Event</a>
+          {events.map(event_iter => (
+            <Event 
+              key={event_iter._id}
+              id={event_iter._id}
+              name={event_iter.event_name}
+              information={event_iter.information}
+              location={event_iter.location}
+              dateTime={event_iter.date_time} />
+
         ))}
+        </div>
       </Layout>
     )
   }
