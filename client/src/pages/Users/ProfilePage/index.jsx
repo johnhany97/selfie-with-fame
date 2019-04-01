@@ -3,9 +3,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
+import Story from '../../../components/Stories/Story';
 import './index.css';
 import avatar from './placeholder-avatar.jpg';
 
@@ -21,18 +22,27 @@ class ProfilePage extends Component {
       isLoading: true,
       deleted: false,
       error: false,
+      errorMessage: '',
+      stories: [],
     };
   }
 
-  async componentDidMount() {
+  componentWillMount() {
     const token = localStorage.getItem('JWT');
-    if (token == null) {
-      this.setState({
-        error: true,
-        isLoading: false,
-      });
-      return;
+    if (token === null) {
+      // eslint-disable-next-line react/prop-types
+      const { history } = this.props;
+      history.replaceState(null, '/login');
     }
+  }
+
+  async componentDidMount() {
+    await this.getUserDetails();
+    await this.getUserStories();
+  }
+
+  getUserDetails = async () => {
+    const token = localStorage.getItem('JWT');
     await axios.get('/api/users/find', {
       params: {
         username: this.props.match.params.username,
@@ -62,6 +72,26 @@ class ProfilePage extends Component {
         error: true,
       });
     });
+  }
+
+  getUserStories = async () => {
+    const token = localStorage.getItem('JWT');
+    axios.get('/api/stories', {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    })
+      .then((res) => {
+        this.setState({
+          stories: res.data.stories,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+          errorMessage: 'Error fetching user stories',
+        });
+      });
   }
 
   deleteUser = (event) => {
@@ -109,6 +139,7 @@ class ProfilePage extends Component {
       error,
       isLoading,
       deleted,
+      stories,
     } = this.state;
 
     if (error) {
@@ -156,6 +187,7 @@ class ProfilePage extends Component {
             </div>
           </div>
           <h3 className="profile-title">STORIES</h3>
+          {stories && stories.map(story => <Story {...story} />)}
         </div>
       </Layout>
     );
@@ -171,4 +203,4 @@ ProfilePage.propTypes = {
   }),
 };
 
-export default ProfilePage;
+export default withRouter(ProfilePage);

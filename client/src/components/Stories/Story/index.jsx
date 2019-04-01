@@ -10,12 +10,22 @@ const Story = (props) => {
     createdAt,
     updatedAt,
   } = props;
-  const pic = Buffer.from(picture, 'base64');
+  let picBuffer;
+  if (picture) {
+    picBuffer = new Buffer(picture).toString('base64');
+    // const uint8array = new TextEncoder("utf-8").encode(picture);
+    // picBuffer = new TextDecoder("utf-8").decode(uint8array);
+    // picBuffer = btoa(String.fromCharCode(...new Uint8Array(picture.data)));
+  }
 
   return (
     <div>
-      Image:
-      <img src={pic} alt="Story pic" />
+      {picture && (
+        <React.Fragment>
+          <p>Image:</p>
+          <img src={`data:image/jpeg;base64,${picBuffer}`} alt="Story pic" />
+        </React.Fragment>
+      )}
       Caption:
       {text}
       Created at:
