@@ -73,8 +73,14 @@ module.exports.getStoriesTimeline = (req, res) => {
 
 module.exports.createStory = (req, res) => {
   const pictureParam = req.body.picture;
-  const pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
-  const pictureBuffer = new Buffer(pictureBlob, 'base64');
+  let pictureBlob;
+  let pictureBuffer;
+  if(pictureParam != null){
+    pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
+    pictureBuffer = new Buffer(pictureBlob, 'base64');
+  }
+
+
 
   const story = new Story({
     text: req.body.text,
