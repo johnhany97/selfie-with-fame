@@ -1,0 +1,9 @@
+.event-title{
+    color: #FF9800;
+    font-size: 1.7em;
+    text-decoration: none;
+}
+
+.event-title:hover{
+    text-decoration: none;
+}

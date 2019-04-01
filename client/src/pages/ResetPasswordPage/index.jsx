@@ -4,13 +4,11 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 
 import {
-  updateButton,
   loginButton,
   forgotButton,
   inputStyle,
 } from '../../styles/buttonStyles';
 import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
 import './index.css';
 

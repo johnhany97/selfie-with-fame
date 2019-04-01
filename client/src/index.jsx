@@ -18,6 +18,7 @@ import CreateEventPage from './pages/CreateEventPage';
 import DisplayEventsPage from './pages/DisplayEventsPage';
 import UpdateEventPage from './pages/UpdateEventPage';
 import EventPage from './pages/EventPage';
+import GoogleMap from './pages/GoogleMap';
 
 import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
@@ -48,6 +49,7 @@ const routing = (
       <Route exact path="/updateEvent/:_id" component={UpdateEventPage} />
       <Route exact path="/eventPage/:_id" component={EventPage} />
       <Route path="/createStory" component={CreateStoryPage} />
+      <Route exact path="/mapTest" component={GoogleMap} />
       <Route component={NotFound} />
     </Switch>
   </Router>

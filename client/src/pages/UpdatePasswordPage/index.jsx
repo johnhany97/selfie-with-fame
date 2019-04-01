@@ -6,13 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 import {
-  cancelButton,
-  saveButton,
   loginButton,
   inputStyle,
 } from '../../styles/buttonStyles';
 import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
 import Layout from '../../components/Layout';
 import './index.css';
 

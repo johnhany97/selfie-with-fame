@@ -10,6 +10,10 @@ import {
   inputStyle,
 } from '../../styles/buttonStyles';
 
+import {
+  errorMessage,
+} from '../../styles/formStyles';
+
 class LoginPage extends Component {
   constructor() {
     super();
@@ -78,7 +82,7 @@ class LoginPage extends Component {
               <div className="col-md-6" className="login-panel-form">
                 <div className="login-form-container">
                   <h3 className="login-panel-title">Log In</h3>
-                  <hr className="login-divider"/>
+                  <hr className="login-divider" />
                   <form onSubmit={this.loginUser} className="login-form">
                     <TextField
                       id="username"
@@ -98,21 +102,17 @@ class LoginPage extends Component {
                       type="password"
                     />
                     <a href="/forgotPassword" className="forgot-pass-txt">Forgot your password?</a>
-                    <button className="login-btn" type="submit">Log In</button>
-                  </form>
-                  {showNullError && (
-                    <div>
-                      <p>The username or password cannot be empty.</p>
-                    </div>
-                  )}
-                  {showError && (
-                    <div>
-                      <p>
-                        That username or password isn&apos;t recognized. Please try
+                    {showNullError && (
+                      <p style={errorMessage}>*The username or password cannot be empty.</p>
+                    )}
+                    {showError && (
+                      <p style={errorMessage}>
+                        *That username or password isn&apos;t recognized. Please try
                         again or register now.
                       </p>
-                    </div>
-                  )}
+                    )}
+                    <button className="login-btn" type="submit">Log In</button>
+                  </form>
                   <p className="no-acc-text">Don't have an account?</p>
                   <a href="/register">Register</a>
                 </div>

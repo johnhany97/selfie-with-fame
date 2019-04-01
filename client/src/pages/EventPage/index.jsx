@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -11,13 +11,14 @@ import TableRow from '@material-ui/core/TableRow';
 import Button from '@material-ui/core/Button';
 
 import {
-  deleteButton,
-  updateButton,
   loginButton,
-  logoutButton,
-  linkStyle,
-  forgotButton,
 } from '../../styles/buttonStyles';
+
+import {
+  crudButton,
+  cardPanel,
+  mTop,
+} from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import Layout from '../../components/Layout';
 
@@ -151,39 +152,18 @@ class EventPage extends Component {
 
     return (
       <Layout title="Event page">
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell>Event Name</TableCell>
-              <TableCell>{event_name}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Information</TableCell>
-              <TableCell>{information}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Location</TableCell>
-              <TableCell>{location}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Date Time</TableCell>
-              <TableCell>{date_time}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <Button
-          style={deleteButton}
-          variant="contained"
-          color="primary"
-          onClick={this.deleteEvent}
-        >
-          Delete Event
-        </Button>
-        <LinkButton
-          buttonStyle={updateButton}
-          buttonText="Update Event"
-          link={`/updateEvent/${this.props.match.params._id}`}
-        />
+        <div className="container" style={mTop}>
+          <div style={cardPanel}>
+            <h3>{event_name}</h3>
+            <p>{information}</p>
+            <p>{location}</p>
+            <p>{date_time}</p>
+            <div>
+              <a href={`/updateEvent/${this.props.match.params._id}`} style={crudButton}>Update</a>
+              <button onClick={this.deleteEvent} style={crudButton}>Delete</button>
+            </div>
+          </div>
+        </div>
       </Layout>
     );
   }
