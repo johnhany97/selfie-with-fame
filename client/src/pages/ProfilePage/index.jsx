@@ -32,7 +32,6 @@ class ProfilePage extends Component {
       last_name: '',
       email: '',
       username: '',
-      password: '',
       isLoading: true,
       deleted: false,
       error: false,
@@ -121,7 +120,6 @@ class ProfilePage extends Component {
       last_name,
       email,
       username,
-      password,
       error,
       isLoading,
       deleted,
@@ -157,18 +155,21 @@ class ProfilePage extends Component {
         <div className="container">
           <h3 className="profile-title">PROFILE</h3>
           <div className="profile-card">
-            <img src={avatar} className="profile-img" />
+            <img src={avatar} className="profile-img" alt="Profile pic" />
             <div className="profile-user-info">
               <h4>{username}</h4>
               <h5>BIO</h5>
-              <p>Morbi ornare risus interdum nibh vestibulum placerat. Curabitur auctor sem eget volutpat bibendum.
-                Fusce convallis ipsum sit amet tellus bibendum varius. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-              <a href={'/updateUser/' + username} className="update-btn">Update</a>
-              <button onClick={this.deleteUser} className="delete-btn">Delete</button>
+              <p>
+                Morbi ornare risus interdum nibh vestibulum placerat.
+                Curabitur auctor sem eget volutpat bibendum.
+                Fusce convallis ipsum sit amet tellus bibendum varius.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </p>
+              <a href={`/updateUser/${username}`} className="update-btn">Update</a>
+              <button type="button" onClick={this.deleteUser} className="delete-btn">Delete</button>
             </div>
           </div>
           <h3 className="profile-title">STORIES</h3>
-
         </div>
       </Layout>
     );

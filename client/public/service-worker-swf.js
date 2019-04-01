@@ -1,4 +1,3 @@
-/* eslint-disable no-restricted-globals */
 // Copyright 2016 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,39 +12,52 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const dataCacheName = 'selfieWithFameData-v1';
-const cacheName = 'selfieWithFame-v0.1';
+const cacheName = 'selfieWithFame-v0.4';
 const filesToCache = [
   '/',
+  '/manifest.json',
+  // '/static/js/0.chunk.js',
+  // '/static/js/bundle.js',
+  // '/static/js/main.chunk.js',
 ];
+
+// Builds the full array of static urls to cache. the %FOO% is replaced with
+// a JSON.stringify'd array of urls pulled from the generated asset-manifest.
+// See: scripts/generate-sw.js.
+// let STATIC_URLS = filesToCache;
+
+// if (process.env.NODE_ENV !== 'development') { // production
+const STATIC_URLS = filesToCache.concat(JSON.parse('%MANIFESTURLS%'));
+// }
 
 /**
  * installation event: it adds all the files to be cached
  */
-self.addEventListener('install', (e) => {
+self.addEventListener('install', function (e) {
   console.log('[ServiceWorker] Install');
   e.waitUntil(
-    caches.open(cacheName).then((cache) => {
+    caches.open(cacheName).then(function (cache) {
       console.log('[ServiceWorker] Caching app shell');
-      return cache.addAll(filesToCache);
-    }),
+      return cache.addAll(STATIC_URLS);
+    })
   );
 });
+
 
 /**
  * activation of service worker: it removes all cashed files if necessary
  */
-self.addEventListener('activate', (e) => {
+self.addEventListener('activate', function (e) {
   console.log('[ServiceWorker] Activate');
   e.waitUntil(
-    caches.keys().then((keyList) => {
+    caches.keys().then(function (keyList) {
       return Promise.all(keyList.map(function (key) {
-        if (key !== cacheName && key !== dataCacheName) {
+        if (key !== cacheName) {
           console.log('[ServiceWorker] Removing old cache', key);
           return caches.delete(key);
         }
       }));
-    }),
+    })
   );
   /*
    * Fixes a corner case in which the app wasn't returning the latest data.
@@ -61,11 +73,44 @@ self.addEventListener('activate', (e) => {
 });
 
 
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', function (event) {
   console.log('[Service Worker] Fetch', event.request.url);
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }),
-  );
+  var dataUrl = '/api';
+  //if the request is '/api', post to the server
+  if (event.request.url.indexOf(dataUrl) > -1) {
+    /*
+     * When the request URL contains dataUrl, the app is asking for fresh
+     * weather data. In this case, the service worker always goes to the
+     * network and then caches the response. This is called the "Cache then
+     * network" strategy:
+     * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
+     */
+    return fetch(event.request).then(function (response) {
+      // note: it the network is down, response will contain the error
+      // that will be passed to Ajax
+      return response;
+    }).catch(function (e) {
+      console.log("service worker error 1: " + e.message);
+    })
+  } else {
+    /*
+     * The app is asking for app shell files. In this scenario the app uses the
+     * "Cache, then if netowrk available, it will refresh the cache
+     * see stale-while-revalidate at
+     * https://jakearchibald.com/2014/offline-cookbook/#on-activate
+     */
+    event.respondWith(async function () {
+      const cache = await caches.open('mysite-dynamic');
+      const cachedResponse = await cache.match(event.request);
+      const networkResponsePromise = fetch(event.request);
+
+      event.waitUntil(async function () {
+        const networkResponse = await networkResponsePromise;
+        await cache.put(event.request, networkResponse.clone());
+      }());
+
+      // Returned the cached response if we have one, otherwise return the network response.
+      return cachedResponse || networkResponsePromise;
+    }());
+  }
 });

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -107,7 +108,7 @@ class DisplayEventsPage extends Component {
   render() {
     const {
       events,
-      showErro,
+      showError,
       isLoading,
       error,
       event_deleted
@@ -132,19 +133,15 @@ class DisplayEventsPage extends Component {
       <Layout title="Events">
         <div className="container" style={mTop}>
           <a href="/createEvent" style={crudButton} className="add-event-btn">Add Event</a>
-          {events.map(event_iter => (
-            <Event 
-              key={event_iter._id}
-              id={event_iter._id}
-              name={event_iter.event_name}
-              information={event_iter.information}
-              location={event_iter.location}
-              dateTime={event_iter.date_time} />
-
-        ))}
+          {events.map(event => (
+            <Event
+              key={event._id}
+              {...event}
+            />
+          ))}
         </div>
       </Layout>
-    )
+    );
   }
 }
 

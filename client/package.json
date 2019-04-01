@@ -6,6 +6,8 @@
     "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
     "bootstrap": "^4.3.1",
+    "idb": "^4.0.0",
+    "indexeddb-promised": "^1.3.1",
     "google-maps-react": "^2.0.2",
     "install": "^0.12.2",
     "npm": "^6.9.0",
@@ -22,7 +24,9 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "startW": "set HTTPS=true && react-scripts start",
-    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
+    "build": "react-scripts build && npm run generate-sw",
+    "generate-sw": "node scripts/generate-sw.js",
+    "build-and-deploy": "npm run build && s3cmd sync -P build/* s3://selfie.johnayad.com",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.jsx"
