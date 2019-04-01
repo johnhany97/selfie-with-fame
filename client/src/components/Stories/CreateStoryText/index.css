@@ -1,0 +1,14 @@
+.story-text-form{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    max-width: 500px;
+    margin-top: 1rem;
+}
+
+.story-text-title{
+    color: #FF9800;
+    margin-top: 1rem;
+}

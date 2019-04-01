@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
 import { inputStyle } from '../../../styles/buttonStyles';
+import {
+  noWidthBtn,
+} from '../../../styles/formStyles';
+import './index.css';
 
 const CreateStoryText = (props) => {
   const {
@@ -11,7 +15,8 @@ const CreateStoryText = (props) => {
     previousStep,
   } = props;
   return (
-    <form>
+    <form className="story-text-form">
+      <h1 className="story-text-title">Add a title</h1>
       <TextField
         id="text"
         label="Text"
@@ -20,8 +25,10 @@ const CreateStoryText = (props) => {
         placeholder="Insert text"
         type="text"
       />
-      <button type="button" onClick={nextStep}>Next</button>
-      <button type="button" onClick={previousStep}>Back</button>
+      <div>
+        <button type="button" onClick={nextStep} style={noWidthBtn}>Next</button>
+        <button type="button" onClick={previousStep} style={noWidthBtn}>Back</button>
+      </div>
     </form>
   );
 };

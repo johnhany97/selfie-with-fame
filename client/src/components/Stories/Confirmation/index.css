@@ -1,0 +1,8 @@
+.story-confirmation-container{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    max-width: 500px;
+}

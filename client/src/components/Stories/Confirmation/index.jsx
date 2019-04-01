@@ -3,6 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Event from '../../Event';
+import {
+  noWidthBtn,
+} from '../../../styles/formStyles.js';
+import './index.css';
 
 const Confirmation = (props) => {
   const {
@@ -13,11 +17,15 @@ const Confirmation = (props) => {
 
   return (
     <React.Fragment>
-      {values && values.picture && <img id="photo" src={values.picture} alt="Story taken" />}
-      {values && values.event && <Event {...values.event} />}
-      {values && values.text && <p>{values.text}</p>}
-      <button type="button" onClick={createStory}>Submit</button>
-      <button type="button" onClick={previousStep}>Back</button>
+      <div className="story-confirmation-container">
+        {values && values.picture && <img id="photo" src={values.picture} alt="Story taken" />}
+        {values && values.event && <Event {...values.event} />}
+        Title: {values && values.text && <p>{values.text}</p>}
+        <div>
+          <button type="button" onClick={createStory} style={noWidthBtn}>Submit</button>
+          <button type="button" onClick={previousStep} style={noWidthBtn}>Back</button>
+        </div>
+      </div>
     </React.Fragment>
   );
 };
