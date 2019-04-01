@@ -32,7 +32,6 @@ class ProfilePage extends Component {
       last_name: '',
       email: '',
       username: '',
-      password: '',
       isLoading: true,
       deleted: false,
       error: false,
@@ -121,7 +120,6 @@ class ProfilePage extends Component {
       last_name,
       email,
       username,
-      password,
       error,
       isLoading,
       deleted,
@@ -172,64 +170,7 @@ class ProfilePage extends Component {
             </div>
           </div>
           <h3 className="profile-title">STORIES</h3>
-
         </div>
-        {/*
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell>First Name</TableCell>
-              <TableCell>{first_name}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Last Name</TableCell>
-              <TableCell>{last_name}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Email</TableCell>
-              <TableCell>{email}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>User Name</TableCell>
-              <TableCell>{username}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Password</TableCell>
-              <TableCell style={{ WebkitTextSecurity: 'disc' }}>
-                {password}
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-        <Button
-          style={deleteButton}
-          variant="contained"
-          color="primary"
-          onClick={this.deleteUser}
-        >
-          Delete User
-        </Button>
-        <LinkButton
-          buttonStyle={updateButton}
-          buttonText="Update User"
-          link={`/updateUser/${username}`}
-        />
-        <LinkButton
-          buttonStyle={forgotButton}
-          buttonText="Update Password"
-          link={`/updatePassword/${username}`}
-        />
-        <Button
-          style={logoutButton}
-          variant="contained"
-          color="primary"
-          onClick={this.logout}
-        >
-          <Link style={linkStyle} to="/">
-            Logout
-          </Link>
-        </Button>
-        */}
       </Layout>
     );
   }
