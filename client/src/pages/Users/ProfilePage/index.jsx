@@ -3,23 +3,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
+import { Redirect } from 'react-router-dom';
 
-import {
-  deleteButton,
-  updateButton,
-  loginButton,
-  logoutButton,
-  linkStyle,
-  forgotButton,
-} from '../../styles/buttonStyles';
-import LinkButton from '../../components/LinkButton';
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import './index.css';
 import avatar from './placeholder-avatar.jpg';
 
@@ -28,9 +14,9 @@ class ProfilePage extends Component {
     super();
 
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
+      // first_name: '',
+      // last_name: '',
+      // email: '',
       username: '',
       isLoading: true,
       deleted: false,
@@ -57,15 +43,15 @@ class ProfilePage extends Component {
     }).then((res) => {
       const { data } = res;
       const {
-        first_name,
-        last_name,
-        email,
+        // first_name,
+        // last_name,
+        // email,
         username,
       } = data;
       this.setState({
-        first_name,
-        last_name,
-        email,
+        // first_name,
+        // last_name,
+        // email,
         username,
         isLoading: false,
         error: false,
@@ -116,9 +102,9 @@ class ProfilePage extends Component {
 
   render() {
     const {
-      first_name,
-      last_name,
-      email,
+      // first_name,
+      // last_name,
+      // email,
       username,
       error,
       isLoading,

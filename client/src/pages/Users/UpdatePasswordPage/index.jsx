@@ -8,9 +8,9 @@ import axios from 'axios';
 import {
   loginButton,
   inputStyle,
-} from '../../styles/buttonStyles';
-import LinkButton from '../../components/LinkButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/buttonStyles';
+import LinkButton from '../../../components/LinkButton';
+import Layout from '../../../components/Layout';
 import './index.css';
 
 class UpdatePasswordPage extends Component {
@@ -161,7 +161,7 @@ class UpdatePasswordPage extends Component {
                 type="password"
               />
               <button type="submit" className="update-pass-btn">Save Changes</button>
-              <a href={"/userProfile/" + username} className="cancel-update-pass-btn">Cancel</a>
+              <a href={`/userProfile/${username}`} className="cancel-update-pass-btn">Cancel</a>
             </form>
           </div>
         </Layout>

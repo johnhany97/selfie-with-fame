@@ -1,8 +1,12 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
-import SubmitButton from '../../components/SubmitButton';
 import PropTypes from 'prop-types';
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
+import SubmitButton from '../../components/SubmitButton';
 import {
   saveButton,
 } from '../../styles/buttonStyles';
@@ -16,46 +20,48 @@ class GoogleMap extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: [],
-    }
-
+    };
   }
 
 
-  onMarkerClick = (props, marker, e) =>
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
-    });
+  onMarkerClick = (props, marker, e) => this.setState({
+    selectedPlace: props,
+    activeMarker: marker,
+    showingInfoWindow: true,
+  });
 
-  onClose = props => {
+  onClose = (props) => {
     if (this.state.showingInfoWindow) {
       this.setState({
         showingInfoWindow: false,
-        activeMarker: null
+        activeMarker: null,
       });
     }
   };
 
   handleMarkerDragEnd(props, marker, coord) {
-    var latitude = coord.latLng.lat();
-    var longitude = coord.latLng.lng();
+    const latitude = coord.latLng.lat();
+    const longitude = coord.latLng.lng();
     this.setState({
       selectedPlace: [latitude, longitude],
       activeMarker: marker,
-      showingInfoWindow: true
+      showingInfoWindow: true,
     });
     const { handleLocationChange } = this.props;
     handleLocationChange(this.state.selectedPlace);
   }
-  
-  render() {
 
+  render() {
     return (
-      <CurrentLocation centerAroundCurrentLocation google={this.props.google} handleLocationChange={this.props.handleLocationChange}>
-        <Marker 
-          onClick={this.onMarkerClick} name={'current location'}
-          draggable={true}
+      <CurrentLocation
+        centerAroundCurrentLocation
+        google={this.props.google}
+        handleLocationChange={this.props.handleLocationChange}
+      >
+        <Marker
+          onClick={this.onMarkerClick}
+          name="current location"
+          draggable
           onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
         />
         <InfoWindow
@@ -69,8 +75,8 @@ class GoogleMap extends Component {
               buttonStyle={saveButton}
               variant="contained"
               color="primary"
-              buttonText = "Select location"
-              //onClick={() => this.selectLocation(this.state.selectedPlace)}
+              buttonText="Select location"
+            // onClick={() => this.selectLocation(this.state.selectedPlace)}
             />
           </div>
         </InfoWindow>
@@ -80,7 +86,6 @@ class GoogleMap extends Component {
 }
 
 GoogleMap.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   match: PropTypes.shape({
     params: PropTypes.shape({
       handleLocationChange: PropTypes.func.isRequired,
@@ -88,5 +93,5 @@ GoogleMap.propTypes = {
   }),
 };
 export default GoogleApiWrapper({
-  apiKey: 'AIzaSyDwl44l9AwolJXOOTPgoVuFNFrgPeXSz7s'
+  apiKey: 'AIzaSyDwl44l9AwolJXOOTPgoVuFNFrgPeXSz7s',
 })(GoogleMap);

@@ -1,26 +1,22 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Redirect } from 'react-router-dom';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
 
 import {
   loginButton,
-} from '../../styles/buttonStyles';
-
+} from '../../../styles/buttonStyles';
 import {
   crudButton,
   cardPanel,
   mTop,
-} from '../../styles/formStyles';
-import LinkButton from '../../components/LinkButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/formStyles';
+import LinkButton from '../../../components/LinkButton';
+import Layout from '../../../components/Layout';
 
 class EventPage extends Component {
   constructor() {
@@ -61,18 +57,15 @@ class EventPage extends Component {
         location,
         date_time,
       } = data;
-      console.log("THE VAAAAAAAAAAR NAMES AAAAAAARE" + event_name);
-
       this.setState({
-        event_name: event_name,
-        information: information,
-        location: location,
-        date_time: date_time,
+        event_name,
+        information,
+        location,
+        date_time,
         isLoading: false,
         error: false,
       });
-    }).catch((err) => {
-      console.error(err.response.data);
+    }).catch(() => {
       this.setState({
         error: true,
       });
@@ -96,13 +89,11 @@ class EventPage extends Component {
       headers: {
         Authorization: `JWT ${token}`,
       },
-    }).then((res) => {
-      console.log(res);
+    }).then(() => {
       this.setState({
         deleted: true,
       });
-    }).catch((err) => {
-      console.error(err.response.data);
+    }).catch(() => {
       this.setState({
         error: true,
       });
@@ -124,7 +115,6 @@ class EventPage extends Component {
       isLoading,
       deleted,
     } = this.state;
-    console.log("THE VAAAAAAAAAAR NAMES AAAAAAARE" + event_name);
     if (error) {
       return (
         <Layout title="Event Page">
@@ -160,7 +150,13 @@ class EventPage extends Component {
             <p>{date_time}</p>
             <div>
               <a href={`/updateEvent/${this.props.match.params._id}`} style={crudButton}>Update</a>
-              <button onClick={this.deleteEvent} style={crudButton}>Delete</button>
+              <button
+                onClick={this.deleteEvent}
+                style={crudButton}
+                type="button"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

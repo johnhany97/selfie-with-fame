@@ -1,24 +1,19 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
-import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
-import { Link, Redirect } from 'react-router-dom';
 
-import Layout from '../../components/Layout';
+import Layout from '../../../components/Layout';
 import {
   loginButton,
-} from '../../styles/buttonStyles';
-
+} from '../../../styles/buttonStyles';
 import {
   mTop,
   crudButton,
-} from '../../styles/formStyles';
-import LinkButton from '../../components/LinkButton';
-import Event from '../../components/Event';
+} from '../../../styles/formStyles';
+import LinkButton from '../../../components/LinkButton';
+import Event from '../../../components/Event';
 import './index.css';
-
-
 
 class DisplayEventsPage extends Component {
   constructor(props) {
@@ -26,10 +21,10 @@ class DisplayEventsPage extends Component {
 
     this.state = {
       events: [],
-      showError: false,
-      isLoading: true,
+      // showError: false,
+      // isLoading: true,
       error: false,
-      event_deleted: false,
+      // event_deleted: false,
     };
   }
 
@@ -37,12 +32,13 @@ class DisplayEventsPage extends Component {
     this.getEvents();
   }
 
-  getEvents = (event) => {
+  getEvents = (e) => {
+    e.preventDefault();
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
         error: true,
-        isLoading: false,
+        // isLoading: false,
       });
       return;
     }
@@ -56,16 +52,16 @@ class DisplayEventsPage extends Component {
       const { data } = res;
       const {
         events,
-        showError,
-        isLoading,
-        error,
-        event_deleted,
+        // showError,
+        // isLoading,
+        // error,
+        // event_deleted,
       } = data;
       this.setState({
         events,
-        isLoading: false,
+        // isLoading: false,
         error: false,
-        event_deleted,
+        // event_deleted,
       });
     }).catch((err) => {
       console.error(err.response.data);
@@ -75,29 +71,21 @@ class DisplayEventsPage extends Component {
     });
   }
 
-
-
   deleteEvent = (_id) => {
     const token = localStorage.getItem('JWT');
     if (token === null) {
       this.setState({
-        isLoading: false,
+        // isLoading: false,
         error: true,
       });
       return;
     }
     axios.delete('/api/events/deleteEvent', {
-      params: {
-        _id: _id,
-      },
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    }).then((res) => {
-      console.log(res);
+      params: { _id },
+      headers: { Authorization: `JWT ${token}` },
+    }).then(() => {
       this.getEvents();
-    }).catch((err) => {
-      console.error(err.response.data);
+    }).catch(() => {
       this.setState({
         error: true,
       });
@@ -108,10 +96,10 @@ class DisplayEventsPage extends Component {
   render() {
     const {
       events,
-      showError,
-      isLoading,
+      // showError,
+      // isLoading,
       error,
-      event_deleted
+      // event_deleted
     } = this.state;
 
     if (error) {
@@ -119,7 +107,7 @@ class DisplayEventsPage extends Component {
         <Layout title="Events">
           <div>
             Problem fetching events data. Please try to login again.
-            </div>
+          </div>
           <LinkButton
             buttonText="Login"
             buttonStyle={loginButton}

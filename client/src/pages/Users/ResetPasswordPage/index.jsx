@@ -7,9 +7,9 @@ import {
   loginButton,
   forgotButton,
   inputStyle,
-} from '../../styles/buttonStyles';
-import LinkButton from '../../components/LinkButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/buttonStyles';
+import LinkButton from '../../../components/LinkButton';
+import Layout from '../../../components/Layout';
 import './index.css';
 
 class ResetPasswordPage extends Component {
@@ -142,7 +142,7 @@ class ResetPasswordPage extends Component {
             <div>
               <p>
                 Your password has been successfully reset, please try logging in again.
-            </p>
+              </p>
               <LinkButton
                 buttonStyle={loginButton}
                 buttonText="Login"

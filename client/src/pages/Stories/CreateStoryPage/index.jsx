@@ -41,7 +41,7 @@ class CreateStoryPage extends Component {
     });
   }
 
-  createStory = (event) => {
+  createStory = (e) => {
     this.setState({
       isLoading: true,
     });
@@ -53,17 +53,23 @@ class CreateStoryPage extends Component {
         errorMessage: 'Unauthorized - Please try to login',
       });
     }
-    event.preventDefault();
+    e.preventDefault();
     const {
       text,
       picture,
+      event,
     } = this.state;
+
+    const {
+      _id,
+    } = event;
 
     axios.put('/api/stories', {
       text,
       picture,
+      event_id: _id,
     }, { headers: { Authorization: `JWT ${token}` } })
-      .then((response) => {
+      .then(() => {
         // TODO: Snackbar of success
         this.setState({
           isLoading: false,

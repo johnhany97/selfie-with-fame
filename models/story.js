@@ -10,6 +10,11 @@ let storySchema = new Schema({
   picture: {
     type: Buffer
   },
+  event: {
+    type: Schema.Types.ObjectId,
+    ref: 'Event',
+    required: true
+  },
   postedBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',

@@ -6,18 +6,19 @@ import './index.css';
 
 import App from './App';
 import NotFound from './components/NotFound';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ResetPasswordPage from './pages/ResetPasswordPage';
-import ForgotPasswordPage from './pages/ForgotPasswordPage';
-import ProfilePage from './pages/ProfilePage';
-import UpdateProfilePage from './pages/UpdateProfilePage';
-import UpdatePasswordPage from './pages/UpdatePasswordPage';
 
-import CreateEventPage from './pages/CreateEventPage';
-import DisplayEventsPage from './pages/DisplayEventsPage';
-import UpdateEventPage from './pages/UpdateEventPage';
-import EventPage from './pages/EventPage';
+import LoginPage from './pages/Users/LoginPage';
+import RegisterPage from './pages/Users/RegisterPage';
+import ResetPasswordPage from './pages/Users/ResetPasswordPage';
+import ForgotPasswordPage from './pages/Users/ForgotPasswordPage';
+import ProfilePage from './pages/Users/ProfilePage';
+import UpdateProfilePage from './pages/Users/UpdateProfilePage';
+import UpdatePasswordPage from './pages/Users/UpdatePasswordPage';
+
+import CreateEventPage from './pages/Events/CreateEventPage';
+import DisplayEventsPage from './pages/Events/DisplayEventsPage';
+import UpdateEventPage from './pages/Events/UpdateEventPage';
+import EventPage from './pages/Events/EventPage';
 import GoogleMap from './pages/GoogleMap';
 
 import CreateStoryPage from './pages/Stories/CreateStoryPage';

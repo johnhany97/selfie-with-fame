@@ -7,14 +7,11 @@ import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 import {
-  cancelButton,
-  saveButton,
   loginButton,
   inputStyle,
-} from '../../styles/buttonStyles';
-import LinkButton from '../../components/LinkButton';
-import SubmitButton from '../../components/SubmitButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/buttonStyles';
+import LinkButton from '../../../components/LinkButton';
+import Layout from '../../../components/Layout';
 import './index.css';
 
 class UpdateProfilePage extends Component {
@@ -90,11 +87,8 @@ class UpdateProfilePage extends Component {
       last_name: this.state.last_name,
       email: this.state.email,
       username: this.state.username,
-    }, {
-        headers: {
-          Authorization: `JWT ${accessString}`,
-        },
-      }).then((res) => {
+    }, { headers: { Authorization: `JWT ${accessString}` } })
+      .then((res) => {
         console.log(res.data);
         this.setState({
           updated: true,
@@ -154,7 +148,7 @@ class UpdateProfilePage extends Component {
         <Layout title="Update Profile">
           <div className="container-fluid">
             <div className="row">
-              <div className="col-md-6" className="update-panel-form">
+              <div className="col-md-6 update-panel-form">
                 <div className="update-form-container">
                   <h3 className="update-panel-title">Update Profile</h3>
                   <hr className="update-divider" />
@@ -200,14 +194,13 @@ class UpdateProfilePage extends Component {
                       disabled
                       type="password"
                     />
-                    <a href={"/updatePassword/" + username} className="forgot-pass-txt">Forgot your password?</a>
+                    <a href={`/updatePassword/${username}`} className="forgot-pass-txt">Forgot your password?</a>
                     <button className="update-profile-btn" type="submit">Save Changes</button>
                   </form>
-                  <a href={"/userProfile/" + username} className="cancel-changes-btn">Cancel</a>
+                  <a href={`/userProfile/${username}`} className="cancel-changes-btn">Cancel</a>
                 </div>
               </div>
-              <div className="col-md-6" className="update-panel-img">
-              </div>
+              <div className="col-md-6 update-panel-img" />
             </div>
           </div>
         </Layout>

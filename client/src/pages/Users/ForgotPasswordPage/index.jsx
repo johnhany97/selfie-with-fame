@@ -5,12 +5,12 @@ import axios from 'axios';
 import {
   registerButton,
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 import {
   errorMessage,
-} from '../../styles/formStyles';
-import LinkButton from '../../components/LinkButton';
-import Layout from '../../components/Layout';
+} from '../../../styles/formStyles';
+import LinkButton from '../../../components/LinkButton';
+import Layout from '../../../components/Layout';
 import './index.css';
 
 class ForgotPasswordPage extends Component {
@@ -97,7 +97,7 @@ class ForgotPasswordPage extends Component {
               <p style={errorMessage}>
                 That email address isn&apos;t recognized. Please try again or
                 register for a new account.
-            </p>
+              </p>
               <LinkButton
                 buttonText="Register"
                 buttonStyle={registerButton}
