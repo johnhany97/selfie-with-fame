@@ -5,6 +5,8 @@ import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 
 import Layout from '../../components/Layout';
+import GoogleMap from '../GoogleMap';
+
 import {
   inputStyle,
 } from '../../styles/buttonStyles';
@@ -26,7 +28,7 @@ class CreateEventPage extends Component {
       event_name: '',
       information: '',
       date_time: '',
-      location: '',
+      location: [],
       messageFromServer: '',
       showError: false,
       createEventError: false,
@@ -36,6 +38,13 @@ class CreateEventPage extends Component {
   handleChange = name => (event) => {
     this.setState({
       [name]: event.target.value,
+    });
+  };
+
+
+  handleLocationChange = (data) => {
+    this.setState({
+      location: data,
     });
   };
 
@@ -99,10 +108,12 @@ class CreateEventPage extends Component {
       showError,
       createEventError,
     } = this.state;
+    console.log("the type of location is " + typeof(location) + ""  + location[0] + " " + location[1]);
 
     if (messageFromServer === '') {
       return (
         <Layout title="Create Event">
+
           <div className="container" style={mTop}>
             <h3 style={formTitle}>Create Event</h3>
             <hr style={formDividor}/>
@@ -122,14 +133,6 @@ class CreateEventPage extends Component {
                 value={information}
                 onChange={this.handleChange('information')}
                 placeholder="Info"
-              />
-              <TextField
-                style={inputStyle}
-                id="location"
-                label="Location"
-                value={location}
-                onChange={this.handleChange('location')}
-                placeholder="Location"
               />
               <TextField
                 style={inputStyle}
@@ -153,8 +156,12 @@ class CreateEventPage extends Component {
               />
               <a href="/events" style={cancelLink}>Cancel</a>
             </form>
+            <GoogleMap
+              handleLocationChange={this.handleLocationChange}
+            ></GoogleMap>
           </div>
         </Layout >
+
       );
     }
     if (messageFromServer === 'event created') {

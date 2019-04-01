@@ -19,6 +19,8 @@ import DisplayEventsPage from './pages/DisplayEventsPage';
 import UpdateEventPage from './pages/UpdateEventPage';
 import EventPage from './pages/EventPage';
 
+import GoogleMap from './pages/GoogleMap';
+
 
 
 import * as serviceWorker from './serviceWorker';
@@ -39,6 +41,7 @@ const routing = (
       <Route exact path="/events" component={DisplayEventsPage} />
       <Route exact path="/updateEvent/:_id" component={UpdateEventPage} />
       <Route exact path="/eventPage/:_id" component={EventPage} />
+      <Route exact path="/mapTest" component={GoogleMap} />
 
 
 
