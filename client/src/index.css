@@ -36,6 +36,6 @@ code {
 
 @media(min-width: 992px){
   .container-lg{
-    padding: 0 75px;
+    padding: 0 50px;
   }
 }

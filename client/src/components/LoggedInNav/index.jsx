@@ -16,7 +16,9 @@ class LoggedInNav extends Component {
   render() {
     return (
       <Nav className="logged-in-nav">
+        <a href="/createStory" className="create-story-btn">+ Create Story</a>
         <img src={avatar} className="profile_img-header" />
+        <Nav.Link href="/createStory" className="create-story-link">+ Create Story</Nav.Link>
         <NavDropdown title={this.props.username} id="basic-nav-dropdown" drop='down' alignRight>
           <NavDropdown.Item href={"/userProfile/" + this.props.username}>Profile</NavDropdown.Item>
           <NavDropdown.Divider />
