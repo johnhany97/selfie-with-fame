@@ -1,0 +1,19 @@
+.create-story-form{
+    display: flex;
+    flex-direction: column;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+    max-width: 500px;
+
+}
+
+.create-story-next-btn{
+    margin-right: auto;
+    margin-left: auto !important;
+}
+
+.create-story-title{
+    color: #FF9800;
+    margin-top: 1rem;
+}

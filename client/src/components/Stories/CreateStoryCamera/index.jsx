@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import Capture from '../../Capture';
-
+import './index.css';
+import{
+  crudButton,
+} from '../../../styles/formStyles';
 class CreateStoryCamera extends Component {
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -13,10 +16,10 @@ class CreateStoryCamera extends Component {
   render() {
     const { handlePhotoChange } = this.props;
     return (
-      <form onSubmit={this.saveAndContinue}>
-        <h1>Camera</h1>
+      <form onSubmit={this.saveAndContinue} className="create-story-form">
+        <h1 className="create-story-title">Camera</h1>
         <Capture handlePhotoChange={handlePhotoChange} />
-        <button type="submit">Next</button>
+        <button type="submit" style={crudButton} className="create-story-next-btn">Next</button>
       </form>
     );
   }

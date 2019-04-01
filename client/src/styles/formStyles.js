@@ -70,6 +70,21 @@ export const errorMessage = {
     textAlign: 'start',
 }
 
+export const noWidthBtn = {
+    marginTop: '1rem',
+    marginBottom: '1rem',
+    backgroundColor: 'rgb(255, 152, 0)',
+    color: 'rgb(255, 255, 255)',
+    border: 'none',
+    fontWeight: '500',
+    padding: '0.5rem 1rem',
+    textAlign: 'center',
+    textDecoration: 'none',
+    display: 'inline-block',
+    cursor: 'pointer',
+    marginLeft: '5px',
+}
+
 
 export default {
     formTitle,
