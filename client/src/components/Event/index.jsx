@@ -12,7 +12,7 @@ import './index.css';
 
 const Event = (props) => {
   const {
-    id,
+    _id,
     event_name,
     information,
     date_time,
@@ -23,7 +23,7 @@ const Event = (props) => {
   return (
     <div style={cardPanel}>
       <a
-        href={`/eventPage/${id}`}
+        href={`/eventPage/${_id}`}
         className="event-title"
       >
         {event_name}
@@ -37,14 +37,14 @@ const Event = (props) => {
         </p>
       )}
       <div>
-        <a href={`/updateEvent/${id}`} style={crudButton}>Update</a>
+        <a href={`/updateEvent/${_id}`} style={crudButton}>Update</a>
       </div>
     </div>
   );
 };
 
 Event.propTypes = {
-  id: PropTypes.string,
+  _id: PropTypes.string,
   event_name: PropTypes.string.isRequired,
   information: PropTypes.string.isRequired,
   date_time: PropTypes.string.isRequired,
