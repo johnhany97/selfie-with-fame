@@ -21,7 +21,9 @@
   "scripts": {
     "start": "HTTPS=true react-scripts start",
     "startW": "set HTTPS=true && react-scripts start",
-    "build": "react-scripts build && sw-precache --config=sw-precache-config.js",
+    "build": "react-scripts build && npm run generate-sw",
+    "generate-sw": "node scripts/generate-sw.js",
+    "build-and-deploy": "npm run build && s3cmd sync -P build/* s3://selfie.johnayad.com",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint . --ext .js,.jsx"
