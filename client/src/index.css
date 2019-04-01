@@ -34,6 +34,15 @@ code {
   min-height: 600px;
 }
 
+.front-page{
+  background-image: url("audience-home.png");
+  height: 100vh;
+  background-position: center center;
+  background-repeat: no-repeat;
+  text-align: center;
+  vertical-align: middle;
+}
+
 @media(min-width: 992px){
   .container-lg{
     padding: 0 50px;

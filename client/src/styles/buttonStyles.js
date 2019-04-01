@@ -60,6 +60,24 @@ export const inputStyle = {
   margin: '.5em',
 };
 
+export const homePageButton = {
+  backgroundColor: 'transparent',
+  border: '2px solid #FFFFFF',
+  color: '#FFFFFF',
+  fontWeight: '500',
+  padding: '0.25rem 1rem',
+  textAlign: 'center',
+  textDecoration: 'none',
+  display: 'inline-block',
+  cursor: 'pointer',
+  textDecoration: 'none',
+  marginLeft: 'auto',
+  marginRight: 'auto',
+  width: '180px',
+  verticalAlign: 'middle',
+  marginTop: '15rem',
+}
+
 export default {
   deleteButton,
   updateButton,
@@ -72,4 +90,5 @@ export default {
   inputStyle,
   saveButton,
   cancelButton,
+  homePageButton,
 };
