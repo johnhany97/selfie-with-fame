@@ -15,10 +15,7 @@ export class CurrentLocation extends React.Component {
 
     const { lat, lng } = this.props.initialCenter;
     this.state = {
-      currentLocation: {
-        lat: lat,
-        lng: lng
-      },
+      currentLocation: [lat, lng],
       marker: "",
     };
   }
@@ -29,15 +26,18 @@ export class CurrentLocation extends React.Component {
         navigator.geolocation.getCurrentPosition(pos => {
           const coords = pos.coords;
           this.setState({
-            currentLocation: {
-              lat: coords.latitude,
-              lng: coords.longitude
-            }
+            currentLocation: [coords.latitude, coords.longitude],
           });
+          const { handleLocationChange } = this.props;
+          handleLocationChange([this.state.currentLocation[0], this.state.currentLocation[1]]);
         });
+       
       }
+      
     }
+   
     this.loadMap();
+   
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -50,6 +50,7 @@ export class CurrentLocation extends React.Component {
   }
 
   loadMap() {
+
     if (this.props && this.props.google) {
       // checks if google is available
       const { google } = this.props;
@@ -61,7 +62,7 @@ export class CurrentLocation extends React.Component {
       const node = ReactDOM.findDOMNode(mapRef);
 
       let { zoom } = this.props;
-      const { lat, lng } = this.state.currentLocation;
+      const [lat, lng] = this.state.currentLocation;
       const center = new maps.LatLng(lat, lng);
       const mapConfig = Object.assign(
         {},
@@ -83,7 +84,7 @@ export class CurrentLocation extends React.Component {
     const maps = google.maps;
 
     if (map) {
-      let center = new maps.LatLng(current.lat, current.lng);
+      let center = new maps.LatLng(current[0], current[1]);
       map.panTo(center);
     }
   }
@@ -98,7 +99,7 @@ export class CurrentLocation extends React.Component {
       return React.cloneElement(c, {
         map: this.map,
         google: this.props.google,
-        mapCenter: this.state.currentLocation
+        mapCenter: {lat: this.state.currentLocation[0], lng: this.state.currentLocation[1]}
       });
     });
   }

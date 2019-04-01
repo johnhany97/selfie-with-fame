@@ -17,7 +17,9 @@ class GoogleMap extends Component {
       activeMarker: {},
       selectedPlace: [],
     }
+
   }
+
 
   onMarkerClick = (props, marker, e) =>
     this.setState({
@@ -48,9 +50,11 @@ class GoogleMap extends Component {
   }
   
   render() {
+    console.log("after click selected place is: " + this.state.selectedPlace[0]);
+
 
     return (
-      <CurrentLocation centerAroundCurrentLocation google={this.props.google}>
+      <CurrentLocation centerAroundCurrentLocation google={this.props.google} handleLocationChange={this.props.handleLocationChange}>
         <Marker 
           onClick={this.onMarkerClick} name={'current location'}
           draggable={true}
