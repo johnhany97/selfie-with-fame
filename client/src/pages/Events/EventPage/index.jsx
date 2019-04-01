@@ -17,6 +17,7 @@ import {
 } from '../../../styles/formStyles';
 import LinkButton from '../../../components/LinkButton';
 import Layout from '../../../components/Layout';
+import Story from '../../../components/Stories/Story';
 
 class EventPage extends Component {
   constructor() {
@@ -30,18 +31,26 @@ class EventPage extends Component {
       isLoading: true,
       deleted: false,
       error: false,
+      stories: [],
     };
   }
 
-  async componentDidMount() {
+  componentWillMount() {
     const token = localStorage.getItem('JWT');
-    if (token == null) {
-      this.setState({
-        error: true,
-        isLoading: false,
-      });
-      return;
+    if (token === null) {
+      // eslint-disable-next-line react/prop-types
+      const { history } = this.props;
+      history.replaceState(null, '/login');
     }
+  }
+
+  async componentDidMount() {
+    await this.getEvent();
+    await this.getEventStories();
+  }
+
+  getEvent = async () => {
+    const token = localStorage.getItem('JWT');
     await axios.get('/api/events/findEvent', {
       params: {
         _id: this.props.match.params._id,
@@ -70,6 +79,25 @@ class EventPage extends Component {
         error: true,
       });
     });
+  }
+
+  getEventStories = async () => {
+    const token = localStorage.getItem('JWT');
+    await axios.get(`/api/stories/event/${this.props.match.params._id}`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    })
+      .then((res) => {
+        this.setState({
+          stories: res.data.stories,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+        });
+      });
   }
 
   deleteEvent = (event) => {
@@ -114,6 +142,7 @@ class EventPage extends Component {
       error,
       isLoading,
       deleted,
+      stories,
     } = this.state;
     if (error) {
       return (
@@ -160,6 +189,7 @@ class EventPage extends Component {
             </div>
           </div>
         </div>
+        {stories && stories.map(story => <Story {...story} />)}
       </Layout>
     );
   }

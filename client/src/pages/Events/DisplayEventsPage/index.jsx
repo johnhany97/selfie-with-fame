@@ -29,11 +29,10 @@ class DisplayEventsPage extends Component {
   }
 
   async componentDidMount() {
-    this.getEvents();
+    await this.getEvents();
   }
 
-  getEvents = (e) => {
-   // e.preventDefault();
+  getEvents = async () => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
