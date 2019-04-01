@@ -33,7 +33,7 @@ class DisplayEventsPage extends Component {
   }
 
   getEvents = (e) => {
-    e.preventDefault();
+   // e.preventDefault();
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
