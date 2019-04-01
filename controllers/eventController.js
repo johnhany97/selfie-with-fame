@@ -23,7 +23,7 @@ module.exports.createEvent = (req, res, next) => {
   event.save()
     .then((event) => {
       //res.send(event);
-      res.status(200).send({ message: 'event created' });
+      res.status(200).send({ message: 'event created', event_id: event._id });
 
     })
     .catch((e) => {
