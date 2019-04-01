@@ -7,7 +7,8 @@ import CreateStoryCamera from '../../../components/Stories/CreateStoryCamera';
 import CreateStoryEvent from '../../../components/Stories/CreateStoryEvent';
 import CreateStoryText from '../../../components/Stories/CreateStoryText';
 import Confirmation from '../../../components/Stories/Confirmation';
-import Success from '../../../components/Stories/Success';
+import { Redirect } from 'react-router-dom';
+
 
 class CreateStoryPage extends Component {
   constructor(props) {
@@ -63,6 +64,8 @@ class CreateStoryPage extends Component {
     const {
       _id,
     } = event;
+
+
 
     axios.put('/api/stories', {
       text,
@@ -174,7 +177,7 @@ class CreateStoryPage extends Component {
       default: // case 5: Success
         return (
           <Layout title="Create Story">
-            <Success />
+            <Redirect to={`/eventPage/${this.state.event._id}`} />
           </Layout>
         );
     }
