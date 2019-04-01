@@ -11,9 +11,11 @@ import {
 
 import {
   mTop,
+  crudButton,
 } from '../../styles/formStyles';
 import LinkButton from '../../components/LinkButton';
 import Event from '../../components/Event';
+import './index.css';
 
 
 
@@ -129,6 +131,7 @@ class DisplayEventsPage extends Component {
     return (
       <Layout title="Events">
         <div className="container" style={mTop}>
+          <a href="/createEvent" style={crudButton} className="add-event-btn">Add Event</a>
           {events.map(event_iter => (
             <Event 
               key={event_iter._id}

@@ -13,6 +13,7 @@ import {
   formDividor,
   formSubmitButton,
   mTop,
+  cancelLink,
 } from '../../styles/formStyles';
 import SubmitButton from '../../components/SubmitButton';
 
@@ -144,6 +145,7 @@ class CreateEventPage extends Component {
                 buttonStyle={formSubmitButton}
                 buttonText="Create Event"
               />
+              <a href="/events" style={cancelLink}>Cancel</a>
             </form>
             {showError === true && createEventError === true && (
               <div>
