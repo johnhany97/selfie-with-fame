@@ -8,13 +8,15 @@ import './index.css';
 import {
   homePageButton,
 } from './styles/buttonStyles';
+import Banner from './components/Banner';
+import Features from './components/Features';
 
 const App = (props) => {
+  const {home} = props;
   return (
-    <Layout title="Festival">
-      <div className="front-page">
-        <a href="/events" style={homePageButton}>Events</a>
-      </div>
+    <Layout title="Festival" home={home}>
+      <Banner />
+      <Features />
     </Layout>
   );
 };

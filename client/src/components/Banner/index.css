@@ -1,0 +1,53 @@
+
+.banner-background{
+    background-color: indianred;
+    padding-top: 30px;
+}
+
+.banner-row{
+    display: flex;
+    flex-direction: row;
+
+}
+.banner-text{
+    flex-grow: 1;
+}
+
+.banner-holder{
+    max-width: 400px;
+    text-align: center;
+    margin: auto;
+}
+.banner-img{
+    flex-grow: 1;
+    display: none;
+}
+.app-img{
+    height: 600px;
+    margin: auto;
+    display: flex;
+}
+.banner-title{
+    margin: auto;
+    color: #ffffff;
+    font-weight: 600;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.banner-info{
+    margin: auto;
+    padding-top: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+@media(min-width: 1150px){
+    .banner-img{
+        display: block;
+    }
+    .banner-holder{
+        text-align: left;
+        margin: 0;
+    }
+}

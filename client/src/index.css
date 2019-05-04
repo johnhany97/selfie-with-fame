@@ -13,6 +13,7 @@ code {
 
 .container-lg{
   width: 100%;
+  padding: 0 20px;
   margin-right: auto;
   margin-left: auto;
   display: flex;
@@ -45,6 +46,12 @@ code {
 
 @media(min-width: 992px){
   .container-lg{
-    padding: 0 50px;
+    padding: 0 70px;
+  }
+}
+
+@media(min-width: 1300px){
+  .container-lg{
+    padding: 0 150px;
   }
 }

@@ -1,19 +1,23 @@
 
 .navbar {
     background-color: #fff;
-    padding: .5rem 1rem;
+    padding: .5rem 0;
 }
 
 .navbar .navbar-brand{
     margin-left: 20px;
 }
 
+.navbar-collapse{
+    flex-grow: 0;
+}
+
 .navbar .nav-menu{
     margin-left: 20px;
 }
 
-.navbar .navbar-nav{
-    margin-left: 20px;
+.navbar .navbar-brand{
+    margin-left: 0px;
 }
 
 .navbar-expand-lg .nav-menu .nav-link{

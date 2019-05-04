@@ -1,0 +1,28 @@
+.feature-item-container{
+    width: 300px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    padding: 1rem 2rem;
+}
+.feature-item-img{
+    border-radius: 50%;
+    width: 125px;
+    height: 125px;
+    background-color: indianred;
+    margin: 0 auto;
+}
+.feature-item-title{
+    padding-top: 8px;
+    text-transform: none;
+    text-align: center;
+}
+
+.feature-item-info{
+    text-transform: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #777777;
+    text-align: center;
+}

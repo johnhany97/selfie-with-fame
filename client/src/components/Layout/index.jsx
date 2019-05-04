@@ -5,10 +5,10 @@ import Header from '../Header';
 import Footer from '../Footer';
 
 const Layout = (props) => {
-  const { title, children } = props;
+  const { title, children, home } = props;
   return (
     <React.Fragment>
-      <Header title={title} bio="Hello111"/>
+      <Header title={title} bio="Hello111" home={home}/>
       {children}
       <Footer />
     </React.Fragment>
