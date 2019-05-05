@@ -4,7 +4,7 @@
     background-image: url('./banner-background.png');
     background-size: 2000px 800px;
     background-repeat: no-repeat;
-    background-position: -100px center;
+    background-position: -100px -200px;
     padding-top: 30px;
 }
 
@@ -67,6 +67,9 @@
 }
 
 @media(min-width: 1150px){
+    .banner-background{
+        background-position: -100px center;
+    }
     .banner-img{
         display: block;
     }
@@ -76,5 +79,12 @@
     }
     .banner-btn{
         margin: 12px 0;
+    }
+}
+
+@media(min-width: 1900px){
+    .banner-background{
+        background-size: 100% 800px;
+        background-position: center center;
     }
 }

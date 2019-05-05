@@ -29,15 +29,20 @@
 .navbar .navbar-brand{
     font-size: 2rem;
     font-family: 'Lobster', cursive;
-    color: #FF9800;
+    background: -webkit-linear-gradient(#FF416C, #FF4B2B);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-#sign-up-btn{
+.sign-up-btn{
     display: none;
 }
 
 .navbar .navbar-nav .nav-link{
-    color: #FF9800;
+    color: #fe5355;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
 }
 
 .btn-text{
@@ -57,10 +62,19 @@
     .navbar .nav-menu{
         margin-left: 50px;
     }
+
+    .navbar .navbar-nav .nav-link{
+        margin: 0 0.75rem;
+        border-bottom: 1px solid transparent;
+    }
+    .navbar .navbar-nav .nav-link:hover{
+        border-bottom: 1px solid #fe5355;
+        color: #fe5355;
+    }
     .navbar .navbar-nav .sign-up-txt{
         display: none;
     }
-    #sign-up-btn{
+    .sign-up-btn{
         display: inline;
     }
     .navbar-expand-lg .nav-menu .nav-link{

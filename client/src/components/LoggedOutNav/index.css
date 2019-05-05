@@ -1,22 +1,20 @@
 /* Custom Button Styles */
-.square-btn{
-    background-color: #FF9800;
-    border: none;
-    color: #FF9800;
-    background-color: inherit;
-    border: 2px solid #FF9800;
-    font-weight: 500;
-    padding: 0.25rem 1rem;
+.sign-up-btn{
+    background-color: transparent;
+    color: #fe5355;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 2px solid #fe5355;
+    padding: 0.4rem 1.2rem;
+    max-width: 150px;
+    font-weight: 600;
+    font-size: 0.9rem;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    margin-left: 10px;
     cursor: pointer;
-    text-decoration: none;
 }
 
-.square-btn:hover{
-    background-color: #FF9800;
-    color: #fff;
+.sign-up-btn:hover{
     text-decoration: none;
+    color: #ffffff;
+    background-color: #fe5355;
 }

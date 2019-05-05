@@ -54,21 +54,17 @@ class Header extends Component {
       rightNav = <LoggedInNav username={this.state.username} />;
     }
 
-    if(this.props.home){
-      return (
-        <Navbar collapseOnSelect expand="lg" variant="light" className="">
-          <div className="container-lg">
-            <Navbar.Brand href="/">Festival</Navbar.Brand>
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" id="burger-icon" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              {rightNav}
-            </Navbar.Collapse>
-          </div>
-        </Navbar>
-      )
-    } else {
-      console.log("Not Home");
-    }
+    return (
+      <Navbar collapseOnSelect expand="lg" variant="light" className="shadow-sm">
+        <div className="container-lg">
+          <Navbar.Brand href="/">Festival</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" id="burger-icon" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            {rightNav}
+          </Navbar.Collapse>
+        </div>
+      </Navbar>
+    )
   }
 }
 
