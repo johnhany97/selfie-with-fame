@@ -1,6 +1,10 @@
 
 .banner-background{
-    background-color: indianred;
+    position: relative;
+    background-image: url('./banner-background.png');
+    background-size: 2000px 800px;
+    background-repeat: no-repeat;
+    background-position: -100px center;
     padding-top: 30px;
 }
 
@@ -21,6 +25,26 @@
 .banner-img{
     flex-grow: 1;
     display: none;
+}
+
+.banner-btn{
+    background-color: transparent;
+    color: #ffffff;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 2px solid #ffffff;
+    padding: 0.5rem 2rem;
+    margin: 12px auto;
+    display: block;
+    max-width: 250px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.banner-btn:hover{
+    background-color: #ffffff;
+    color: indianred;
+    text-decoration: none;
 }
 .app-img{
     height: 600px;
@@ -49,5 +73,8 @@
     .banner-holder{
         text-align: left;
         margin: 0;
+    }
+    .banner-btn{
+        margin: 12px 0;
     }
 }

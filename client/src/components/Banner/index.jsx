@@ -12,6 +12,7 @@ const Banner = (props) => {
                     <div className="banner-holder">
                         <h1 className="banner-title">Discover 1000's of events in your area</h1>
                         <p className="banner-info">Add your story to the hundreds of people sharing their experiences of the best festivals around the world</p>
+                        <a className="banner-btn" href='/events'>Find Events</a>
                     </div>
                 </div>
                 <div className="banner-img">
