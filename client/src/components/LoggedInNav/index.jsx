@@ -16,14 +16,19 @@ class LoggedInNav extends Component {
   render() {
     return (
       <Nav className="logged-in-nav">
-        <a href="/createStory" className="create-story-btn">+ Create Story</a>
-        <img src={avatar} className="profile_img-header" />
-        <Nav.Link href="/createStory" className="create-story-link">+ Create Story</Nav.Link>
-        <NavDropdown title={this.props.username} id="basic-nav-dropdown" drop='down' alignRight>
-          <NavDropdown.Item href={"/userProfile/" + this.props.username}>Profile</NavDropdown.Item>
-          <NavDropdown.Divider />
-          <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
-        </NavDropdown>
+        <Nav.Link href="#discover">Discover</Nav.Link>
+        <Nav.Link href="/events">Events</Nav.Link>
+        <Nav.Link href="#about">About</Nav.Link>
+        <Nav.Link href="#contact">Contact</Nav.Link>
+        <NavDropdown.Divider />
+        <div className="profile-container">
+          <img src={avatar} className="profile_img-header" />
+          <NavDropdown title={this.props.username} id="basic-nav-dropdown" drop='down' alignRight>
+            <NavDropdown.Item href={"/userProfile/" + this.props.username}>Profile</NavDropdown.Item>
+            <NavDropdown.Divider />
+            <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
+          </NavDropdown>
+        </div>
       </Nav>
     )
   }

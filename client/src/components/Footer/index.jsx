@@ -2,9 +2,43 @@ import React from 'react';
 import './index.css';
 
 const Footer = () => (
-  <footer className="footer-shadow">
+  <footer>
     <div className="container-lg">
-        <span className="copyright">Copyright © Festival 2019</span>
+        <div className="footer-row">
+          <div className="footer-item">
+            <h4 className="footer-item-title">Pages</h4>
+            <hr />
+            <ul>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              <li>Discover</li>
+              <li>Events</li>
+              <li>About</li>
+              <li>Contact Us</li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h4 className="footer-item-title">Contact</h4>
+            <hr />
+            <ul>
+              <li>Tel: 01234567891</li>
+              <li>Address: 113 Cobden View</li>
+              <li>Events</li>
+              <li>About</li>
+              <li>Contact Us</li>
+            </ul>
+          </div>
+          <div className="footer-item">
+            <h4 className="footer-item-title">Social</h4>
+            <hr />
+            <ul>
+              <li>Facebook</li>
+              <li>Instagram</li>
+              <li>Twitter</li>
+            </ul>
+          </div>
+        </div>
     </div>
   </footer>
 );

@@ -9,40 +9,28 @@
     display: none;
 }
 
+.profile-container{
+    display: flex;
+    margin-left: 0;
+}
+
+.profile_img-header{
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+} 
+
 .logged-in-nav{
     display: inline-block;
-}
-
-.create-story-btn{
-    background-color: #FF9800;
-    border: none;
-    color: #FF9800;
-    background-color: inherit;
-    border: 2px solid #FF9800;
-    font-weight: 500;
-    padding: 0.25rem 1rem;
-    text-align: center;
-    text-decoration: none;
-    display: none;
-    margin-right: 1.5rem;
-    cursor: pointer;
-    text-decoration: none;
-}
-.create-story-btn:hover{
-    background-color: #FF9800;
-    color: #fff;
-    text-decoration: none;
-}
-
-.create-story-link{
-    color: #FF9800;
-
 }
 
 @media(min-width: 992px){
     .profile_img-header{
         display: block;
     } 
+    .profile-container{
+        margin-left: 1.2rem;
+    }
     .create-story-btn{
         display: inline-block;
     }

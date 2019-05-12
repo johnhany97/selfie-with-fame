@@ -53,19 +53,13 @@ class Header extends Component {
     } else {
       rightNav = <LoggedInNav username={this.state.username} />;
     }
+
     return (
-      <Navbar collapseOnSelect expand="lg" variant="light" className="shadow-sm bg-white rounded">
+      <Navbar collapseOnSelect expand="lg" variant="light" className="shadow-sm">
         <div className="container-lg">
           <Navbar.Brand href="/">Festival</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" id="burger-icon" />
           <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto nav-menu">
-              <Nav.Link href="#discover">Discover</Nav.Link>
-              <Nav.Link href="/events">Events</Nav.Link>
-              <Nav.Link href="#about">About</Nav.Link>
-              <Nav.Link href="#contact">Contact</Nav.Link>
-            </Nav>
-            <hr />
             {rightNav}
           </Navbar.Collapse>
         </div>

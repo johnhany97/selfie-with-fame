@@ -1,0 +1,35 @@
+.features-container{
+    padding-top: 50px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+}
+.home-features-title{
+    margin: auto;
+    display: flex;
+    text-align: center;
+}
+
+.home-features-dividor{
+    margin-top: 10px;
+    width: 200px;
+    background-color: indianred;
+    height: 1px;
+    margin-bottom: 50px;
+}
+
+.item-row{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: -webkit-fill-available;
+    justify-content: space-between;
+    margin: auto;
+}
+
+@media(min-width: 1100px){
+    .item-row{
+        flex-direction: row;
+    }
+}
