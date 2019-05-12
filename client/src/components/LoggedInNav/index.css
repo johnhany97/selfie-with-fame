@@ -9,6 +9,17 @@
     display: none;
 }
 
+.profile-container{
+    display: flex;
+    margin-left: 0;
+}
+
+.profile_img-header{
+    justify-content: center;
+    margin-top: auto;
+    margin-bottom: auto;
+} 
+
 .logged-in-nav{
     display: inline-block;
 }
@@ -43,6 +54,9 @@
     .profile_img-header{
         display: block;
     } 
+    .profile-container{
+        margin-left: 1.2rem;
+    }
     .create-story-btn{
         display: inline-block;
     }
