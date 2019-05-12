@@ -153,7 +153,7 @@ class RegisterPage extends Component {
                       </div>
                     )}
                     <button className="register-btn" type="submit">Sign Up</button>
-                    <a href="/login">Already have an account? Login</a>
+                    <p className="existing-acc-text">Already have an account? <a href="/login">Login</a></p>
                   </form>
                 </div>
               </div>
