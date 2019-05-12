@@ -9,7 +9,9 @@ const Layout = (props) => {
   return (
     <React.Fragment>
       <Header title={title} bio="Hello111" home={home}/>
-      {children}
+        <div className="content">
+          {children}
+        </div>
       <Footer />
     </React.Fragment>
   );
