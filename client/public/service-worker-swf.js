@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const cacheName = 'selfieWithFame-v0.4';
+const cacheName = 'selfieWithFame-v0.5';
 const filesToCache = [
   '/',
   '/manifest.json',
@@ -85,13 +85,8 @@ self.addEventListener('fetch', function (event) {
      * network" strategy:
      * https://jakearchibald.com/2014/offline-cookbook/#cache-then-network
      */
-    return fetch(event.request).then(function (response) {
-      // note: it the network is down, response will contain the error
-      // that will be passed to Ajax
-      return response;
-    }).catch(function (e) {
-      console.log("service worker error 1: " + e.message);
-    })
+    console.log('[Service worker] Hitting the web')
+    event.respondWith(fetch(event.request));
   } else {
     /*
      * The app is asking for app shell files. In this scenario the app uses the
@@ -99,8 +94,9 @@ self.addEventListener('fetch', function (event) {
      * see stale-while-revalidate at
      * https://jakearchibald.com/2014/offline-cookbook/#on-activate
      */
+    console.log('[Service worker] Checking cache')
     event.respondWith(async function () {
-      const cache = await caches.open('mysite-dynamic');
+      const cache = await caches.open('selfie-with-fame-store');
       const cachedResponse = await cache.match(event.request);
       const networkResponsePromise = fetch(event.request);
 
