@@ -1,0 +1,14 @@
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+distinguished_name = dn
+
+[dn]
+C=UK
+ST=Sheffield
+L=Sheffield
+O=University of Sheffield
+OU=Computer Science Department
+emailAddress=selfiewithfame@gmail.com
+CN = localhost
