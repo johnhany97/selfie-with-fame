@@ -286,3 +286,72 @@ module.exports.updateUser = (req, res, next) => {
     });
   })(req, res, next);
 }
+
+module.exports.followUser = (req, res, next) => {
+  const username = req.params.username;
+  User.findOne({ username })
+    .then((userToFollow) => {
+      if (!userToFollow) {
+        return res.send(404).send('User not found');
+      }
+      if (userToFollow._id.equals(req.user._id)) {
+        return res.status(500).send('Cannot follow self');
+      }
+      User.findById(req.user._id)
+        .then((currentUser) => {
+          if (currentUser.following.indexOf(userToFollow._id) === -1) {
+            currentUser.following.push(userToFollow._id);
+            if (userToFollow.followers.indexOf(currentUser._id) === -1) {
+              userToFollow.followers.push(currentUser._id);
+              currentUser.save().then(() => {
+                userToFollow.save().then(() => {
+                  return res.status(200).send();
+                });
+              });
+            } else {
+              return res.status(409).send('already following');
+            }
+          } else {
+            return res.status(409).send('already following');
+          }
+        });
+    });
+}
+
+module.exports.unfollowUser = (req, res, next) => {
+  return res.status(500).send("Unimplented route");
+}
+
+module.exports.getUserByUsername = (req, res, next) => {
+  const username = req.params.username;
+  User.findOne({ username })
+    .populate('followers', 'first_name last_name username')
+    .populate('following', 'first_name last_name username')
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send(user);
+    });
+}
+
+module.exports.getAll = (req, res, next) => {
+  const size = req.query.size || 10;
+  const page = req.query.page || 1;
+
+  const pagination = {
+    limit: size * 1,
+    skip: (page - 1) * size
+  };
+
+  const query = {}
+
+  User.find(query, {}, pagination)
+    .populate('followers', 'first_name last_name username')
+    .populate('following', 'first_name last_name username')
+    .then((users) => {
+      res.status(200).send({
+        users
+      });
+    });
+}

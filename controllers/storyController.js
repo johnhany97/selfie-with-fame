@@ -80,8 +80,6 @@ module.exports.createStory = (req, res) => {
     pictureBuffer = new Buffer(pictureBlob, 'base64');
   }
 
-
-
   const story = new Story({
     text: req.body.text,
     picture: pictureBuffer,
