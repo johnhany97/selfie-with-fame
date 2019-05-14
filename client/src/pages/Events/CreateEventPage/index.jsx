@@ -7,6 +7,7 @@ import axios from 'axios';
 import Layout from '../../../components/Layout';
 import GoogleMap from '../../GoogleMap';
 
+
 import {
   inputStyle,
 } from '../../../styles/buttonStyles';
@@ -33,6 +34,7 @@ class CreateEventPage extends Component {
       messageFromServer: '',
       showError: false,
       createEventError: false,
+      displayedEvents: [],
     };
   }
 
@@ -97,6 +99,48 @@ class CreateEventPage extends Component {
         createEventError: true,
       });
     });
+  }
+
+  getEvents = async () => {
+    const token = localStorage.getItem('JWT');
+    if (token == null) {
+      this.setState({
+        error: true,
+        // isLoading: false,
+      });
+      return;
+    }
+    axios.get('/api/events/getEvents', {
+      params: {
+      },
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }).then((res) => {
+      const { data } = res;
+      const {
+        events,
+        // showError,
+        // isLoading,
+        // error,
+        // event_deleted,
+      } = data;
+      this.setState({
+        displayedEvents: events,
+        // isLoading: false,
+        error: false,
+        // event_deleted,
+      });
+    }).catch((err) => {
+      console.error(err.response.data);
+      this.setState({
+        error: true,
+      });
+    });
+  }
+
+  async componentDidMount() {
+    await this.getEvents();
   }
 
   // eslint-disable-next-line consistent-return

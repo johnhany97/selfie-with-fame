@@ -144,6 +144,7 @@ CurrentLocation.propTypes = {
     lat: PropTypes.number,
     lng: PropTypes.number,
   }),
+  markers: PropTypes.any,
 };
 
 

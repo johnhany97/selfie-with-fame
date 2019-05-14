@@ -70,6 +70,29 @@ module.exports.findEvent = (req, res, next) => {
 }
 
 
+module.exports.getEventsByLocation = (req, res) => {
+  const size = req.query.size || 10;
+  const page = req.query.page || 1;
+
+  const pagination = {
+    limit: size * 1,
+    skip: (page - 1) * size
+  };
+
+  const query = {
+    event: req.params.id,
+  }
+
+  Story.find(query, {}, pagination)
+    .sort({ createdAt: -1 })
+    .populate('postedBy', '_id first_name last_name')
+    .then((stories) => {
+      res.status(200).send({
+        stories
+      });
+    });
+}
+
 module.exports.updateEvent = (req, res, next) => {
   Event.findOne({
     _id: req.body._id,
