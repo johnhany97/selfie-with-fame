@@ -12,6 +12,7 @@ import Banner from './components/Banner';
 import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
+import UserCard from './components/UserCard';
 
 class App extends React.Component {
   constructor() {
@@ -102,6 +103,7 @@ class App extends React.Component {
         <Layout title="Festival" home={home}>
           <div className="event-center-bounds">
             <div className="feed-create-btns">
+              <UserCard />
               <a href="/createStory" className="create-btn">Share Story</a>
               <a href="/createEvent" className="create-btn">Create Event</a>
             </div>
