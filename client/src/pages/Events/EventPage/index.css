@@ -1,8 +1,9 @@
 .event-header-container{
     width: 100%;
     background-color: #fff;
-    max-height: 400px;
+    max-height: none;
     padding: 0;
+    margin-bottom: 1.5rem;
 }
 
 .event-center-bounds{
