@@ -17,6 +17,10 @@ import {
   errorMessage,
 } from '../../styles/formStyles';
 
+import {
+  inputStyle,
+} from '../../styles/buttonStyles';
+
 import SubmitButton from '../../components/SubmitButton';
 import {
   saveButton,
@@ -26,21 +30,64 @@ import CurrentLocation from './Map';
 class GoogleMap extends Component {
   constructor(props) {
     super(props);
-
+    this.autocomplete = null;
+    this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
+    /*global google*/
     this.state = {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: [],
-      address_search: '',
+      query: '',
+      city: '',
       showError: false,
       displayedEvents: [],
       marker_clicked: ' ',
-      selected_name: '',
+      selected_event: [],
     };
+
+    // Bind Functions
+   // this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
+
+
   }
 
   async componentDidMount() {
     await this.getEvents();
+
+    var options= { types: ['(cities)'] };
+
+     // To disable any eslint 'google not defined' errors
+
+    this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options );
+    // Fire Event when a suggested name is selected
+   this.autocomplete.addListener('place_changed', this.handlePlaceSelect); 
+    // this.state.autocomplete.setFields(
+    //   ['address_components', 'geometry', 'icon', 'name']);
+
+  }
+
+
+  handlePlaceSelect() {
+
+    // Extract City From Address Object
+    let addressObject = this.autocomplete.getPlace();
+    console.log("the addRESS OBJECT IS!!!!!!" + addressObject.address_components);
+    let address = addressObject.address_components;
+
+    // Check if address is valid
+    if (address) {
+      // Set State
+      this.setState(
+        {
+          city: address[0].long_name,
+          query: addressObject.formatted_address,
+        }
+      );
+      console.log("the city and query: " + this.state.city + '' + this.state.query)
+    }
+    else {
+      console.log("not an address")
+    }
   }
 
 
@@ -49,7 +96,7 @@ class GoogleMap extends Component {
     activeMarker: marker,
     showingInfoWindow: true,
     marker_clicked: "my marker",
-    selected_name: props.name,
+    selected_event: props
 
   });
 
@@ -57,7 +104,7 @@ class GoogleMap extends Component {
     activeMarker: marker,
     showingInfoWindow: true,
     marker_clicked: "other event marker",
-    selected_name: props.name,
+    selected_event: props,
 
   });
 
@@ -155,6 +202,12 @@ class GoogleMap extends Component {
     return dictionary_loc;
   }
 
+  handleChange = name => (event) => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
+
 
   render() {
     const {
@@ -172,10 +225,11 @@ class GoogleMap extends Component {
           <hr style={formDividor} />
           <form onSubmit={this.getEventsLocation} className="panel-center">
             <TextField
-              id="address_search"
+              style={inputStyle}
+              id="autocomplete"
               label="Address"
-              value={address_search}
-              onChange={this.handleChange}
+              value={this.state.query}
+              onChange={this.handleChange('query')}
               placeholder="Current Location"
             />
             {showError &&  (
@@ -201,6 +255,10 @@ class GoogleMap extends Component {
           <Marker
             onClick={this.onMarkerClick}
             name="Selected Location"
+            info="Where the new event will be."
+            icon= {
+              "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            }
             draggable
             onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
           />
@@ -211,7 +269,9 @@ class GoogleMap extends Component {
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
               name={event.event_name}
+              info={event.information}
               position= {this.arrayTodict(event.location)}
+              
 
             />
        
@@ -223,13 +283,9 @@ class GoogleMap extends Component {
             onClose={this.onClose}
           >
             <div>
-              <h4>{this.state.selected_name}</h4>
-              <SubmitButton
-                buttonStyle={saveButton}
-                variant="contained"
-                color="secondary"
-                buttonText="Select location"
-              />
+              <h4>{this.state.selected_event.name}</h4>
+              <p> {this.state.selected_event.info}</p>
+              
             </div>
           </InfoWindow>
         </CurrentLocation>
