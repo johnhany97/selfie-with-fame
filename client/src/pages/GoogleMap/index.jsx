@@ -34,6 +34,8 @@ class GoogleMap extends Component {
       address_search: '',
       showError: false,
       displayedEvents: [],
+      marker_clicked: ' ',
+      selected_name: '',
     };
   }
 
@@ -46,6 +48,17 @@ class GoogleMap extends Component {
     selectedPlace: props,
     activeMarker: marker,
     showingInfoWindow: true,
+    marker_clicked: "my marker",
+    selected_name: props.name,
+
+  });
+
+  onOtherMarkerClick = (props, marker, e) => this.setState({
+    activeMarker: marker,
+    showingInfoWindow: true,
+    marker_clicked: "other event marker",
+    selected_name: props.name,
+
   });
 
   
@@ -149,8 +162,9 @@ class GoogleMap extends Component {
       address_search,
       showError
     } = this.state;
-    console.log("displauyed events: ")
-    console.log(displayedEvents)
+    console.log("displauyed events: ");
+    console.log(displayedEvents);
+    console.log("marker clicked: ", this.state.marker_clicked);
     return (
       <div>
         <div className="container" style={mTop}>
@@ -186,17 +200,30 @@ class GoogleMap extends Component {
         >
           <Marker
             onClick={this.onMarkerClick}
-            name="current location"
+            name="Selected Location"
             draggable
             onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
           />
+         
+
+
+          {displayedEvents.map(event => (
+            <Marker key={event._id}
+              onClick={this.onOtherMarkerClick}
+              name={event.event_name}
+              position= {this.arrayTodict(event.location)}
+
+            />
+       
+          ))}
+
           <InfoWindow
             marker={this.state.activeMarker}
             visible={this.state.showingInfoWindow}
             onClose={this.onClose}
           >
             <div>
-              <h4>{this.state.selectedPlace.name}</h4>
+              <h4>{this.state.selected_name}</h4>
               <SubmitButton
                 buttonStyle={saveButton}
                 variant="contained"
@@ -205,27 +232,9 @@ class GoogleMap extends Component {
               />
             </div>
           </InfoWindow>
-
-          <Marker
-            onClick={this.onMarkerClick}
-            name="current location"
-            position= {{lat: 25.774, lng: -80.190}}
-            draggable
-            onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
-          />
-
-          {displayedEvents.map(event => (
-              <Marker key={event._id}
-                onClick={this.onMarkerClick}
-                name={event.event_name}
-                position= {this.arrayTodict(event.location)}
-
-                draggable
-                onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
-              />
-       
-          ))}
         </CurrentLocation>
+
+
 
        
       </div>
