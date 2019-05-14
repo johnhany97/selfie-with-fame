@@ -15,6 +15,23 @@ let storySchema = new Schema({
     ref: 'Event',
     required: true
   },
+  likes: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+  comments: [
+    {
+      text: {
+        type: String,
+        required: true
+      },
+      postedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      }
+    }
+  ],
   postedBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',
