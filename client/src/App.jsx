@@ -10,6 +10,7 @@ import {
 } from './styles/buttonStyles';
 import Banner from './components/Banner';
 import Features from './components/Features';
+import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
 
 class App extends React.Component {
@@ -18,6 +19,7 @@ class App extends React.Component {
     this.state = {
       username: '',
       loggedIn: false,
+      events: [],
       stories: [],
     }
   }
@@ -49,7 +51,7 @@ class App extends React.Component {
         loggedIn: false,
       });
     });
-
+    await this.getEvents();
     await this.getStories();
   }
 
@@ -72,15 +74,43 @@ class App extends React.Component {
       });
   }
 
+  getEvents = async () => {
+    const token = localStorage.getItem('JWT');
+    await axios.get(`/api/events/getEvents`, {
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    })
+      .then((res) => {
+        this.setState({
+          events: res.data.events,
+        });
+      })
+      .catch(() => {
+        this.setState({
+          error: true,
+        });
+      });
+  }
+
   render() {
     const { home } = this.props;
-    const { stories } = this.state;
+    const { events, stories } = this.state;
 
     if (this.state.loggedIn) {
       return (
         <Layout title="Festival" home={home}>
           <div className="event-center-bounds">
-            {stories && stories.map(story => <Story {...story} />)}
+            <div className="feed-create-btns">
+              <a href="/createStory" className="create-btn">Share Story</a>
+              <a href="/createEvent" className="create-btn">Create Event</a>
+            </div>
+            <div className="discover-events-container scrolling-wrapper">
+              {events && events.map(event => <DiscoverEvent key={event._id} {...event} />)}
+            </div>
+          </div>
+          <div className="event-center-bounds">
+            {stories && stories.map(story => <Story key={story._id} {...story} />)}
           </div>
         </Layout>
       )

@@ -26,6 +26,7 @@ class Story extends React.Component {
       picture,
       createdAt,
       updatedAt,
+      postedBy,
     } = this.props;
 
     let picBuffer;
@@ -40,7 +41,7 @@ class Story extends React.Component {
       <div className="story-container">
         <div className="story-header">
           <img className="story-user-profile" src={userProfilePlaceholder} alt="User profile" />
-          <h4 className="story-username">Test Username</h4>
+          <h4 className="story-username">{postedBy.username}</h4>
           <p className="story-date">{this.convertDateFormat(createdAt)}</p>
         </div>
         {picture && (
