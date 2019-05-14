@@ -299,18 +299,15 @@ module.exports.followUser = (req, res, next) => {
       }
       User.findById(req.user._id)
         .then((currentUser) => {
-          if (currentUser.following.indexOf(userToFollow._id) === -1) {
+          if (currentUser.following.indexOf(userToFollow._id) === -1 || userToFollow.followers.indexOf(currentUser._id) === -1) {
             currentUser.following.push(userToFollow._id);
-            if (userToFollow.followers.indexOf(currentUser._id) === -1) {
-              userToFollow.followers.push(currentUser._id);
-              currentUser.save().then(() => {
-                userToFollow.save().then(() => {
-                  return res.status(200).send();
-                });
+            userToFollow.followers.push(currentUser._id);
+            // Save
+            currentUser.save().then(() => {
+              userToFollow.save().then(() => {
+                return res.status(200).send('successfully followed');
               });
-            } else {
-              return res.status(409).send('already following');
-            }
+            });
           } else {
             return res.status(409).send('already following');
           }
@@ -319,7 +316,39 @@ module.exports.followUser = (req, res, next) => {
 }
 
 module.exports.unfollowUser = (req, res, next) => {
-  return res.status(500).send("Unimplented route");
+  const username = req.params.username;
+
+  User.findOne({ username })
+    .then(userToUnfollow => {
+      // exists
+      if (!userToUnfollow) {
+        return res.send(404).send('User not found');
+      }
+      // self
+      if (userToUnfollow._id.equals(req.user._id)) {
+        return res.status(500).send('Cannot unfollow self');
+      }
+      // Unfollow them
+      User.findById(req.user._id)
+        .then((currentUser) => {
+          // are we even following them?
+          if (currentUser.following.indexOf(userToUnfollow._id) === -1) {
+            return res.status(500).send('Cannot unfollow someone we are not following');
+          }
+          currentUser.following = currentUser.following.filter((val, idx, arr) => {
+            return !val.equals(userToUnfollow._id);
+          });
+          userToUnfollow.followers = userToUnfollow.followers.filter((val, idx, arr) => {
+            return !val.equals(currentUser._id);
+          });
+          // Save
+          currentUser.save().then(() => {
+            userToUnfollow.save().then(() => {
+              return res.status(200).send('succesfully unfollowed');
+            });
+          });
+        });
+    });
 }
 
 module.exports.getUserByUsername = (req, res, next) => {
