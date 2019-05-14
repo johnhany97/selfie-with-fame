@@ -120,12 +120,16 @@ class DisplayEventsPage extends Component {
       <Layout title="Events">
         <div className="container" style={mTop}>
           <a href="/createEvent" style={crudButton} className="add-event-btn">Add Event</a>
-          {events.map(event => (
-            <Event
-              key={event._id}
-              {...event}
-            />
-          ))}
+          <div className="event-results">
+            {events.map(event => (
+              <div className="event-container">
+                <Event
+                  key={event._id}
+                  {...event}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </Layout>
     );
