@@ -2,7 +2,7 @@ const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 
 var User = require('../models/user');
 
@@ -212,13 +212,17 @@ module.exports.updatePassword = (req, res, next) => {
         res.status(404).json('no user exists in db to update');
         return;
       }
-      bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS).then((hashedPassword) => {
+      bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
+        if (err) {
+          res.status(500).json('error hashing password');
+          return;
+        }
         user.password = hashedPassword;
-        user.save();
-      }).then(() => {
-        res.status(200).send({
-          auth: true,
-          message: 'password updated'
+        user.save().then(() => {
+          res.status(200).send({
+            auth: true,
+            message: 'password updated'
+          });
         });
       });
     });
@@ -236,13 +240,16 @@ module.exports.updatePasswordViaEmail = (req, res) => {
     if (user == null) {
       res.status(403).send('password reset link is invalid or has expired');
     } else if (user != null) {
-      bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS).then((hashedPassword) => {
+      bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
+        if (err) {
+          return res.status(500).json('error hashing password');
+        }
         user.password = hashedPassword;
         user.resetPasswordToken = null;
         user.resetPasswordExpires = null;
-        user.save();
-      }).then(() => {
-        res.status(200).send({ message: 'password updated' });
+        user.save().then(() => {
+          res.status(200).send({ message: 'password updated' });
+        });
       });
     } else {
       res.status(401).json('no user exists in db to update');
