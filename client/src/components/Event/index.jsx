@@ -20,26 +20,25 @@ const Event = (props) => {
     selected,
   } = props;
 
+  
+
   return (
-    <div style={cardPanel}>
-      <a
-        href={`/eventPage/${_id}`}
-        className="event-title"
-      >
-        {event_name}
-      </a>
-      <p>{information}</p>
-      <p>{location}</p>
-      <p>{date_time}</p>
-      {selected && (
-        <p>
-          Selected
-        </p>
-      )}
-      <div>
-        <a href={`/updateEvent/${_id}`} style={crudButton}>Update</a>
+    <a href={`/eventPage/${_id}`}>
+      <div className="event-card-panel">
+        <div className="event-card-img" />
+        <div className="event-card-info">
+          <p className="event-card-date">{date_time}</p>
+          <h3 className="event-card-title">{event_name}</h3>
+          <p className="event-card-location">{location}</p>
+          {selected && (
+            <p>
+              Selected
+            </p>
+          )}
+          <p className="event-card-going">234 people going</p>
+        </div>
       </div>
-    </div>
+    </a>
   );
 };
 
