@@ -150,6 +150,8 @@ class CreateEventPage extends Component {
         error: false,
         // event_deleted,
       });
+      console.log("displayed events all ones");
+      console.log(this.state.displayedEvents);
     }).catch((err) => {
       console.error(err.response.data);
       this.setState({

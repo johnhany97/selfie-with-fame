@@ -61,7 +61,8 @@ class CurrentLocation extends React.Component {
               window.alert('Geocoder failed due to: ' + status);
             }
           });
-          
+          const {handleLocalCityChange} = this.props
+          handleLocalCityChange(city_state)
           const { handleCityChange } = this.props;
           handleCityChange(city_state)
 
@@ -74,6 +75,9 @@ class CurrentLocation extends React.Component {
           handleLocationChange([lat, lng]);
           const { handleSelectedLocationChange } = this.props;
           handleSelectedLocationChange( [lat, lng])
+          const { getEventsLocation } = this.props;
+          getEventsLocation();
+
 
 
         });
@@ -180,7 +184,9 @@ CurrentLocation.propTypes = {
   zoom: PropTypes.number,
   handleLocationChange: PropTypes.func,
   handleCityChange: PropTypes.func,
+  handleLocalCityChange: PropTypes.func,
   handleSelectedLocationChange: PropTypes.func,
+  getEventsLocation: PropTypes.func,
   centerAroundCurrentLocation: PropTypes.bool,
   initialCenter: PropTypes.shape({
     lat: PropTypes.number,

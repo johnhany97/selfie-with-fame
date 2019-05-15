@@ -71,20 +71,19 @@ module.exports.findEvent = (req, res, next) => {
 }
 
 
-module.exports.getEventsByLocation = (req, res) => {
+module.exports.getEventsByLocation = (req, res, next) => {
 
-  const query = {
-    location: {
-      city: req.params.city,
-    } 
-  }
+  const query = { 'location.city': req.body.city };
 
-  Event.find(query, {})
+  Event.find(query)
     .sort({ createdAt: -1 })
     .then((events) => {
       res.status(200).send({
         events
       });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 }
 
