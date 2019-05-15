@@ -68,3 +68,9 @@
 .submit-story-btn{
     background-color: #fc6769;
 }
+
+.thumbnails-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0;
+}

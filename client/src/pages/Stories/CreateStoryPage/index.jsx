@@ -138,7 +138,7 @@ class CreateStoryPage extends Component {
       return (
         <Layout title="Create Story">
           <h1>{errorMessage}</h1>
-        </Layout>
+        </Layout>        
       );
     }
     switch (step) {

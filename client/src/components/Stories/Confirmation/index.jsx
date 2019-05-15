@@ -9,6 +9,7 @@ import {
 import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
 import FormProgress from '../../FormProgress';
+import Photo from '../../Photo';
 
 const Confirmation = (props) => {
   const {
@@ -28,7 +29,11 @@ const Confirmation = (props) => {
           </button>
           <FormProgress size={4} step={step} />
         </div>
-        {values && values.picture && <img className="story-photo-preview" id="photo" src={values.picture} alt="Story taken" />}
+        <div className="thumbnails-container">
+          {values.pictures.map((data, index) =>
+            <Photo key={index} data={data} confirmation={true}/>
+          )}
+        </div>
         <h5 className="confirmation-event-heading">Event</h5>
         {values && values.event && <p>{values.event.event_name} </p>}
         <h5 className="confirmation-caption-heading">Caption</h5>

@@ -95,7 +95,7 @@ class Capture extends Component {
           id="canvas"
           hidden
         />
-        <div className="thumbnail-container">
+        <div className="thumbnails-container">
           {this.props.values.pictures.map((data, index) =>
             <Photo key={index} data={data} index={index} removePicture={removePicture}/>
           )}
