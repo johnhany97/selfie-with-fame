@@ -21,5 +21,7 @@ router.route('/story/:id').all(authMiddleware.authenticate).delete(storyControll
 router.route('/timeline').all(authMiddleware.authenticate).get(storyController.getStoriesTimeline);
 // POST a comment to a story
 router.route('/:id/comment').all(authMiddleware.authenticate).post(storyController.comment);
+// POST a like to a story
+router.route('/:id/like').all(authMiddleware.authenticate).post(storyController.like);
 
 module.exports = router;

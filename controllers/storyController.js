@@ -229,5 +229,43 @@ module.exports.comment = async (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send(err);
+    });
+}
+
+/**
+ * POST /api/stories/:id/like
+ *
+ * Used to like a story as the currently logged in user.
+ *
+ * Parameters:
+ * - id   => provided in the link, refers to the story ID
+ *
+ * Returns:
+ * - Status 200 if successfully liked
+ * - Status 400 if error with provided parameters
+ * - Status 404 if story not found
+ * - Status 500 if error with saving new story with like
+*/
+module.exports.like = async (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('Invalid ID');
+  }
+
+  const story = await Story.findById(id);
+  if (!story) {
+    return res.status(404).send('Story not found');
+  }
+
+  const currentUser = req.user._id;
+
+  story.likes.push(currentUser);
+  story.save()
+    .then(() => {
+      return res.status(200).send();
     })
+    .catch((err) => {
+      return res.status(500).send(err);
+    });
 }

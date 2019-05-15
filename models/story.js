@@ -15,10 +15,10 @@ let storySchema = new Schema({
     ref: 'Event',
     required: true
   },
-  likes: {
+  likes: [{
     type: Schema.Types.ObjectId,
     ref: 'User',
-  },
+  }],
   comments: [
     {
       text: {
