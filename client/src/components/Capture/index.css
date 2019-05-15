@@ -4,8 +4,11 @@
     margin-right: auto;
 }
 
-.thumbnails-container{
+.thumbnails-container-preview{
     display: flex;
     flex-direction: row;
     margin: 0.5rem 0;
+    max-width: 300px;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
 }
