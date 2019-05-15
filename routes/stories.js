@@ -19,5 +19,7 @@ router.route('/story/:id').all(authMiddleware.authenticate).get(storyController.
 router.route('/story/:id').all(authMiddleware.authenticate).delete(storyController.deleteStory);
 // GET the logged in user's timeline
 router.route('/timeline').all(authMiddleware.authenticate).get(storyController.getStoriesTimeline);
+// POST a comment to a story
+router.route('/:id/comment').all(authMiddleware.authenticate).post(storyController.comment);
 
 module.exports = router;

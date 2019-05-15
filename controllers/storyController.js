@@ -185,3 +185,49 @@ module.exports.deleteStory = async (req, res) => {
       });
     });
 }
+
+/** 
+ * POST /api/stories/:id/comment 
+ * 
+ * Used to post a comment to a story as the currently logged in user.
+ * 
+ * Parameters:
+ * - id   => provided in the link, refers to the story ID
+ * - text => provided in body, of type String, represents the text content of the comment
+ * 
+ * Returns:
+ * - Status 201 if successfully created the comment
+ * - Status 400 if error with provided parameters
+ * - Status 404 if story not found
+ * - Status 500 if error with saving new story with comments
+*/
+module.exports.comment = async (req, res) => {
+  const id = req.params.id;
+  
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('Invalid ID');
+  }
+
+  const text = req.body.text;
+  const postedBy = req.user._id;
+
+  if (!text || text === '') {
+    return res.status(400).send('Invalid comment text');
+  }
+
+  const story = await Story.findById(id);
+  if (!story) {
+    return res.status(404).send('Story not found');
+  }
+  story.comments.push({
+    text,
+    postedBy
+  });
+  story.save()
+    .then(() => {
+      return res.status(201).send();
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    })
+}
