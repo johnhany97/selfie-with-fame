@@ -59,6 +59,9 @@ class App extends React.Component {
     socket.on('connect', () => {
       socket.emit('connected', this.state.username);
     });
+    socket.on('new_story', () => {
+      console.log('New stories, please refresh');
+    });
   }
 
   getStories = async () => {

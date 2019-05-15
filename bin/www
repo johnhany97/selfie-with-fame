@@ -38,10 +38,7 @@ server.listen(port);
 
 // use socket io
 let io = require('socket.io').listen(server);
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+app.set('io', io);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -108,7 +105,10 @@ function onListening() {
 const Connection = require('../models/connection');
 
 io.on('connect' , (socket) => {
-  socket.on('connected', (username) => {
+  socket.on('connected', async (username) => {
+    // Remove any of their old connections
+    await Connection.remove({user: username});
+    // Add new connection
     const connection = new Connection({
       socketId: socket.id,
       user: username,

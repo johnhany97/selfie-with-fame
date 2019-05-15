@@ -2,6 +2,7 @@ const passport = require('passport');
 const validator = require('validator');
 
 const Story = require('../models/story');
+const Connection = require('../models/connection');
 const User = require('../models/user');
 const NewsFeed = require('../models/newsfeed');
 
@@ -113,6 +114,17 @@ module.exports.createStory = (req, res) => {
           });
           // 3- Save these entries
           await NewsFeed.insertMany(newsFeed);
+          // 4- Inform the followers there's an update using Sockets
+          followers.map(async (follower) => {
+            const user = await User.findById(follower);
+            Connection.findOne({user: user.username})
+              .then((connection) => {
+                if (connection) {
+                  const io = req.app.get('io');
+                  io.to(connection.socketId).emit('new_story');
+                }
+              })
+          })
         });
     })
     .catch((e) => {
