@@ -18,7 +18,7 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
       res.status(200).send({
         stories,
@@ -41,6 +41,7 @@ module.exports.getStoriesByUser = (req, res) => {
   // no need to populate as current user is poster
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
+    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
       res.status(200).send({
         stories
@@ -63,7 +64,7 @@ module.exports.getStoriesByEvent = (req, res) => {
 
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name')
+    .populate('postedBy', '_id first_name last_name username')
     .then((stories) => {
       res.status(200).send({
         stories

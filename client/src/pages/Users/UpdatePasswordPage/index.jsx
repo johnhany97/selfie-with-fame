@@ -39,15 +39,11 @@ class UpdatePasswordPage extends Component {
       });
       return;
     }
-    axios.get('/api/users/find', {
-      params: {
-        username: this.props.match.params.username,
-      },
+    axios.get(`/api/users/${this.props.match.params.username}`, {
       headers: {
         Authorization: `JWT ${accessString}`,
       },
     }).then((res) => {
-      // console.log(response.data);
       const { data } = res;
       const {
         username,
@@ -85,9 +81,8 @@ class UpdatePasswordPage extends Component {
     }
     e.preventDefault();
     axios.put(
-      '/api/users/updatePassword',
+      `/api/users/${this.state.username}/password`,
       {
-        username: this.state.username,
         password: this.state.password,
       },
       {
@@ -96,15 +91,12 @@ class UpdatePasswordPage extends Component {
         },
       },
     ).then((res) => {
-      if (res.data.message === 'password updated') {
-        this.setState({
-          updated: true,
-          error: false,
-          loadingUser: false,
-        });
-      }
+      this.setState({
+        updated: true,
+        error: false,
+        loadingUser: false,
+      });
     }).catch((err) => {
-      console.log(err.response.data);
       this.setState({
         updated: false,
         error: true,

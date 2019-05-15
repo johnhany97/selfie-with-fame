@@ -16,25 +16,29 @@ passport.use(
       session: false,
     },
     (username, password, done) => {
-      User.findOne({
-        username: username,
-      }).then(user => {
-        if (user !== null) {
-          console.log('username already taken');
-          return done(null, false, { message: 'username already taken' });
-        } else {
+      User.findOne({ username })
+        .then(user => {
+          if (user) { // it already exists
+            return done(null, false, { message: 'username already taken' });
+          }
+          // Hash the password
           bcrypt.hash(password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
-            if (err) {
+            if (err) { // Error hashing it
               return done(err);
             }
-            User.create({ username, password: hashedPassword }).then(user => {
-              return done(null, user);
-            });
+            // Create the user using the password
+            User.create({ username, password: hashedPassword })
+              .then(user => {
+                return done(null, user);
+              })
+              .catch(err => {
+                return done(err);
+              });
           });
-        }
-      }).catch(err => {
-        return done(err);
-      });
+        })
+        .catch(err => {
+          return done(err);
+        });
     },
   ),
 );
@@ -48,22 +52,26 @@ passport.use(
       session: false,
     },
     (username, password, done) => {
-      User.findOne({
-        username: username,
-      }).then(user => {
-        if (user === null) {
-          return done(null, false, { message: 'bad username' });
-        } else {
+      User.findOne({ username })
+        .then(user => {
+          if (!user) { // Not found, wrong username?
+            return done(null, false, { message: 'bad username' });
+          }
+          // Compare hashed password with provided one
           bcrypt.compare(password, user.password, (err, res) => {
-            if (!res) {
+            if (err) { // something went wrong
+              return done(err);
+            }
+            if (!res) { // user exists, password wrong
               return done(null, false, { message: 'passwords do not match' });
             }
-            return done(null, user)
+            // yay, all went good
+            return done(null, user);
           });
-        }
-      }).catch(err => {
-        return done(err);
-      });
+        })
+        .catch(err => {
+          return done(err);
+        });
     },
   ),
 );
@@ -81,7 +89,7 @@ passport.use(
       if (!user) {
         return done(null, false, { message: 'User not found' });
       }
-      //Pass the user details to the next middleware
+      // Pass the user details to the next middleware
       return done(null, user);
     } catch (error) {
       done(error);

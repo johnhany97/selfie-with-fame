@@ -3,147 +3,203 @@ const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
+const sanitizeHtml = require('sanitize-html');
 
 var User = require('../models/user');
 
 const BCRYPT_SALT_ROUNDS = 12;
 
-module.exports.login = (req, res, next) => {
+/**
+ * POST /api/users/login
+ *
+ * @summary
+ * Login to the platform
+ * 
+ * @auth
+ * Does not require authentication
+ *
+ * @param
+ * - username => provided in the body, should be a string
+ * - password => provided in the body, should be a string
+ *
+ * @returns:
+ * - Status 200 if successfully logged in
+ * - Status 400 if bad request
+ * - Status 404 if story not found
+ * - Status 500 if error with saving new story with like
+ * If successful, it returns a JSON of the following format:
+ * {
+ *  auth: true,
+ *  token: "SOME_TOKEN_THAT_SHOULD_BE_USED_BY_THE_CLIENT",
+ *  message: "user found & logged in"
+ * }
+*/
+module.exports.login = (req, res) => {
   passport.authenticate('login', (err, user, info) => {
     if (err) {
-      console.log(err);
+      return res.status(500).send(err)
     }
-    if (info !== undefined) {
+    if (info) {
       if (info.message === 'bad username') {
-        res.status(401).send(info.message);
-      } else {
-        res.status(403).send(info.message);
+        return res.status(401).send(info.message);
       }
-    } else {
-      req.logIn(user, err => {
-        User.findOne({
-          username: user.username,
-        }).then(user => {
-          const token = jwt.sign({ id: user.username }, process.env.JWT_SECRET);
-          res.status(200).send({
-            auth: true,
-            token: token,
-            message: 'user found & logged in',
-          });
+      return res.status(403).send(info.message);
+    }
+    req.logIn(user, err => {
+      User.findOne({
+        username: user.username,
+      }).then(user => {
+        const token = jwt.sign({ id: user.username }, process.env.JWT_SECRET);
+        res.status(200).send({
+          auth: true,
+          token: token,
+          message: 'user found & logged in',
         });
       });
-    }
-  })(req, res, next);
+    });
+  })(req, res);
 }
 
-module.exports.register = (req, res, next) => {
-  const first_name = req.body.first_name;
-  const last_name = req.body.last_name;
-  const email = req.body.email;
-  const username = req.body.username;
+/**
+ * POST /api/users/register
+ *
+ * @summary
+ * Register on the platform
+ *
+ * @auth
+ * Does not require authentication
+ *
+ * @param
+ * - first_name => string   - First name
+ * - last_name  => string   - Last name
+ * - email      => string   - Email
+ * - username   => string   - User name
+ * - password   => string   - Password
+ *
+ * @returns:
+ * - Status 201 if successfully registered
+ * - Status 400 if bad request
+ * - Status 500 if error registering
+ * If successful, it returns a JSON of the following format:
+ * {
+ *  message: "user created"
+ * }
+*/
+module.exports.register = (req, res) => {
+  // Obtain parameters and sanitize them
+  const first_name = sanitizeHtml(req.body.first_name);
+  const last_name = sanitizeHtml(req.body.last_name);
+  const email = sanitizeHtml(req.body.email);
+  const username = sanitizeHtml(req.body.username);
   const password = req.body.password;
+  // Validate they're there
   if (!first_name || !last_name || !email || !username || !password) {
-    res.send('Missing parameters')
-    return;
+    return res.status(400).send('Missing or invalid parameters');
   }
+  // Start registering through passport
   passport.authenticate('register', (err, user, info) => {
     if (err) {
-      console.log(err);
+      return res.status(400).send(err);
     }
-    if (info !== undefined) {
-      console.log(info.message);
-      res.status(403).send(info.message);
-    } else {
-      req.logIn(user, err => {
-        const data = {
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          email: req.body.email,
-          username: user.username,
-        };
-        User.findOne({
-          username: data.username,
-        }).then(user => {
+    if (info) { // Contains error (ex. username already taken)
+      return res.status(500).send(info.message);
+    }
+    // Complete the puzzle by adding the rest
+    // of the provided information to the user's db entry
+    req.logIn(user, err => {
+      User.findOne({ username })
+        .then(user => {
           user
             .update({
-              first_name: data.first_name,
-              last_name: data.last_name,
-              email: data.email,
+              first_name,
+              last_name,
+              email,
             })
             .then(() => {
-              console.log('user created in db');
-              res.status(200).send({ message: 'user created' });
+              res.status(201).send({ message: 'user created' });
             });
         });
-      });
-    }
-  })(req, res, next);
+    });
+  })(req, res);
 }
 
-module.exports.deleteUser = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err) {
-      console.error(err);
-    }
-    if (info !== undefined) {
-      res.status(403).send(info.message);
-    } else {
-      User.remove({
-        username: req.query.username,
-      }).then((userInfo) => {
-        if (userInfo) {
-          console.log('user deleted from db');
-          res.status(200).send('user deleted from db');
-        } else {
-          console.error('user not found in db');
-          res.status(404).send('no user with that username to delete');
-        }
-      }).catch((error) => {
-        console.error('problem communicating with db');
-        res.status(500).send(error);
-      });
-    }
-  })(req, res, next);
-}
+/**
+ * DELETE /api/users/:username
+ * 
+ * @todo
+ * Switch to admin exclusive
+ *
+ * @summary
+ * Delete a given user by their given username
+ *
+ * @auth
+ * Requires signed in user
+ *
+ * @param
+ * - username => String   - User name
+ *
+ * @returns:
+ * - Status 202 if successfully deleted
+ * - Status 400 if bad request
+ * - Status 404 if user not found
+ * - Status 500 if error with deleting user
+*/
+module.exports.deleteUser = (req, res) => {
+  const username = sanitizeHtml(req.params.username);
 
-module.exports.findUser = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err) {
-      console.log(err);
-    }
-    if (info !== undefined) {
-      console.log(info.message);
-      res.status(401).send(info.message);
-    } else {
-      console.log('user found in db from route');
-      res.status(200).send({
-        auth: true,
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        username: user.username,
-        password: user.password,
-        message: 'user found in db',
-      });
-    }
-  })(req, res, next);
-}
-
-module.exports.forgotPassword = (req, res) => {
-  if (req.body.email === '') {
-    res.status(400).send('email required');
+  if (!username || username === '') {
+    return res.status(400).send('invalid username');
   }
-  User.findOne({
-    email: req.body.email,
-  }).then((user) => {
-    if (user === null) {
-      console.error('email not in database');
-      res.status(403).send('email not in db');
-    } else {
+
+  User.remove({ username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('no user with that username to delete');
+      }
+      res.status(202).send('user deleted from db');
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
+/**
+ * POST /api/users/forgotPassword
+ *
+ * @summary
+ * Used to trigger a forgot my password workflow provided we have
+ * the user's email provided in the body
+ *
+ * @auth
+ * Does not require authenticated user
+ *
+ * @param
+ * - email => String   - Email
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs with sending email or finding user in db
+*/
+module.exports.forgotPassword = (req, res) => {
+  const email = sanitizeHtml(req.body.email);
+
+  if (!email || email === '') {
+    return res.status(400).send('email required');
+  }
+
+  User.findOne({ email })
+    .then(async (user) => {
+      if (!user) {
+        return res.status(404).send('user not found');
+      }
+      // Generate reset token
       const token = crypto.randomBytes(20).toString('hex');
       user.resetPasswordToken = token;
       user.resetPasswordExpires = Date.now() + 360000;
-      user.save();
+      await user.save();
+      // Prepare email to send to user
       const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -163,143 +219,264 @@ module.exports.forgotPassword = (req, res) => {
           + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
       };
 
+      // Send the prepared email
       transporter.sendMail(mailOptions, (err, response) => {
         if (err) {
-          console.error('there was an error: ', err);
-          res.status(500).send(err);
-        } else {
-          res.status(200).json('recovery email sent');
+          return res.status(500).send(err);
         }
+        res.status(200).send('recovery email sent');
       });
-    };
-  });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 }
 
+/**
+ * PUT /api/users/reset
+ *
+ * @summary
+ * Triggered when user clicks on the link provided in the 
+ * forgot my password email to reset their password.
+ *
+ * @auth
+ * Does not require authenticated user
+ *
+ * @param
+ * - resetPasswordToken => String - Randomly generated token provided as query param
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs with sending email or finding user in db
+*/
 module.exports.resetPassword = (req, res) => {
+  const resetPasswordToken = req.query.resetPasswordToken;
+
   User.findOne({
-    resetPasswordToken: req.query.resetPasswordToken,
+    resetPasswordToken,
     resetPasswordExpires: {
       $gt: Date.now(),
     }
-  }).then((user) => {
-    console.log(user);
-    if (user === null) {
-      res.status(403).send('password reset link is invalid or has expired');
-    } else {
+  })
+    .then((user) => {
+      if (!user) {
+        return res.status(403).send('password reset link is invalid or has expired');
+      }
       res.status(200).send({
         username: user.username,
         message: 'Password successfully reset',
       });
-    }
-  });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
 }
 
-module.exports.updatePassword = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err) {
-      console.error(err);
-    }
-    if (info !== undefined) {
-      console.error(info.message);
-      res.status(403).send(info.message);
-      return;
-    }
-    User.findOne({
-      username: req.body.username,
-    }).then((user) => {
-      if (user === null) {
-        console.error('no user exists in db to update');
-        res.status(404).json('no user exists in db to update');
-        return;
+/**
+ * PUT /api/users/:username/password
+ *
+ * @summary
+ * Used to update a user's password given their username
+ *
+ * @auth
+ * Requires authenticated users
+ *
+ * @param
+ * - username => String     - User name
+ * - password => String     - Password
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs with hashing password or interacting with db
+*/
+module.exports.updatePassword = (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+
+  const password = req.body.password;
+
+  if (!username || !password || password === '') {
+    return res.status(400).send('Invalid params');
+  }
+
+  User.findOne({ username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('no user exists in db to update');
       }
-      bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
+      bcrypt.hash(password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
         if (err) {
-          res.status(500).json('error hashing password');
-          return;
+          return res.status(500).send('error hashing password');
         }
         user.password = hashedPassword;
-        user.save().then(() => {
-          res.status(200).send({
-            auth: true,
-            message: 'password updated'
+        user.save()
+          .then(() => {
+            res.status(200).send({
+              auth: true,
+              message: 'password updated'
+            });
+          })
+          .catch((err) => {
+            return res.status(500).send(err);
           });
-        });
       });
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
     });
-  })(req, res, next);
 }
 
+/**
+ * PUT /api/users/updatePasswordViaEmail
+ *
+ * @summary
+ * Used to update the user's password through email rather than through profile
+ *
+ * @auth
+ * Does not require authentication
+ *
+ * @param
+ * - username => String     - User name
+ * - password => String     - Password
+ * - resetPasswordToken => String - Randomly generated token provided as query param
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs with hashing password or interacting with db
+*/
 module.exports.updatePasswordViaEmail = (req, res) => {
+  const username = sanitizeHtml(req.body.username);
+  const resetPasswordToken = req.body.resetPasswordToken;
+
   User.findOne({
-    username: req.body.username,
-    resetPasswordToken: req.body.resetPasswordToken,
+    username,
+    resetPasswordToken,
     resetPasswordExpires: {
       $gt: Date.now(),
     },
-  }).then(user => {
-    if (user == null) {
-      res.status(403).send('password reset link is invalid or has expired');
-    } else if (user != null) {
+  })
+    .then(user => {
+      if (!user) {
+        return res.status(403).send('password reset link is invalid or has expired');
+      }
       bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS, (err, hashedPassword) => {
         if (err) {
-          return res.status(500).json('error hashing password');
+          return res.status(500).ßjson('error hashing password');
         }
+        // Update the password with the newly hashed password
         user.password = hashedPassword;
+        // Reset reset password parameters
         user.resetPasswordToken = null;
         user.resetPasswordExpires = null;
-        user.save().then(() => {
-          res.status(200).send({ message: 'password updated' });
-        });
+        // Save changes
+        user.save()
+          .then(() => {
+            res.status(200).send({ message: 'password updated' });
+          })
+          .catch((err) => {
+            return res.status(500).send(err);
+          });
       });
-    } else {
-      res.status(401).json('no user exists in db to update');
-    }
-  });
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    });
 }
 
-module.exports.updateUser = (req, res, next) => {
-  passport.authenticate('jwt', { session: false }, (err, user, info) => {
-    if (err) {
-      console.error(err);
-    }
-    if (info !== undefined) {
-      res.status(403).send(info.message);
-      return;
-    }
-    User.findOne({
-      username: req.body.username,
-    }).then((userInfo) => {
-      if (userInfo != null) {
-        userInfo.update({
-          first_name: req.body.first_name,
-          last_name: req.body.last_name,
-          email: req.body.email,
-        }).then(() => {
+/**
+ * PUT /api/users/:username
+ *
+ * @summary
+ * Update the user's details
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - username => String     - User name
+ * - password => String     - Password
+ * - resetPasswordToken => String - Randomly generated token provided as query param
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs with hashing password or interacting with db
+*/
+module.exports.updateUser = (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+
+  const first_name = sanitizeHtml(req.body.first_name);
+  const last_name = sanitizeHtml(req.body.last_name);
+  const email = sanitizeHtml(req.body.email);
+
+  User.findOne({ username })
+    .then((user) => {
+      if (!user) {
+        return res.status(404).send('user not found');
+      }
+      user.update({
+        first_name,
+        last_name,
+        email
+      })
+        .then(() => {
           res.status(200).send({
             auth: true,
             message: 'user updated'
           });
+        })
+        .catch((err) => {
+          return res.status(500).send(err);
         });
-      } else {
-        res.status(401).send('no user exists in db to update');
-      }
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
     });
-  })(req, res, next);
 }
 
-module.exports.followUser = (req, res, next) => {
-  const username = req.params.username;
+/**
+ * POST /api/users/:username/follow
+ *
+ * @summary
+ * Follow the user with the provided username
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - username => String     - User name
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 409 if user tries to follow self or if already followed (conflict)
+ * - Status 500 if an error occurs when interacting with the db
+*/
+module.exports.followUser = (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+  
+  if (!username || username === '') {
+    return res.status(400).send('Invalid username');
+  }
+
   User.findOne({ username })
     .then((userToFollow) => {
       if (!userToFollow) {
         return res.send(404).send('User not found');
       }
       if (userToFollow._id.equals(req.user._id)) {
-        return res.status(500).send('Cannot follow self');
+        return res.status(409).send('Cannot follow self');
       }
       User.findById(req.user._id)
         .then((currentUser) => {
-          if (currentUser.following.indexOf(userToFollow._id) === -1 || userToFollow.followers.indexOf(currentUser._id) === -1) {
+          if (currentUser.following.indexOf(userToFollow._id) === -1 && userToFollow.followers.indexOf(currentUser._id) === -1) {
             currentUser.following.push(userToFollow._id);
             userToFollow.followers.push(currentUser._id);
             // Save
@@ -315,7 +492,26 @@ module.exports.followUser = (req, res, next) => {
     });
 }
 
-module.exports.unfollowUser = (req, res, next) => {
+/**
+ * POST /api/users/:username/unfollow
+ *
+ * @summary
+ * Unfollow the user with the provided username
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - username => String     - User name
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 409 if user tries to unfollow self or if already not following (conflict)
+ * - Status 500 if an error occurs when interacting with the db
+*/
+module.exports.unfollowUser = (req, res) => {
   const username = req.params.username;
 
   User.findOne({ username })
@@ -326,15 +522,16 @@ module.exports.unfollowUser = (req, res, next) => {
       }
       // self
       if (userToUnfollow._id.equals(req.user._id)) {
-        return res.status(500).send('Cannot unfollow self');
+        return res.status(409).send('Cannot unfollow self');
       }
       // Unfollow them
       User.findById(req.user._id)
         .then((currentUser) => {
           // are we even following them?
           if (currentUser.following.indexOf(userToUnfollow._id) === -1) {
-            return res.status(500).send('Cannot unfollow someone we are not following');
+            return res.status(409).send('Cannot unfollow someone we are not following');
           }
+          // Filter down the following and followers lists
           currentUser.following = currentUser.following.filter((val, idx, arr) => {
             return !val.equals(userToUnfollow._id);
           });
@@ -347,12 +544,38 @@ module.exports.unfollowUser = (req, res, next) => {
               return res.status(200).send('succesfully unfollowed');
             });
           });
+        })
+        .catch((err) => {
+          return res.status(500).send(err);
         });
     });
 }
 
-module.exports.getUserByUsername = (req, res, next) => {
-  const username = req.params.username;
+/**
+ * GET /api/users/:username
+ *
+ * @summary
+ * Get a user by their username
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - username => String     - User name
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs when interacting with the db
+*/
+module.exports.getUserByUsername = (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+
+  if (!username || username === '') {
+    return res.status(400).send('invalid parameters');
+  }
+
   User.findOne({ username })
     .populate('followers', 'first_name last_name username')
     .populate('following', 'first_name last_name username')
@@ -360,11 +583,56 @@ module.exports.getUserByUsername = (req, res, next) => {
       if (!user) {
         return res.status(404).send();
       }
-      res.send(user);
+      res.status(200).send(user);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
     });
 }
 
-module.exports.getAll = (req, res, next) => {
+/**
+ * GET /api/users/me
+ *
+ * @summary
+ * Gets current user using their token
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 500 if an error occurs when interacting with the db
+*/
+module.exports.me = (req, res) => {
+  User.findById(req.user._id)
+    .populate('followers', 'first_name last_name username')
+    .populate('following', 'first_name last_name username')
+    .then((user) => {
+      res.status(200).send(user);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    });
+}
+
+/**
+ * GET /api/users
+ *
+ * @summary
+ * Get all users
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - size => Number   - number of users / page (Default: 10)
+ * - page => Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 500 if an error occurs when interacting with the db
+*/
+module.exports.getAll = (req, res) => {
   const size = req.query.size || 10;
   const page = req.query.page || 1;
 
@@ -379,8 +647,11 @@ module.exports.getAll = (req, res, next) => {
     .populate('followers', 'first_name last_name username')
     .populate('following', 'first_name last_name username')
     .then((users) => {
-      res.status(200).send({
+      return res.status(200).send({
         users
       });
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
     });
 }

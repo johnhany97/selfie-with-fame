@@ -43,10 +43,7 @@ class ProfilePage extends Component {
 
   getUserDetails = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get('/api/users/find', {
-      params: {
-        username: this.props.match.params.username,
-      },
+    await axios.get(`/api/users/${this.props.match.params.username}`, {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -67,7 +64,6 @@ class ProfilePage extends Component {
         error: false,
       });
     }).catch((err) => {
-      console.error(err.response.data);
       this.setState({
         error: true,
       });

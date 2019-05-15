@@ -49,6 +49,7 @@ class LoginPage extends Component {
       username,
       password,
     }).then((res) => {
+      console.log(res);
       localStorage.setItem('JWT', res.data.token);
       this.setState({
         loggedIn: true,
@@ -56,12 +57,10 @@ class LoginPage extends Component {
         showNullError: false,
       });
     }).catch((err) => {
-      if (err.response.data === 'bad username' || err.response.data === 'passwords do not match') {
-        this.setState({
-          showError: true,
-          showNullError: false,
-        });
-      }
+      this.setState({
+        showError: true,
+        showNullError: false,
+      });
     });
   }
 

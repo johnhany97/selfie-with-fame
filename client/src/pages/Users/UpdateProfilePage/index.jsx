@@ -42,10 +42,7 @@ class UpdateProfilePage extends Component {
         error: true,
       });
     }
-    axios.get('/api/users/find', {
-      params: {
-        username: this.props.match.params.username,
-      },
+    axios.get(`/api/users/${this.props.match.params.username}`, {
       headers: { Authorization: `JWT ${token}` },
     }).then((response) => {
       // console.log(response.data);
@@ -59,7 +56,6 @@ class UpdateProfilePage extends Component {
         error: false,
       });
     }).catch((error) => {
-      console.log(error.response.data);
       this.setState({
         error: true,
       });
@@ -82,20 +78,17 @@ class UpdateProfilePage extends Component {
     }
 
     e.preventDefault();
-    axios.put('/api/users/updateUser', {
+    axios.put(`/api/users/${this.state.username}`, {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
-      username: this.state.username,
     }, { headers: { Authorization: `JWT ${accessString}` } })
       .then((res) => {
-        console.log(res.data);
         this.setState({
           updated: true,
           error: false,
         });
       }).catch((err) => {
-        console.log(err.response.data);
         this.setState({
           loadingUser: false,
           error: true,

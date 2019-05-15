@@ -33,7 +33,7 @@ class App extends React.Component {
       });
       return;
     }
-    await axios.get('/api/users/find', {
+    await axios.get('/api/users/me', {
       headers: {
         Authorization: `JWT ${token}`,
       },
