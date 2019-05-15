@@ -1,7 +1,9 @@
 const passport = require('passport');
 const validator = require('validator');
 
-var Story = require('../models/story');
+const Story = require('../models/story');
+const User = require('../models/user');
+const NewsFeed = require('../models/newsfeed');
 
 module.exports.getAllStories = (req, res) => {
   const size = req.query.size || 10;
@@ -67,15 +69,15 @@ module.exports.getStoriesByEvent = (req, res) => {
     });
 }
 
-module.exports.getStoriesTimeline = (req, res) => {
-  res.status(500).send('Not implemented yet');
+module.exports.getStoriesTimeline = async (req, res) => {
+  await NewsFeed.find({ owner: req.user._id }).exect();
 }
 
 module.exports.createStory = (req, res) => {
   const pictureParam = req.body.picture;
   let pictureBlob;
   let pictureBuffer;
-  if(pictureParam != null){
+  if (pictureParam != null) {
     pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
     pictureBuffer = new Buffer(pictureBlob, 'base64');
   }
@@ -90,6 +92,21 @@ module.exports.createStory = (req, res) => {
   story.save()
     .then((story) => {
       res.send(story);
+      // Add to news feed
+      User.findById(req.user._id)
+        .then(async (user) => {
+          // 1- Get Followers
+          let followers = user.followers;
+          // 2- Create entries for them
+          let newsFeed = followers.map((follower) => {
+            return {
+              owner: follower._id,
+              story: story._id
+            };
+          });
+          // 3- Save these entries
+          await NewsFeed.insertMany(newsFeed);
+        });
     })
     .catch((e) => {
       res.status(400).send(e);

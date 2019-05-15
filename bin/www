@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('selfiewithfame:server');
 var https = require('https');
 var fs = require('fs-extra');
+const express = require('express');
 
 /**
  * Get port from environment and store in Express.
@@ -34,6 +35,13 @@ var server = https.createServer(options, app);
  */
 
 server.listen(port);
+
+// use socket io
+let io = require('socket.io').listen(server);
+app.use((req, res, next) => {
+  req.io = io;
+  next();
+});
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -96,3 +104,19 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+const Connection = require('../models/connection');
+
+io.on('connect' , (socket) => {
+  socket.on('connected', (username) => {
+    const connection = new Connection({
+      socketId: socket.id,
+      user: username,
+    });
+    connection.save();
+  });
+
+  socket.on('disconnect', () => {
+    Connection.findOne({ socketId: socket.id }).remove().exec();
+  });
+});

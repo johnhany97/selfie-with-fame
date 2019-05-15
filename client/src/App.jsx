@@ -2,16 +2,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
+import socketIOClient from "socket.io-client";
+
 import Layout from './components/Layout';
 import { STORIES_STORE_NAME } from './db/db';
 import './index.css';
-import {
-  homePageButton,
-} from './styles/buttonStyles';
 import Banner from './components/Banner';
 import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
+
+const socketIOEndpoint = 'https://localhost:3001';
 
 class App extends React.Component {
   constructor() {
@@ -53,6 +54,11 @@ class App extends React.Component {
     });
     await this.getEvents();
     await this.getStories();
+    // Socket IO
+    const socket = socketIOClient(socketIOEndpoint, { reconnection: true, secure: true });
+    socket.on('connect', () => {
+      socket.emit('connected', this.state.username);
+    });
   }
 
   getStories = async () => {
