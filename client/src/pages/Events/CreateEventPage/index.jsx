@@ -27,10 +27,12 @@ class CreateEventPage extends Component {
 
     this.state = {
       eventID: '',
-      event_name: '',
+      name: '',
       information: '',
-      date_time: '',
+      start_date: '',
+      end_date: '',
       location: [],
+      city,
       messageFromServer: '',
       showError: false,
       createEventError: false,
@@ -51,6 +53,12 @@ class CreateEventPage extends Component {
     });
   };
 
+  handleCityChange = (data) => {
+    this.setState({
+      city: data,
+    });
+  };
+
   createEvent = (event) => {
     const token = localStorage.getItem('JWT');
     if (token === null) {
@@ -61,12 +69,14 @@ class CreateEventPage extends Component {
     }
     event.preventDefault();
     const {
-      event_name,
+      name,
       information,
-      date_time,
+      start_date,
+      end_date,
       location,
+      city,
     } = this.state;
-    if (event_name === '' || date_time === '' || location === '' || information === '') {
+    if (event_name === '' || information === ''||start_date === '' || end_date === '' || location === '' || city === '') {
       this.setState({
         showError: true,
         createEventError: true,
@@ -76,10 +86,12 @@ class CreateEventPage extends Component {
     axios.post(
       '/api/events/createEvent',
       {
-        event_name,
+        name,
         information,
-        date_time,
+        start_date,
+        end_date,
         location,
+        city,
       },
       {
         headers: {
@@ -149,8 +161,10 @@ class CreateEventPage extends Component {
       eventID,
       event_name,
       information,
+      start_date,
+      end_date,
       location,
-      date_time,
+      city,
       messageFromServer,
       showError,
       createEventError,
@@ -184,10 +198,21 @@ class CreateEventPage extends Component {
               <TextField
                 style={inputStyle}
                 id="date_time"
-                label="Date and Time of Event"
+                label="Date and Time of Event Start"
                 type="datetime-local"
                 onChange={this.handleChange('date_time')}
-                value={date_time}
+                value={start_date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+               <TextField
+                style={inputStyle}
+                id="date_time"
+                label="Date and Time of Event End"
+                type="datetime-local"
+                onChange={this.handleChange('date_time')}
+                value={end_date}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -207,6 +232,7 @@ class CreateEventPage extends Component {
             </form>
             <GoogleMap
               handleLocationChange={this.handleLocationChange}
+              handleCityChange={this.handleCityChange}
             />
           </div>
         </Layout>

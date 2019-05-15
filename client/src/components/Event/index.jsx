@@ -13,10 +13,12 @@ import './index.css';
 const Event = (props) => {
   const {
     _id,
-    event_name,
+    name,
     information,
-    date_time,
+    start_date,
     location,
+    end_date,
+    city,
     selected,
   } = props;
 
@@ -29,8 +31,10 @@ const Event = (props) => {
         {event_name}
       </a>
       <p>{information}</p>
-      <p>{location}</p>
-      <p>{date_time}</p>
+      <p>{city}</p>
+      <p>{start_date}</p>
+      <p>{end_date}</p>
+
       {selected && (
         <p>
           Selected

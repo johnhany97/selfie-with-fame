@@ -126,13 +126,25 @@ class GoogleMap extends Component {
   handleMarkerDragEnd(props, marker, coord) {
     const latitude = coord.latLng.lat();
     const longitude = coord.latLng.lng();
+
+    let addressObject = marker.getPlace();
+    let address = addressObject.address_components;
+
+
+
     this.setState({
       selectedPlace: [latitude, longitude],
       activeMarker: marker,
       showingInfoWindow: true,
+      city: address[0].long_name,
     });
+
+    console.log("the city is: " + this.state.city);
     const { handleLocationChange } = this.props;
+    const { handleCityChange } = this.props;
+
     handleLocationChange(this.state.selectedPlace);
+    handleCityChange(this.state.city);
   }
 
   getEvents = async () => {
@@ -302,6 +314,7 @@ GoogleMap.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       handleLocationChange: PropTypes.func.isRequired,
+      handleCityChange: PropTypes.func.isRequired,
     }),
   }),
 };

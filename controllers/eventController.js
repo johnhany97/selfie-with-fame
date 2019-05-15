@@ -14,9 +14,10 @@ module.exports.getEvents = (req, res, next) => {
 
 module.exports.createEvent = (req, res, next) => {
   const event = new Event({
-    event_name: req.body.event_name,
+    name: req.body.event_name,
     information: req.body.information,
-    date_time: req.body.date_time,
+    start_date: req.body.date_time,
+    end_date: req.body.date_time,
     location: req.body.location
   });
 
@@ -99,10 +100,11 @@ module.exports.updateEvent = (req, res, next) => {
   }).then((eventInfo) => {
     if (eventInfo != null) {
       eventInfo.update({
-        event_name: req.body.event_name,
+        name: req.body.event_name,
         information: req.body.information,
-        location: req.body.location,
-        date_time: req.body.date_time,
+        start_date: req.body.date_time,
+        end_date: req.body.date_time,
+        location: req.body.location
       }).then(() => {
         res.status(200).send({
           message: 'event updated'
