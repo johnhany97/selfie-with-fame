@@ -98,17 +98,20 @@ module.exports.getStoriesTimeline = async (req, res) => {
 }
 
 module.exports.createStory = (req, res) => {
-  const pictureParam = req.body.picture;
-  let pictureBlob;
-  let pictureBuffer;
-  if (pictureParam != null) {
-    pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
-    pictureBuffer = new Buffer(pictureBlob, 'base64');
+  const picturesParam = req.body.pictures;
+
+  let pictureBuffers = [];
+
+  if (picturesParam) {
+    for (let i = 0; i < picturesParam.length; i++) {
+      let pictureBlob = picturesParam[i].replace(/^data:image\/\w+;base64,/, '');
+      pictureBuffers.push(new Buffer(pictureBlob, 'base64'));
+    }
   }
 
   const story = new Story({
     text: sanitizeHtml(req.body.text),
-    picture: pictureBuffer,
+    pictures: pictureBuffers,
     event: req.body.event_id,
     postedBy: req.user._id
   });

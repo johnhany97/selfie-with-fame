@@ -7,9 +7,9 @@ let storySchema = new Schema({
   text: {
     type: String
   },
-  picture: {
+  pictures: [{
     type: Buffer
-  },
+  }],
   event: {
     type: Schema.Types.ObjectId,
     ref: 'Event',

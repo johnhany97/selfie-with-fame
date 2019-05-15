@@ -1,0 +1,11 @@
+.camera-container{
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.thumbnails-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0;
+}
