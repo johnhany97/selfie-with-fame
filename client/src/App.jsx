@@ -60,6 +60,7 @@ class App extends React.Component {
       socket.emit('connected', this.state.username);
     });
     socket.on('new_story', () => {
+      // TODO: Snackbar? Update state? Top bar?
       console.log('New stories, please refresh');
     });
   }

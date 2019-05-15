@@ -71,12 +71,26 @@ module.exports.getStoriesByEvent = (req, res) => {
 }
 
 module.exports.getStoriesTimeline = async (req, res) => {
-  NewsFeed.find({ owner: req.user._id })
+  const size = req.query.size || 10;
+  const page = req.query.page || 1;
+
+  const pagination = {
+    limit: size * 1,
+    skip: (page - 1) * size
+  };
+
+  const query = {
+    owner: req.user._id,
+  }
+
+  NewsFeed.find(query, {}, pagination)
     .populate('story')
     .then((feed) => {
       let stories = feed.map((entry) => {
         return entry.story;
       })
+      // sort
+      stories = stories.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
       res.status(200).send({stories});
     });
 }
