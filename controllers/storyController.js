@@ -1,5 +1,6 @@
 const passport = require('passport');
 const validator = require('validator');
+const sanitizeHtml = require('sanitize-html');
 
 const Story = require('../models/story');
 const Connection = require('../models/connection');
@@ -105,7 +106,7 @@ module.exports.createStory = (req, res) => {
   }
 
   const story = new Story({
-    text: req.body.text,
+    text: sanitizeHtml(req.body.text),
     picture: pictureBuffer,
     event: req.body.event_id,
     postedBy: req.user._id
@@ -173,7 +174,7 @@ module.exports.deleteStory = async (req, res) => {
   Story.findById(id)
     .then((story) => {
       if (!story) {
-        return res.status(404).send();
+        return res.status(404).send('Story not found');
       }
       if (!story.postedBy.equals(req.user._id)) {
 
@@ -208,7 +209,7 @@ module.exports.comment = async (req, res) => {
     return res.status(400).send('Invalid ID');
   }
 
-  const text = req.body.text;
+  const text = sanitizeHtml(req.body.text);
   const postedBy = req.user._id;
 
   if (!text || text === '') {
