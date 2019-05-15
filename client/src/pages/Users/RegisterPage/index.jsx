@@ -22,6 +22,7 @@ class RegisterPage extends Component {
       email: '',
       username: '',
       password: '',
+      bio: '',
       messageFromServer: '',
       showError: false,
       registerError: false,
@@ -43,6 +44,7 @@ class RegisterPage extends Component {
       username,
       password,
       email,
+      bio,
     } = this.state;
     if (username === '' || password === '' || email === '' || first_name === '' || last_name === '') {
       this.setState({
@@ -58,6 +60,7 @@ class RegisterPage extends Component {
       email,
       username,
       password,
+      bio,
     }).then((res) => {
       this.setState({
         messageFromServer: res.data.message,
@@ -84,6 +87,7 @@ class RegisterPage extends Component {
       email,
       username,
       password,
+      bio,
       messageFromServer,
       showError,
       loginError,
@@ -131,6 +135,14 @@ class RegisterPage extends Component {
                       value={username}
                       onChange={this.handleChange('username')}
                       placeholder="Username"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="bio"
+                      label="bio"
+                      value={bio}
+                      onChange={this.handleChange('bio')}
+                      placeholder="Biography"
                     />
                     <TextField
                       style={inputStyle}

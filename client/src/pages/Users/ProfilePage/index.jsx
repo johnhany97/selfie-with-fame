@@ -19,6 +19,7 @@ class ProfilePage extends Component {
       // last_name: '',
       // email: '',
       username: '',
+      bio: '',
       isLoading: true,
       deleted: false,
       error: false,
@@ -32,7 +33,7 @@ class ProfilePage extends Component {
     if (token === null) {
       // eslint-disable-next-line react/prop-types
       const { history } = this.props;
-      history.replaceState(null, '/login');
+      history.replace('/login');
     }
   }
 
@@ -54,11 +55,13 @@ class ProfilePage extends Component {
         // last_name,
         // email,
         username,
+        bio,
       } = data;
       this.setState({
         // first_name,
         // last_name,
         // email,
+        bio,
         username,
         isLoading: false,
         error: false,
@@ -100,10 +103,7 @@ class ProfilePage extends Component {
       return;
     }
     event.preventDefault();
-    axios.delete('/api/users/delete', {
-      params: {
-        username: this.props.match.params.username,
-      },
+    axios.delete(`/api/users/delete/${this.props.match.params.username}`, {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -136,6 +136,7 @@ class ProfilePage extends Component {
       isLoading,
       deleted,
       stories,
+      bio,
     } = this.state;
 
     if (error) {
@@ -173,10 +174,7 @@ class ProfilePage extends Component {
               <h4>{username}</h4>
               <h5>BIO</h5>
               <p>
-                Morbi ornare risus interdum nibh vestibulum placerat.
-                Curabitur auctor sem eget volutpat bibendum.
-                Fusce convallis ipsum sit amet tellus bibendum varius.
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                {bio}
               </p>
               <a href={`/updateUser/${username}`} className="update-btn">Update</a>
               <button type="button" onClick={this.deleteUser} className="delete-btn">Delete</button>
