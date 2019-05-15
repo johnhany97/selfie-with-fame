@@ -83,7 +83,6 @@ class CurrentLocation extends React.Component {
       this.map = new maps.Map(node, mapConfig);
     }
   }
-
   recenterMap() {
     const { currentLocation } = this.state;
     const [lat, lng] = currentLocation;
@@ -97,6 +96,13 @@ class CurrentLocation extends React.Component {
     }
   }
 
+
+  changeCurrentLoc(new_center) {
+    this.setState({
+      currentLocation: new_center,
+    });
+    this.recenterMap();
+  }
   renderChildren() {
     const {
       children,

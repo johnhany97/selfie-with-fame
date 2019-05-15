@@ -32,6 +32,7 @@ class GoogleMap extends Component {
     super(props);
     this.autocomplete = null;
     this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
+    this.mapElement = React.createRef();
     /*global google*/
     this.state = {
       showingInfoWindow: false,
@@ -45,8 +46,7 @@ class GoogleMap extends Component {
       selected_event: [],
     };
 
-    // Bind Functions
-   // this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
+   
 
 
   }
@@ -61,8 +61,8 @@ class GoogleMap extends Component {
     this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options );
     // Fire Event when a suggested name is selected
    this.autocomplete.addListener('place_changed', this.handlePlaceSelect); 
-    // this.state.autocomplete.setFields(
-    //   ['address_components', 'geometry', 'icon', 'name']);
+  //  this.autocomplete.setFields(
+  //     ['address_components', 'geometry']);
 
   }
 
@@ -71,8 +71,10 @@ class GoogleMap extends Component {
 
     // Extract City From Address Object
     let addressObject = this.autocomplete.getPlace();
-    console.log("the addRESS OBJECT IS!!!!!!" + addressObject.address_components);
     let address = addressObject.address_components;
+    console.log("the address object: " + addressObject.geometry.location.lat())
+
+    console.log(this.autocomplete)
 
     // Check if address is valid
     if (address) {
@@ -83,6 +85,8 @@ class GoogleMap extends Component {
           query: addressObject.formatted_address,
         }
       );
+
+      this.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
       console.log("the city and query: " + this.state.city + '' + this.state.query)
     }
     else {
@@ -215,9 +219,7 @@ class GoogleMap extends Component {
       address_search,
       showError
     } = this.state;
-    console.log("displauyed events: ");
-    console.log(displayedEvents);
-    console.log("marker clicked: ", this.state.marker_clicked);
+   
     return (
       <div>
         <div className="container" style={mTop}>
@@ -247,6 +249,7 @@ class GoogleMap extends Component {
         </div>
 
         <CurrentLocation
+          ref={this.mapElement}
           centerAroundCurrentLocation
           google={this.props.google}
           handleLocationChange={this.props.handleLocationChange}
@@ -289,9 +292,6 @@ class GoogleMap extends Component {
             </div>
           </InfoWindow>
         </CurrentLocation>
-
-
-
        
       </div>
     );
