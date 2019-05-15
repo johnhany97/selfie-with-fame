@@ -15,7 +15,7 @@ class CreateStoryPage extends Component {
     this.state = {
       step: 1,
       text: '',
-      picture: null,
+      pictures: [],
       event: null,
       isLoading: false,
       error: false,
@@ -23,15 +23,26 @@ class CreateStoryPage extends Component {
     };
   }
 
-  handleChange = name => (event) => {
-    this.setState({
-      [name]: event.target.value,
+  onAddPicture = (data) => {
+    // not allowed AND not working
+    this.setState(state => {
+      const pictures = state.pictures.concat(data);
+      return {
+        pictures,
+      };
     });
   };
 
-  handlePhotoChange = (data) => {
+  removePicture = (index) => {
+    if (index !== -1) {
+      this.state.pictures.splice(index, 1);
+      this.setState({pictures: this.state.pictures});
+    }
+  };
+
+  handleChange = name => (event) => {
     this.setState({
-      picture: data,
+      [name]: event.target.value,
     });
   };
 
@@ -56,7 +67,7 @@ class CreateStoryPage extends Component {
     e.preventDefault();
     const {
       text,
-      picture,
+      pictures,
       event,
     } = this.state;
 
@@ -68,7 +79,7 @@ class CreateStoryPage extends Component {
 
     axios.put('/api/stories', {
       text,
-      picture,
+      pictures,
       event_id: _id,
     }, { headers: { Authorization: `JWT ${token}` } })
       .then(() => {
@@ -107,13 +118,13 @@ class CreateStoryPage extends Component {
     const {
       step,
       text,
-      picture,
+      pictures,
       isLoading,
       error,
       errorMessage,
       event,
     } = this.state;
-    const values = { text, picture, event };
+    const values = { text, pictures, event };
 
     if (isLoading) {
       return (
@@ -139,6 +150,9 @@ class CreateStoryPage extends Component {
               previousStep={this.previousStep}
               handlePhotoChange={this.handlePhotoChange}
               step={step}
+              values={values}
+              onAddPicture={this.onAddPicture}
+              removePicture={this.removePicture}
             />
           </Layout>
         );

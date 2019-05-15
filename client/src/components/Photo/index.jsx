@@ -5,13 +5,14 @@ import {
   noWidthBtn,
 } from '../../styles/formStyles';
 import './index.css';
+import crossBtn from './../../images/cross.png';
 
 const Photo = (props) => {
-  const { handleSaveClick } = props;
+  const { handleSaveClick, data, index, removePicture } = props;
   return (
-    <div>
-      <img id="photo" className="create-story-img"/>
-      <a id="saveButton" onClick={handleSaveClick} style={noWidthBtn}>Save Photo</a>
+    <div className="thumbnail-container">
+      <img src={data} id="photo" className="create-story-img"/>
+      <img src={crossBtn} alt="Remove Picture" className="remove-picture-btn" onClick={() => removePicture(index)}/>
     </div>
   );
 }

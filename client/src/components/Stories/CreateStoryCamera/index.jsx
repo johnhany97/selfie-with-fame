@@ -16,7 +16,7 @@ class CreateStoryCamera extends Component {
     nextStep();
   }
   render() {
-    const { handlePhotoChange, step} = this.props;
+    const { handlePhotoChange, step, onAddPicture, removePicture, values} = this.props;
     return (
       <form onSubmit={this.saveAndContinue} className="create-story-form">
         <div className="form-navigation">
@@ -25,7 +25,7 @@ class CreateStoryCamera extends Component {
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>
         </div>
-        <Capture handlePhotoChange={handlePhotoChange} />
+        <Capture handlePhotoChange={handlePhotoChange} onAddPicture={onAddPicture} removePicture={removePicture} values={values} />
       </form>
     );
   }
@@ -33,7 +33,6 @@ class CreateStoryCamera extends Component {
 
 CreateStoryCamera.propTypes = {
   nextStep: PropTypes.func.isRequired,
-  handlePhotoChange: PropTypes.func.isRequired,
 };
 
 export default CreateStoryCamera;
