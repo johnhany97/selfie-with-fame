@@ -5,7 +5,7 @@ import axios from 'axios';
 import socketIOClient from "socket.io-client";
 
 import Layout from './components/Layout';
-import { STORIES_STORE_NAME } from './db/db';
+import DB, { STORIES_STORE_NAME, EVENTS_STORE_NAME } from './db/db';
 import './index.css';
 import Banner from './components/Banner';
 import Features from './components/Features';
@@ -76,6 +76,8 @@ class App extends React.Component {
         this.setState({
           stories: res.data.stories,
         });
+        // Store locally in IndexedDB
+        res.data.stories.forEach((story) => DB.set(STORIES_STORE_NAME, story));
       })
       .catch(() => {
         this.setState({
@@ -95,6 +97,8 @@ class App extends React.Component {
         this.setState({
           events: res.data.events,
         });
+        // Store locally in IndexedDB
+        res.data.events.forEach((event) => DB.set(EVENTS_STORE_NAME, event));
       })
       .catch(() => {
         this.setState({
