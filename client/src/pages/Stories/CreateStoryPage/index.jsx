@@ -81,7 +81,7 @@ class CreateStoryPage extends Component {
       text,
       pictures,
       event_id: _id,
-    }, { headers: { Authorization: `JWT ${token}` } })
+    }, { headers: { Authorization: `JWT ${token}`} })
       .then(() => {
         // TODO: Snackbar of success
         this.setState({

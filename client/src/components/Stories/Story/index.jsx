@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import './index.css';
 import userProfilePlaceholder from '../../../images/event-img-placeholder.jpg';
 import heartOutline from './heart-outline.png';
+import StoryStepper from '../../StoryStepper';
 
 class Story extends React.Component {
   constructor(props) {
@@ -23,19 +24,19 @@ class Story extends React.Component {
   render() {
     const {
       text,
-      picture,
+      pictures,
       createdAt,
       updatedAt,
       postedBy,
     } = this.props;
 
-    let picBuffer;
-    if (picture) {
-      picBuffer = new Buffer(picture).toString('base64');
-      // const uint8array = new TextEncoder("utf-8").encode(picture);
-      // picBuffer = new TextDecoder("utf-8").decode(uint8array);
-      // picBuffer = btoa(String.fromCharCode(...new Uint8Array(picture.data)));
+    let picBuffers = [];
+    if (pictures) {
+      for(let i = 0; i < pictures.length; i++){
+        picBuffers.push(new Buffer(pictures[i]).toString('base64'));
+      }
     }
+    console.log(picBuffers);
 
     return (
       <div className="story-container">
@@ -44,11 +45,7 @@ class Story extends React.Component {
           <h4 className="story-username">{postedBy.username}</h4>
           <p className="story-date">{this.convertDateFormat(createdAt)}</p>
         </div>
-        {picture && (
-          <React.Fragment>
-            <img className="story-img" src={`data:image/jpeg;base64,${picBuffer}`} alt="Story pic" />
-          </React.Fragment>
-        )}
+        {picBuffers && (<StoryStepper pictures={picBuffers} />)}
         <div className="story-btns">
           <img className="heart-story-btn" src={heartOutline} alt="Heart Story button"/>
           <p className="story-likes">13</p>
@@ -62,6 +59,13 @@ class Story extends React.Component {
     );
   }
 };
+/**
+ * {picture && (
+          <React.Fragment>
+            <img className="story-img" src={`data:image/jpeg;base64,${picBuffer}`} alt="Story pic" />
+          </React.Fragment>
+        )}
+ */
 
 Story.propTypes = {
   text: PropTypes.string,
