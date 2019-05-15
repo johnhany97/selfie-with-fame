@@ -7,6 +7,7 @@ import rightArrow from './../../../images/right-arrow.png';
 import {
   crudButton,
 } from '../../../styles/formStyles';
+import FormProgress from '../../FormProgress';
 class CreateStoryCamera extends Component {
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -15,12 +16,13 @@ class CreateStoryCamera extends Component {
   }
 
   render() {
-    const { handlePhotoChange } = this.props;
+    const { handlePhotoChange, step} = this.props;
     return (
       <form onSubmit={this.saveAndContinue} className="create-story-form">
-        <div class="form-navigation">
-          <button type="submit" className="navigation-btn">Next
-          <img className="navigation-arrow" src={rightArrow} alt="Next" />
+        <div className="form-navigation">
+          <FormProgress size={4} step={step} />
+          <button type="submit" className="navigation-btn-next">Next
+            <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>
         </div>
         <Capture handlePhotoChange={handlePhotoChange} />

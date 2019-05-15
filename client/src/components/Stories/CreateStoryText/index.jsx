@@ -9,12 +9,14 @@ import {
 import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
 import rightArrow from './../../../images/right-arrow.png';
+import FormProgress from '../../FormProgress';
 
 const CreateStoryText = (props) => {
   const {
     handleChange,
     nextStep,
     previousStep,
+    step,
   } = props;
   return (
     <form className="story-text-form">
@@ -22,7 +24,8 @@ const CreateStoryText = (props) => {
         <button onClick={previousStep} type="button" className="navigation-btn-back">
           <img className="navigation-arrow" src={leftArrow} alt="Back" />
           Back
-          </button>
+        </button>
+        <FormProgress size={4} step={step} />
         <button onClick={nextStep} className="navigation-btn-next">Next
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
         </button>

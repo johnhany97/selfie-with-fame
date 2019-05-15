@@ -8,12 +8,14 @@ import {
 } from '../../../styles/formStyles.js';
 import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
+import FormProgress from '../../FormProgress';
 
 const Confirmation = (props) => {
   const {
     values,
     createStory,
     previousStep,
+    step,
   } = props;
 
   return (
@@ -24,6 +26,7 @@ const Confirmation = (props) => {
             <img className="navigation-arrow" src={leftArrow} alt="Back" />
             Back
           </button>
+          <FormProgress size={4} step={step} />
         </div>
         {values && values.picture && <img id="photo" src={values.picture} alt="Story taken" />}
         {values && values.event && <Event {...values.event} />}

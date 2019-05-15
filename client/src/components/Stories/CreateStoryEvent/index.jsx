@@ -11,6 +11,7 @@ import {
 import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
 import rightArrow from './../../../images/right-arrow.png';
+import FormProgress from '../../FormProgress';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
@@ -55,7 +56,7 @@ class CreateStoryEvent extends Component {
 
   render() {
     const { events } = this.state;
-    const { values, handleEventChange, nextStep, previousStep } = this.props;
+    const { values, handleEventChange, nextStep, previousStep, step } = this.props;
     return (
       <div className="select-event-container">
         <div class="form-navigation">
@@ -63,6 +64,7 @@ class CreateStoryEvent extends Component {
             <img className="navigation-arrow" src={leftArrow} alt="Back" />
             Back
           </button>
+          <FormProgress size={4} step={step} />
           <button onClick={nextStep} disabled={values.event === null} className="navigation-btn-next">Next
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>

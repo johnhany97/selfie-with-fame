@@ -19,15 +19,17 @@
 .navigation-btn-next{
     background: transparent;
     border: 0;
+    margin: 0;
     padding: 0.25rem 0.5rem;
-    margin-left: auto;
+    float: right;
 }
 
 .navigation-btn-back{
     background: transparent;
     border: 0;
     padding: 0.25rem 0.5rem;
-    margin-right: auto;
+    margin: 0;
+    float: left;
 }
 
 .navigation-arrow{

@@ -138,6 +138,7 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handlePhotoChange={this.handlePhotoChange}
+              step={step}
             />
           </Layout>
         );
@@ -149,6 +150,7 @@ class CreateStoryPage extends Component {
               previousStep={this.previousStep}
               handleEventChange={this.handleEventChange}
               values={values}
+              step={step}
             />
           </Layout>
         );
@@ -159,6 +161,7 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handleChange={this.handleChange}
+              step={step}
             />
           </Layout>
         );
@@ -170,6 +173,7 @@ class CreateStoryPage extends Component {
               previousStep={this.previousStep}
               handleChange={this.handleChange}
               values={values}
+              step={step}
             />
           </Layout>
         );
