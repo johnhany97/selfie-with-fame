@@ -54,7 +54,7 @@ class GoogleMap extends Component {
   }
 
   async componentDidMount() {
-    await this.getEvents();
+    await this.getEventsLocation();
 
     var options= { types: ['(cities)'] };
 
@@ -213,10 +213,17 @@ class GoogleMap extends Component {
       });
       return;
     }
-    event.preventDefault();
+    const {
+      start_date,
+      end_date,
+      location,
+      city,
+    } = this.state;
+    console.log("get events by location. the city is " + city)
 
-    axios.get('/api/events/getEvents', {
+    axios.get('/api/events/getEventsByLocation', {
       params: {
+        city
       },
       headers: {
         Authorization: `JWT ${token}`,
@@ -310,8 +317,6 @@ class GoogleMap extends Component {
             onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
           />
          
-
-
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}

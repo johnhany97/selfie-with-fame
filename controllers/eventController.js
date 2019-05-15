@@ -72,24 +72,18 @@ module.exports.findEvent = (req, res, next) => {
 
 
 module.exports.getEventsByLocation = (req, res) => {
-  const size = req.query.size || 10;
-  const page = req.query.page || 1;
-
-  const pagination = {
-    limit: size * 1,
-    skip: (page - 1) * size
-  };
 
   const query = {
-    event: req.params.id,
+    location: {
+      city: req.params.city,
+    } 
   }
 
-  Story.find(query, {}, pagination)
+  Event.find(query, {})
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name')
-    .then((stories) => {
+    .then((events) => {
       res.status(200).send({
-        stories
+        events
       });
     });
 }
