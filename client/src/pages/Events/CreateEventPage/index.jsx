@@ -32,7 +32,7 @@ class CreateEventPage extends Component {
       start_date: '',
       end_date: '',
       location: [],
-      city,
+      city: '',
       messageFromServer: '',
       showError: false,
       createEventError: false,
@@ -51,12 +51,16 @@ class CreateEventPage extends Component {
     this.setState({
       location: data,
     });
+    console.log("handle location change" + this.state.location)
+
   };
 
   handleCityChange = (data) => {
     this.setState({
       city: data,
     });
+    console.log("handle city change" + this.state.city)
+
   };
 
   createEvent = (event) => {
@@ -76,11 +80,14 @@ class CreateEventPage extends Component {
       location,
       city,
     } = this.state;
-    if (event_name === '' || information === ''||start_date === '' || end_date === '' || location === '' || city === '') {
+    if (name === '' || information === ''||start_date === '' || end_date === '' || location === '' || city === '') {
       this.setState({
         showError: true,
         createEventError: true,
       });
+   
+
+
       return;
     }
     axios.post(
@@ -159,7 +166,7 @@ class CreateEventPage extends Component {
   render() {
     const {
       eventID,
-      event_name,
+      name,
       information,
       start_date,
       end_date,
@@ -169,7 +176,6 @@ class CreateEventPage extends Component {
       showError,
       createEventError,
     } = this.state;
-    console.log(`the type of location is ${typeof (location)} ${location[0]} ${location[1]}`);
 
     if (messageFromServer === '') {
       return (
@@ -181,10 +187,10 @@ class CreateEventPage extends Component {
             <form onSubmit={this.createEvent} className="panel-center">
               <TextField
                 style={inputStyle}
-                id="event_name"
+                id="name"
                 label="Event Name"
-                value={event_name}
-                onChange={this.handleChange('event_name')}
+                value={name}
+                onChange={this.handleChange('name')}
                 placeholder="Event Name"
               />
               <TextField
@@ -197,10 +203,10 @@ class CreateEventPage extends Component {
               />
               <TextField
                 style={inputStyle}
-                id="date_time"
+                id="start_date"
                 label="Date and Time of Event Start"
                 type="datetime-local"
-                onChange={this.handleChange('date_time')}
+                onChange={this.handleChange('start_date')}
                 value={start_date}
                 InputLabelProps={{
                   shrink: true,
@@ -208,10 +214,10 @@ class CreateEventPage extends Component {
               />
                <TextField
                 style={inputStyle}
-                id="date_time"
+                id="end_date"
                 label="Date and Time of Event End"
                 type="datetime-local"
-                onChange={this.handleChange('date_time')}
+                onChange={this.handleChange('end_date')}
                 value={end_date}
                 InputLabelProps={{
                   shrink: true,

@@ -18,7 +18,6 @@ const Event = (props) => {
     start_date,
     location,
     end_date,
-    city,
     selected,
   } = props;
 
@@ -28,10 +27,10 @@ const Event = (props) => {
         href={`/eventPage/${_id}`}
         className="event-title"
       >
-        {event_name}
+        {name}
       </a>
       <p>{information}</p>
-      <p>{city}</p>
+      <p>{location['city']}</p>
       <p>{start_date}</p>
       <p>{end_date}</p>
 
@@ -49,9 +48,10 @@ const Event = (props) => {
 
 Event.propTypes = {
   _id: PropTypes.string,
-  event_name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   information: PropTypes.string.isRequired,
-  date_time: PropTypes.string.isRequired,
+  start_date: PropTypes.string.isRequired,
+  end_date: PropTypes.string.isRequired,
   location: PropTypes.object,
   selected: PropTypes.bool,
 };

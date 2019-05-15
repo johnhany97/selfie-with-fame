@@ -14,11 +14,11 @@ module.exports.getEvents = (req, res, next) => {
 
 module.exports.createEvent = (req, res, next) => {
   const event = new Event({
-    name: req.body.event_name,
+    name: req.body.name,
     information: req.body.information,
-    start_date: req.body.date_time,
-    end_date: req.body.date_time,
-    location: req.body.location
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    location: {"coordinates": req.body.location, "city": req.body.city}
   });
 
   event.save()

@@ -33,6 +33,8 @@ class GoogleMap extends Component {
     this.autocomplete = null;
     this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
     this.mapElement = React.createRef();
+    this.placeDetails = null
+    this.geocoder = null
     /*global google*/
     this.state = {
       showingInfoWindow: false,
@@ -61,8 +63,12 @@ class GoogleMap extends Component {
     this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options );
     // Fire Event when a suggested name is selected
    this.autocomplete.addListener('place_changed', this.handlePlaceSelect); 
+
+   this.placeDetails = new google.maps.places.PlacesService(this.props.google);
   //  this.autocomplete.setFields(
   //     ['address_components', 'geometry']);
+   this.geocoder =  new google.maps.Geocoder;
+
 
   }
 
@@ -72,9 +78,7 @@ class GoogleMap extends Component {
     // Extract City From Address Object
     let addressObject = this.autocomplete.getPlace();
     let address = addressObject.address_components;
-    console.log("the address object: " + addressObject.geometry.location.lat())
 
-    console.log(this.autocomplete)
 
     // Check if address is valid
     if (address) {
@@ -83,20 +87,27 @@ class GoogleMap extends Component {
         {
           city: address[0].long_name,
           query: addressObject.formatted_address,
+          selectedPlace: [addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]
         }
       );
 
       this.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
-      console.log("the city and query: " + this.state.city + '' + this.state.query)
+      const { handleLocationChange } = this.props;
+      const { handleCityChange } = this.props;
+      handleLocationChange(this.state.selectedPlace);
+      handleCityChange(this.state.city)
+
+
+
     }
     else {
       console.log("not an address")
     }
   }
 
+  
 
   onMarkerClick = (props, marker, e) => this.setState({
-    selectedPlace: props,
     activeMarker: marker,
     showingInfoWindow: true,
     marker_clicked: "my marker",
@@ -112,7 +123,11 @@ class GoogleMap extends Component {
 
   });
 
-  
+  handleChange = name => (event) => {
+    this.setState({
+      [name]: event.target.value,
+    });
+  };
 
   onClose = (props) => {
     if (this.state.showingInfoWindow) {
@@ -126,25 +141,37 @@ class GoogleMap extends Component {
   handleMarkerDragEnd(props, marker, coord) {
     const latitude = coord.latLng.lat();
     const longitude = coord.latLng.lng();
+    
+    //let place = this.placeDetails.getDetails(coord)
+     /*global google*/
 
-    let addressObject = marker.getPlace();
-    let address = addressObject.address_components;
+     var city_state = this.state.city
+
+     this.geocoder.geocode({'location': {"lat": latitude, "lng":longitude}}, (results, status) => {
+       if (status === 'OK') {
+         if (results[0]) {
+           results[0].address_components.map(i => {
+             if (i.types[0] == "postal_town" ||i.types[0] =="locality" )  {
+               city_state = i.long_name
+             }
+           });
+         } 
+        }
+       
+        this.setState({
+          selectedPlace: [latitude, longitude],
+          activeMarker: marker,
+          showingInfoWindow: true,
+          city: city_state,
+        });
+
+        const { handleLocationChange } = this.props;
+        const { handleCityChange } = this.props;
 
 
-
-    this.setState({
-      selectedPlace: [latitude, longitude],
-      activeMarker: marker,
-      showingInfoWindow: true,
-      city: address[0].long_name,
-    });
-
-    console.log("the city is: " + this.state.city);
-    const { handleLocationChange } = this.props;
-    const { handleCityChange } = this.props;
-
-    handleLocationChange(this.state.selectedPlace);
-    handleCityChange(this.state.city);
+        handleLocationChange(this.state.selectedPlace);
+        handleCityChange(this.state.city);        
+     });
   }
 
   getEvents = async () => {
@@ -214,13 +241,12 @@ class GoogleMap extends Component {
 
   arrayTodict(array) {
     var dictionary_loc = {lat: array[0], lng: array[1]};
-    console.log("location dictionaryised is " + dictionary_loc['lat'] + ", " +  dictionary_loc['lng'])
     return dictionary_loc;
   }
 
-  handleChange = name => (event) => {
+  handleSelectedLocationChange = (data) => {
     this.setState({
-      [name]: event.target.value,
+      selectedPlace: data,
     });
   };
 
@@ -265,10 +291,16 @@ class GoogleMap extends Component {
           centerAroundCurrentLocation
           google={this.props.google}
           handleLocationChange={this.props.handleLocationChange}
+          handleCityChange={this.props.handleCityChange}
+          handleSelectedLocationChange={this.handleSelectedLocationChange}
           markers = {displayedEvents}
         >
           <Marker
             onClick={this.onMarkerClick}
+            position={{
+              lat: this.state.selectedPlace[0], 
+              lng: this.state.selectedPlace[1]
+            }}
             name="Selected Location"
             info="Where the new event will be."
             icon= {
@@ -283,9 +315,9 @@ class GoogleMap extends Component {
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
-              name={event.event_name}
+              name={event.name}
               info={event.information}
-              position= {this.arrayTodict(event.location)}
+              position= {this.arrayTodict(event.location["coordinates"])}
               
 
             />

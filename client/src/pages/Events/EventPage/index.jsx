@@ -24,10 +24,11 @@ class EventPage extends Component {
     super();
 
     this.state = {
-      event_name: '',
+      name: '',
       information: '',
-      date_time: '',
-      location: '',
+      start_date: '',
+      end_date: '',
+      location: {},
       isLoading: true,
       deleted: false,
       error: false,
@@ -61,16 +62,18 @@ class EventPage extends Component {
     }).then((res) => {
       const { data } = res;
       const {
-        event_name,
+        name,
         information,
+        start_date,
+        end_date,
         location,
-        date_time,
       } = data;
       this.setState({
-        event_name,
+        name,
         information,
+        start_date,
+        end_date,
         location,
-        date_time,
         isLoading: false,
         error: false,
       });
@@ -135,10 +138,11 @@ class EventPage extends Component {
 
   render() {
     const {
-      event_name,
+      name,
       information,
+      start_date,
+      end_date,
       location,
-      date_time,
       error,
       isLoading,
       deleted,
@@ -173,10 +177,11 @@ class EventPage extends Component {
       <Layout title="Event page">
         <div className="container" style={mTop}>
           <div style={cardPanel}>
-            <h3>{event_name}</h3>
+            <h3>{name}</h3>
             <p>{information}</p>
-            <p>{location}</p>
-            <p>{date_time}</p>
+            <p>{location["city"]}</p>
+            <p>{start_date}</p>
+            <p>{end_date}</p>
             <div>
               <a href={`/updateEvent/${this.props.match.params._id}`} style={crudButton}>Update</a>
               <button

@@ -18,6 +18,8 @@ const mapStyles = {
 class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
+    this.geocoder = null
+
 
     const { initialCenter } = this.props;
     const {
@@ -38,10 +40,42 @@ class CurrentLocation extends React.Component {
           this.setState({
             currentLocation: [coords.latitude, coords.longitude],
           });
+          
+          /*global google*/
+
+          this.geocoder =  new google.maps.Geocoder;
+          var city_state = "Sheffield"
+          this.geocoder.geocode({'location': {"lat": coords.latitude, "lng":coords.longitude}}, function(results, status) {
+            if (status === 'OK') {
+              if (results[0]) {
+                results[0].address_components.map(i => {
+                //  console.log(i)
+                  if (i.types[0] == "postal_town" ||i.types[0] =="locality" )  {
+                    city_state = i.long_name
+                  }
+                });
+              } else {
+                window.alert('No results found');
+              }
+            } else {
+              window.alert('Geocoder failed due to: ' + status);
+            }
+          });
+          
+          const { handleCityChange } = this.props;
+          handleCityChange(city_state)
+
+
+
+
           const { handleLocationChange } = this.props;
           const { currentLocation } = this.state;
           const [lat, lng] = currentLocation;
           handleLocationChange([lat, lng]);
+          const { handleSelectedLocationChange } = this.props;
+          handleSelectedLocationChange( [lat, lng])
+
+
         });
       }
     }
@@ -145,6 +179,8 @@ CurrentLocation.propTypes = {
   children: PropTypes.any,
   zoom: PropTypes.number,
   handleLocationChange: PropTypes.func,
+  handleCityChange: PropTypes.func,
+  handleSelectedLocationChange: PropTypes.func,
   centerAroundCurrentLocation: PropTypes.bool,
   initialCenter: PropTypes.shape({
     lat: PropTypes.number,
