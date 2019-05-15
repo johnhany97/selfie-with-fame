@@ -1,5 +1,8 @@
 import React from 'react';
 import MobileStepper from '@material-ui/core/MobileStepper';
+import './index.css';
+import rightArrow from './../../images/right-arrow.png';
+import leftArrow from './../../images/left-arrow.png';
 
 class StoryStepper extends React.Component {
     constructor(props){
@@ -24,13 +27,17 @@ class StoryStepper extends React.Component {
 
     render() {
         const { pictures } = this.props;
+        if(pictures.length > 0 ){
+            console.log(pictures[0]);
+        }
         const { activeStep } = this.state;
         const maxSteps = pictures ? pictures.length : 0;
 
         return (
             <div className="story-stepper">
                 <img
-                    src={pictures[activeStep]}
+                    className="story-stepper-img"
+                    src={"data:image/png;base64," + pictures[activeStep]}
                     alt={pictures[activeStep]}
                 />
                 <MobileStepper
@@ -38,12 +45,14 @@ class StoryStepper extends React.Component {
                     position="static"
                     activeStep={activeStep}
                     nextButton={
-                        <button size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
+                        <button className="story-stepper-navigation" size="small" onClick={this.handleNext} disabled={activeStep === maxSteps - 1}>
                             Next
+                            <img className="stepper-arrow" src={rightArrow} alt="Next Image"/>
                         </button>
                     }
                     backButton={
-                        <button size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+                        <button className="story-stepper-navigation" size="small" onClick={this.handleBack} disabled={activeStep === 0}>
+                            <img className="stepper-arrow" src={leftArrow} alt="Previous Image"/>
                             Back
                         </button>
                     }

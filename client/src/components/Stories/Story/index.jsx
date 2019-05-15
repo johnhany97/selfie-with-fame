@@ -12,9 +12,9 @@ class Story extends React.Component {
     super(props);
   }
 
-  convertDateFormat(date){
+  convertDateFormat(date) {
     let createAtDate = new Date(date);
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var year = createAtDate.getFullYear();
     var month = months[createAtDate.getMonth()];
     var date = createAtDate.getDate();
@@ -32,40 +32,76 @@ class Story extends React.Component {
 
     let picBuffers = [];
     if (pictures) {
-      for(let i = 0; i < pictures.length; i++){
+      for (let i = 0; i < pictures.length; i++) {
         picBuffers.push(new Buffer(pictures[i]).toString('base64'));
       }
     }
-    console.log(picBuffers);
 
-    return (
-      <div className="story-container">
-        <div className="story-header">
-          <img className="story-user-profile" src={userProfilePlaceholder} alt="User profile" />
-          <h4 className="story-username">{postedBy.username}</h4>
-          <p className="story-date">{this.convertDateFormat(createdAt)}</p>
-        </div>
-        {picBuffers && (<StoryStepper pictures={picBuffers} />)}
-        <div className="story-btns">
-          <img className="heart-story-btn" src={heartOutline} alt="Heart Story button"/>
-          <p className="story-likes">13</p>
-        </div>
-        <div className="story-info">
-          <div className="story-caption">
-            {text}
+    if (picBuffers.length > 1) {
+      return (
+        <div className="story-container">
+          <div className="story-header">
+            <img className="story-user-profile" src={userProfilePlaceholder} alt="User profile" />
+            <h4 className="story-username">{postedBy.username}</h4>
+            <p className="story-date">{this.convertDateFormat(createdAt)}</p>
+          </div>
+          {picBuffers && (<StoryStepper pictures={picBuffers} />)}
+          <div className="story-btns">
+            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
+            <p className="story-likes">13</p>
+          </div>
+          <div className="story-info">
+            <div className="story-caption">
+              {text}
+            </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
+    else if (picBuffers.length == 1) {
+      return (
+        <div className="story-container">
+          <div className="story-header">
+            <img className="story-user-profile" src={userProfilePlaceholder} alt="User profile" />
+            <h4 className="story-username">{postedBy.username}</h4>
+            <p className="story-date">{this.convertDateFormat(createdAt)}</p>
+          </div>
+          <React.Fragment>
+            <img className="story-img" src={`data:image/jpeg;base64,${picBuffers[0]}`} alt="Story pic" />
+          </React.Fragment>
+          <div className="story-btns">
+            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
+            <p className="story-likes">13</p>
+          </div>
+          <div className="story-info">
+            <div className="story-caption">
+              {text}
+            </div>
+          </div>
+        </div>
+      );
+    } else{
+      return (
+        <div className="story-container">
+          <div className="story-header">
+            <img className="story-user-profile" src={userProfilePlaceholder} alt="User profile" />
+            <h4 className="story-username">{postedBy.username}</h4>
+            <p className="story-date">{this.convertDateFormat(createdAt)}</p>
+          </div>
+          <div className="story-btns">
+            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
+            <p className="story-likes">13</p>
+          </div>
+          <div className="story-info">
+            <div className="story-caption">
+              {text}
+            </div>
+          </div>
+        </div>
+      );
+    }
   }
 };
-/**
- * {picture && (
-          <React.Fragment>
-            <img className="story-img" src={`data:image/jpeg;base64,${picBuffer}`} alt="Story pic" />
-          </React.Fragment>
-        )}
- */
 
 Story.propTypes = {
   text: PropTypes.string,

@@ -76,8 +76,6 @@ class CreateStoryEvent extends Component {
           </React.Fragment>
         ))}
         {(events === null || (events && events.length === 0)) && <p>No events available</p>}
-        <button onClick={nextStep} disabled={values.event === null}>Next</button>
-        <button onClick={previousStep} type="button" style={noWidthBtn}>Back</button>
       </div>
     );
   }
