@@ -75,6 +75,7 @@ module.exports.login = (req, res) => {
  * - email      => string   - Email
  * - username   => string   - User name
  * - password   => string   - Password
+ * - bio        => string   - Biography
  *
  * @returns:
  * - Status 201 if successfully registered
@@ -91,6 +92,7 @@ module.exports.register = (req, res) => {
   const last_name = sanitizeHtml(req.body.last_name);
   const email = sanitizeHtml(req.body.email);
   const username = sanitizeHtml(req.body.username);
+  const bio = sanitizeHtml(req.body.bio);
   const password = req.body.password;
   // Validate they're there
   if (!first_name || !last_name || !email || !username || !password) {
@@ -114,6 +116,7 @@ module.exports.register = (req, res) => {
               first_name,
               last_name,
               email,
+              bio,
             })
             .then(() => {
               res.status(201).send({ message: 'user created' });
@@ -286,6 +289,7 @@ module.exports.resetPassword = (req, res) => {
  * @param
  * - username => String     - User name
  * - password => String     - Password
+ * - bio        => string   - Biography
  *
  * @returns:
  * - Status 200 if successful
@@ -414,6 +418,7 @@ module.exports.updateUser = (req, res) => {
   const first_name = sanitizeHtml(req.body.first_name);
   const last_name = sanitizeHtml(req.body.last_name);
   const email = sanitizeHtml(req.body.email);
+  const bio = sanitizeHtml(req.body.bio);
 
   User.findOne({ username })
     .then((user) => {
@@ -423,7 +428,8 @@ module.exports.updateUser = (req, res) => {
       user.update({
         first_name,
         last_name,
-        email
+        email,
+        bio
       })
         .then(() => {
           res.status(200).send({

@@ -24,6 +24,7 @@ class UpdateProfilePage extends Component {
       email: '',
       username: '',
       password: '',
+      bio: '',
       loadingUser: false,
       updated: false,
       error: false,
@@ -53,6 +54,7 @@ class UpdateProfilePage extends Component {
         email: response.data.email,
         username: response.data.username,
         password: response.data.password,
+        bio: response.data.bio,
         error: false,
       });
     }).catch((error) => {
@@ -82,6 +84,7 @@ class UpdateProfilePage extends Component {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
+      bio: this.state.bio,
     }, { headers: { Authorization: `JWT ${accessString}` } })
       .then((res) => {
         this.setState({
@@ -104,6 +107,7 @@ class UpdateProfilePage extends Component {
       email,
       username,
       password,
+      bio,
       updated,
       error,
       loadingUser,
@@ -169,6 +173,14 @@ class UpdateProfilePage extends Component {
                       value={email}
                       onChange={this.handleChange('email')}
                       placeholder="Email"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="bio"
+                      label="bio"
+                      value={bio}
+                      onChange={this.handleChange('bio')}
+                      placeholder="Biography"
                     />
                     <TextField
                       style={inputStyle}

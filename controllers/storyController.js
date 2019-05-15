@@ -265,7 +265,12 @@ module.exports.like = async (req, res) => {
 
   const currentUser = req.user._id;
 
+  if (story.likes.indexOf(currentUser) !== -1) {
+    return res.status(400).send('already liked');
+  }
+  
   story.likes.push(currentUser);
+
   story.save()
     .then(() => {
       return res.status(200).send();
