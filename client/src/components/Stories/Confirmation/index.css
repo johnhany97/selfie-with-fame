@@ -28,6 +28,17 @@
     width: 20px;
 }
 
+.story-photo-preview{
+    height: 300px;
+    width: 300px;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: center center;
+    background-repeat: no-repeat;
+    margin-bottom: 1rem;
+}
+
 .submit-story-btn{
     width: 100%;
     background-color: #fc474a;
@@ -42,6 +53,16 @@
     margin-bottom: 0.5rem;
     text-align: center;
     cursor: pointer;
+}
+
+.confirmation-event-heading{
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.confirmation-caption-heading{
+    font-size: 0.9rem;
+    color: #444;
 }
 
 .submit-story-btn{

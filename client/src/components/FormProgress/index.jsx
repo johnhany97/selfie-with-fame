@@ -17,8 +17,4 @@ class FormProgress extends React.Component {
     }
 }
 
-/**
- * 
- */
-
 export default FormProgress;

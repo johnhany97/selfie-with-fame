@@ -8,13 +8,13 @@ import {
   crudButton,
 } from '../../../styles/formStyles';
 import FormProgress from '../../FormProgress';
+
 class CreateStoryCamera extends Component {
   saveAndContinue = (e) => {
     e.preventDefault();
     const { nextStep } = this.props;
     nextStep();
   }
-
   render() {
     const { handlePhotoChange, step} = this.props;
     return (

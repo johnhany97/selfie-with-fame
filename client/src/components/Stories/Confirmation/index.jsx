@@ -28,11 +28,12 @@ const Confirmation = (props) => {
           </button>
           <FormProgress size={4} step={step} />
         </div>
-        {values && values.picture && <img id="photo" src={values.picture} alt="Story taken" />}
-        {values && values.event && <Event {...values.event} />}
-        Title: {values && values.text && <p>{values.text}</p>}
+        {values && values.picture && <img className="story-photo-preview" id="photo" src={values.picture} alt="Story taken" />}
+        <h5 className="confirmation-event-heading">Event</h5>
+        {values && values.event && <p>{values.event.event_name} </p>}
+        <h5 className="confirmation-caption-heading">Caption</h5>
+        {values && values.text && <p>{values.text}</p>}
         <div>
-
           <button type="button" onClick={createStory} className="submit-story-btn">Submit</button>
         </div>
       </div>
