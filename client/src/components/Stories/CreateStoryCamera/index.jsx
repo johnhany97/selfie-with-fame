@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import Capture from '../../Capture';
 import './index.css';
-import{
+import rightArrow from './../../../images/right-arrow.png';
+import {
   crudButton,
 } from '../../../styles/formStyles';
 class CreateStoryCamera extends Component {
@@ -17,9 +18,12 @@ class CreateStoryCamera extends Component {
     const { handlePhotoChange } = this.props;
     return (
       <form onSubmit={this.saveAndContinue} className="create-story-form">
-        <h1 className="create-story-title">Camera</h1>
+        <div class="form-navigation">
+          <button type="submit" className="navigation-btn">Next
+          <img className="navigation-arrow" src={rightArrow} alt="Next" />
+          </button>
+        </div>
         <Capture handlePhotoChange={handlePhotoChange} />
-        <button type="submit" style={crudButton} className="create-story-next-btn">Next</button>
       </form>
     );
   }

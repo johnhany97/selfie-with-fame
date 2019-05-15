@@ -7,6 +7,8 @@ import {
   noWidthBtn,
 } from '../../../styles/formStyles';
 import './index.css';
+import leftArrow from './../../../images/left-arrow.png';
+import rightArrow from './../../../images/right-arrow.png';
 
 const CreateStoryText = (props) => {
   const {
@@ -16,19 +18,23 @@ const CreateStoryText = (props) => {
   } = props;
   return (
     <form className="story-text-form">
-      <h1 className="story-text-title">Add a title</h1>
+      <div class="form-navigation">
+        <button onClick={previousStep} type="button" className="navigation-btn-back">
+          <img className="navigation-arrow" src={leftArrow} alt="Back" />
+          Back
+          </button>
+        <button onClick={nextStep} className="navigation-btn-next">Next
+            <img className="navigation-arrow" src={rightArrow} alt="Next" />
+        </button>
+      </div>
       <TextField
         id="text"
-        label="Text"
+        label="Add a caption"
         style={inputStyle}
         onChange={handleChange('text')}
-        placeholder="Insert text"
+        placeholder="Add a caption"
         type="text"
       />
-      <div>
-        <button type="button" onClick={nextStep} style={noWidthBtn}>Next</button>
-        <button type="button" onClick={previousStep} style={noWidthBtn}>Back</button>
-      </div>
     </form>
   );
 };

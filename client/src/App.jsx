@@ -103,7 +103,6 @@ class App extends React.Component {
         <Layout title="Festival" home={home}>
           <div className="event-center-bounds">
             <div className="feed-create-btns">
-              <UserCard />
               <a href="/createStory" className="create-btn">Share Story</a>
               <a href="/createEvent" className="create-btn">Create Event</a>
             </div>

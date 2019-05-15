@@ -9,7 +9,6 @@ import CreateStoryText from '../../../components/Stories/CreateStoryText';
 import Confirmation from '../../../components/Stories/Confirmation';
 import { Redirect } from 'react-router-dom';
 
-
 class CreateStoryPage extends Component {
   constructor(props) {
     super(props);
