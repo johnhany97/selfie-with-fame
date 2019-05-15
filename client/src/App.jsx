@@ -12,6 +12,7 @@ import Banner from './components/Banner';
 import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
+import UserCard from './components/UserCard';
 
 class App extends React.Component {
   constructor() {

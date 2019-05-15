@@ -1,0 +1,18 @@
+.story-stepper-img{
+    object-fit: cover;
+    max-height: 600px;
+    max-width: 600px;
+}
+
+.story-stepper-navigation{
+    background: transparent;
+    padding: 0.25rem 0.5rem;
+    border: 0;
+    
+}
+
+.stepper-arrow{
+    margin-left: 0.25rem;
+    height: 20px;
+    width: 20px;
+}
