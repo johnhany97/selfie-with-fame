@@ -63,7 +63,7 @@ class App extends React.Component {
 
   getStories = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get(`/api/stories/all`, {
+    await axios.get(`/api/stories/timeline`, {
       headers: {
         Authorization: `JWT ${token}`,
       },

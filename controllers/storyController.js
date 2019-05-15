@@ -70,7 +70,14 @@ module.exports.getStoriesByEvent = (req, res) => {
 }
 
 module.exports.getStoriesTimeline = async (req, res) => {
-  await NewsFeed.find({ owner: req.user._id }).exect();
+  NewsFeed.find({ owner: req.user._id })
+    .populate('story')
+    .then((feed) => {
+      let stories = feed.map((entry) => {
+        return entry.story;
+      })
+      res.status(200).send({stories});
+    });
 }
 
 module.exports.createStory = (req, res) => {

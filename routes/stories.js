@@ -17,5 +17,7 @@ router.route('/').all(authMiddleware.authenticate).put(storyController.createSto
 router.route('/story/:id').all(authMiddleware.authenticate).get(storyController.getStory);
 // DELETE a story if you're the creator
 router.route('/story/:id').all(authMiddleware.authenticate).delete(storyController.deleteStory);
+// GET the logged in user's timeline
+router.route('/timeline').all(authMiddleware.authenticate).get(storyController.getStoriesTimeline);
 
 module.exports = router;
