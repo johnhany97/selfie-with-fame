@@ -238,12 +238,14 @@ class GoogleMap extends Component {
     let end_date_displayEvents = this.state.end_date
     let city_displayEvents = city
     let start_date_displayEvents = this.state.end_date
-    let mode = "onGoing"
+    let eventQuery = '';
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
+        eventQuery
+        
       },
       {
         headers: {

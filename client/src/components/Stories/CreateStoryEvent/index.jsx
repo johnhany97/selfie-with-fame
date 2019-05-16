@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import Event from '../../Event';
 import {
@@ -69,7 +68,7 @@ class CreateStoryEvent extends Component {
     const { values, handleEventChange, nextStep, previousStep, step } = this.props;
     return (
       <div className="select-event-container">
-        <div class="form-navigation">
+        <div className="form-navigation">
           <button onClick={previousStep} type="button" className="navigation-btn-back">
             <img className="navigation-arrow" src={leftArrow} alt="Back" />
             Back

@@ -167,7 +167,7 @@ class SearchEvents extends Component {
         <div>
           <h3 className="search-location-title">Select Location</h3>
           <hr className="search-location-divider" />
-          <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
+          <form  className="panel-center">
             <TextField
                 style={inputStyle}
                 label="Event"
@@ -189,7 +189,7 @@ class SearchEvents extends Component {
                 label="Event occuring between this date "
                 type="datetime-local"
                 onChange={this.handleChange('start_date')}
-                value={this.state.start_date}
+                value={new Date(this.state.start_date).toISOString().substring(0, 16)}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -200,14 +200,11 @@ class SearchEvents extends Component {
                 label="and this date"
                 type="datetime-local"
                 onChange={this.handleChange('end_date')}
-                value={this.state.end_date}
+                value={new Date(this.state.end_date).toISOString().substring(0, 16)}
                 InputLabelProps={{
                   shrink: true,
                 }}
             />
-            <button type="submit" className="round-search-btn">
-                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
-            </button>
             {showError &&  (
                 <p
                   style={errorMessage}
@@ -217,6 +214,10 @@ class SearchEvents extends Component {
               )}
 
           </form>
+          
+          <button  className="round-search-btn" onClick={this.getEventsByLocationAndDate}>
+            <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+          </button>
         </div>
       </div>
     );

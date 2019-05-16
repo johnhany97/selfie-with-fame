@@ -18,7 +18,7 @@ module.exports.createEvent = (req, res, next) => {
     information: req.body.information,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
-    location: {"coordinates": req.body.location, "city": req.body.city}
+    location: { "coordinates": req.body.location, "city": req.body.city }
   });
 
   //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
@@ -97,108 +97,44 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
   let query = {
     $and:
-    [
-      {'name': req.body.eventQuery},
-      {'location.city': req.body.city_displayEvents},
-      {$or:
-        [
-          {$and:
+      [
+        req.body.eventQuery !== '' ? { 'name':  {'$regex' : req.body.eventQuery, '$options' : 'i'}} : undefined,
+        { 'location.city': req.body.city_displayEvents },
+        {
+          $or:
             [
-              {'start_date' :{$gte: req.body.start_date_displayEvents}}, 
-              {'start_date' : {$lte: req.body.end_date_displayEvents}}
-            ] 
-          },
+              {
+                $and:
+                  [
+                    { 'start_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'start_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
 
-          {$and:
-            [
-              {'end_date' :{$gte: req.body.start_date_displayEvents}}, 
-              {'end_date' : {$lte: req.body.end_date_displayEvents}}
-            ] 
-          },
+              {
+                $and:
+                  [
+                    { 'end_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
 
-          {$and:
-            [
-              {'start_date': {$lte: req.body.start_date_displayEvents}},
-              {'end_date': {$gte: req.body.end_date_displayEvents}}
+              {
+                $and:
+                  [
+                    { 'start_date': { $lte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $gte: req.body.end_date_displayEvents } }
+                  ]
+              }
             ]
-          }
-        ]
-      }
-    ]
+        }
+      ]
   };
-
-  // let query = {
-  //   $and:
-  //   [
-  //     {'location.city': req.body.city_displayEvents},
-  //     {$or:
-  //       [
-  //         {'start_date': {$lte: req.body.start_date_displayEvents} },
-  //         {'end_date': {$lte: req.body.end_date_displayEvents} },
-
-
-  //       ]
-  //     }
-  //   ]
-  // };
-
-  // {
-  //   $and : [
-  //       { $or : [ { price : 0.99 }, { price : 1.99 } ] },
-  //       { $or : [ { sale : true }, { qty : { $lt : 20 } } ] }
-  //   ]
-
-  // if (req.body.mode == "onGoing") {
-  //    query = {
-  //     'location.city': req.body.city_displayEvents,
-  //     'start_date' : {$gte: req.body.start_date_displayEvents},
-  //     'end_date' : {$gte: req.body.end_date_displayEvents},
-  
-  //   };
-  // }
-
- 
-
-  // if (mode == "all") {
-  //   query = {};
-  // }
-  // else if (mode == "allLocation") {
-  //   query = {'location.city': req.body.city} 
-  // }
-  // else if (mode == "locationOngoing") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     // 'startDate' : {$lte: today},
-  //     'end_date': 
-      
-  //   } 
-  //   console.log("location on going")
-
-  // }
-  // else if (mode == "locationLastWeek") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     'start_date' : {$lte: today},
-  //     'end_date': {$gte: lastWeek}
-  //   } 
-
-  // }
-
-  // else if (mode == "locationSetDates") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     'start_date' : req.body.startDate,
-  //     'end_date': req.body.endDate
-  //   } 
-
-  // }
-  // else {
-  //   query = {};
-  //   console.log("no match");
-
-  // }
-
-  Event.find(query)
+  let tempQuery = { $and : []}
+  for(let i of query.$and) {
+    i && tempQuery.$and.push(i);
+  }
+  Event.find(tempQuery)
     .sort({ createdAt: -1 })
     .then((events) => {
       res.status(200).send({
