@@ -92,50 +92,54 @@ module.exports.getEventsByLocation = (req, res, next) => {
 
 
 module.exports.getEventsByLocationAndDate = (req, res, next) => {
-  let today = new Date();
-  // let today =  new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59);
-  let lastWeek = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
-  console.log("todate is" + today + "next week is " + lastWeek);
 
-  const mode = req.body.mode;
-  var query = {};
-  if (mode == "all") {
-    query = {};
-  }
-  else if (mode == "allLocation") {
-    query = {'location.city': req.body.city} 
-  }
-  else if (mode == "locationOngoing") {
-    query = {
-      'location.city': req.body.city,
-      // 'startDate' : {$lte: today},
-      'end_date': {$gte: today}
-    } 
-    console.log("location on going")
+  console.log("city and end date " + req.body.city_displayEvents + ", " + req.body.end_date_displayEvents)
 
-  }
-  else if (mode == "locationLastWeek") {
-    query = {
-      'location.city': req.body.city,
-      'start_date' : {$lte: today},
-      'end_date': {$gte: lastWeek}
-    } 
+  var query = {
+    'location.city': req.body.city_displayEvents,
+    'end_date' : {$gte: req.body.end_date_displayEvents},
 
-  }
+    
 
-  else if (mode == "locationSetDates") {
-    query = {
-      'location.city': req.body.city,
-      'start_date' : req.body.startDate,
-      'end_date': req.body.endDate
-    } 
+  };
+  // if (mode == "all") {
+  //   query = {};
+  // }
+  // else if (mode == "allLocation") {
+  //   query = {'location.city': req.body.city} 
+  // }
+  // else if (mode == "locationOngoing") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     // 'startDate' : {$lte: today},
+  //     'end_date': 
+      
+  //   } 
+  //   console.log("location on going")
 
-  }
-  else {
-    query = {};
-    console.log("no match");
+  // }
+  // else if (mode == "locationLastWeek") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     'start_date' : {$lte: today},
+  //     'end_date': {$gte: lastWeek}
+  //   } 
 
-  }
+  // }
+
+  // else if (mode == "locationSetDates") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     'start_date' : req.body.startDate,
+  //     'end_date': req.body.endDate
+  //   } 
+
+  // }
+  // else {
+  //   query = {};
+  //   console.log("no match");
+
+  // }
 
   Event.find(query)
     .sort({ createdAt: -1 })

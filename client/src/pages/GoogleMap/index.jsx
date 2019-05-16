@@ -48,6 +48,7 @@ class GoogleMap extends Component {
       displayedEvents: [],
       marker_clicked: ' ',
       selected_event: [],
+      end_date: new Date()
     };
 
 
@@ -56,6 +57,7 @@ class GoogleMap extends Component {
   }
 
   async componentDidMount() {
+
 
     var options = { types: ['(cities)'] };
 
@@ -234,12 +236,13 @@ class GoogleMap extends Component {
       location,
       city,
     } = this.state;
-    let mode = "locationOngoing"
-    console.log("the city is!!!!!!!!!!" + city)
+    let end_date_displayEvents = this.state.end_date
+    let city_displayEvents = city
+    console.log("the city is!!!!!!!!!!" + city + " and end date " +this.state.end_date)
     axios.post('/api/events/getEventsByLocationAndDate',
       {
-        city,
-        mode
+        city_displayEvents,
+        end_date_displayEvents
       },
       {
         headers: {
