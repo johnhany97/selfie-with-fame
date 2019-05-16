@@ -46,6 +46,11 @@ class App extends React.Component {
         username,
         loggedIn: true,
       });
+      console.log(res.data);
+      IO.setup(this.state.username);
+      IO.attachToEvent(EVENT_NEW_STORY, () => {
+        console.log('New stories, refresh man');
+      });
     }).catch(() => {
       this.setState({
         loggedIn: false,
@@ -53,13 +58,6 @@ class App extends React.Component {
     });
     await this.getEvents();
     await this.getStories();
-    // Socket IO
-    IO.attachToEvent(EVENT_CONNECT, () => {
-      IO.emit(EMIT_EVENT_CONNECTED, this.state.username);
-    });
-    IO.attachToEvent(EVENT_NEW_STORY, () => {
-      console.log('New stories, refresh man');
-    });
   }
 
   getStories = async () => {

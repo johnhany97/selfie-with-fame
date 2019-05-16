@@ -36,6 +36,12 @@ class DB {
     return store.getAll();
   });
 
+  static getOfflineStories = () => DB.dbPromise.then((db) => {
+    const tx = db.transaction(OFFLINE_STORIES_STORE_NAME, 'readonly');
+    const store = tx.objectStore(OFFLINE_STORIES_STORE_NAME);
+    return store.getAll();
+  });
+
   static getAllEvents = () => DB.dbPromise.then((db) => {
     const tx = db.transaction(EVENTS_STORE_NAME, 'readonly');
     const store = tx.objectStore(EVENTS_STORE_NAME);

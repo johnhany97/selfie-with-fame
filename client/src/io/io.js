@@ -1,4 +1,6 @@
+/* eslint-disable no-underscore-dangle */
 import socketIOClient from 'socket.io-client';
+
 import DB, { OFFLINE_STORIES_STORE_NAME } from '../db/db';
 
 export const SOCKET_IO_ENDPOINT = 'https://localhost:3001';
@@ -10,22 +12,31 @@ export const EMIT_EVENT_CONNECTED = 'connected'; // Custom event, to inform serv
 export const EMIT_EVENT_POST_STORY = 'post_story'; // Custom event, to post a story that was waiting for us to be online
 
 class IO {
-  static setup() {
-    if (!IO.socket) {
-      IO.socket = socketIOClient(SOCKET_IO_ENDPOINT, {
-        reconnection: true,
-        secure: true,
-      });
-      IO.attachToEvent(EVENT_CONNECT, () => {
-        IO.emit(EMIT_EVENT_CONNECTED, this.state.username);
-        // Check if any data in IDB offline stories store
-        if (DB.getOfflineStories()
-      })
-    }
+  static setup(username) {
+    IO.socket = socketIOClient(SOCKET_IO_ENDPOINT, {
+      reconnection: true,
+      secure: true,
+    });
+    IO.attachToEvent(EVENT_CONNECT, async () => {
+      IO.emit(EMIT_EVENT_CONNECTED, username);
+      // Check if any data in IDB offline stories store
+      const stories = await DB.getOfflineStories();
+      if (stories) {
+        for (let i = 0; i < stories.length; i += 1) {
+          const story = {
+            text: stories[i].text,
+            event_id: stories[i].event._id,
+            pictures: stories[i].pictures,
+            username,
+          };
+          IO.emit(EMIT_EVENT_POST_STORY, story);
+          DB.delete(OFFLINE_STORIES_STORE_NAME, stories[i].id);
+        }
+      }
+    });
   }
 
   static attachToEvent = (event, fn) => {
-    IO.setup();
     // Clear all existing ones
     IO.socket.removeAllListeners(event);
     // Attach new one
@@ -33,12 +44,10 @@ class IO {
   }
 
   static removeAllListenersForEvent = (event) => {
-    IO.setup();
     IO.socket.removeAllListeners(event);
   }
 
   static emit = (event, data) => {
-    IO.setup();
     IO.socket.emit(event, data);
   }
 }
