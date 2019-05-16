@@ -18,6 +18,7 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
+    .populate('comments', 'username')
     .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
       stories.map((story) => {
@@ -76,6 +77,7 @@ module.exports.getStoriesByEvent = (req, res) => {
 
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
+    .populate('comments', '_id username')
     .populate('postedBy', '_id first_name last_name username')
     .then((stories) => {
       stories.map((story) => {
@@ -105,6 +107,7 @@ module.exports.getStoriesTimeline = async (req, res) => {
 
   NewsFeed.find(query, {}, pagination)
     .populate('story')
+    .populate('comments.postedBy', 'username')
     .then((feed) => {
       let stories = feed.map((entry) => {
         return entry.story;
