@@ -14,11 +14,15 @@ module.exports.getEvents = (req, res, next) => {
 
 module.exports.createEvent = (req, res, next) => {
   const event = new Event({
-    event_name: req.body.event_name,
+    name: req.body.name,
     information: req.body.information,
-    date_time: req.body.date_time,
-    location: req.body.location
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    location: {"coordinates": req.body.location, "city": req.body.city}
   });
+
+  //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
+
 
   event.save()
     .then((event) => {
@@ -37,19 +41,15 @@ module.exports.getStory = (req, res, next) => {
 
 
 module.exports.deleteEvent = (req, res, next) => {
-  console.log("ATTEMPTED TO DELETE EVENT WITH ID" + req.query._id);
   Event.remove({
     _id: req.query._id,
   }).then((eventInfo) => {
     if (eventInfo) {
-      console.log('event deleted from db');
       res.status(200).send('event deleted from db');
     } else {
-      console.error('event not found in db');
       res.status(404).send('no event with that event_id to delete');
     }
   }).catch((error) => {
-    console.error('problem communicating with db');
     res.status(500).send(error);
   });
 }
@@ -70,16 +70,106 @@ module.exports.findEvent = (req, res, next) => {
 }
 
 
+module.exports.getEventsByLocation = (req, res, next) => {
+
+  const query = { 'location.city': req.body.city };
+
+  Event.find(query)
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
+
+module.exports.getEventsByLocationAndDate = (req, res, next) => {
+
+
+  let query = {
+    'location.city': req.body.city_displayEvents,
+    'start_date' : {$gte: req.body.start_date_displayEvents},
+    'end_date' : {$lte: req.body.end_date_displayEvents},
+
+  };
+
+  if (req.body.mode == "onGoing") {
+     query = {
+      'location.city': req.body.city_displayEvents,
+      'start_date' : {$gte: req.body.start_date_displayEvents},
+      'end_date' : {$gte: req.body.end_date_displayEvents},
+  
+    };
+  }
+
+ 
+
+  // if (mode == "all") {
+  //   query = {};
+  // }
+  // else if (mode == "allLocation") {
+  //   query = {'location.city': req.body.city} 
+  // }
+  // else if (mode == "locationOngoing") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     // 'startDate' : {$lte: today},
+  //     'end_date': 
+      
+  //   } 
+  //   console.log("location on going")
+
+  // }
+  // else if (mode == "locationLastWeek") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     'start_date' : {$lte: today},
+  //     'end_date': {$gte: lastWeek}
+  //   } 
+
+  // }
+
+  // else if (mode == "locationSetDates") {
+  //   query = {
+  //     'location.city': req.body.city,
+  //     'start_date' : req.body.startDate,
+  //     'end_date': req.body.endDate
+  //   } 
+
+  // }
+  // else {
+  //   query = {};
+  //   console.log("no match");
+
+  // }
+
+  Event.find(query)
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
 module.exports.updateEvent = (req, res, next) => {
   Event.findOne({
     _id: req.body._id,
   }).then((eventInfo) => {
     if (eventInfo != null) {
       eventInfo.update({
-        event_name: req.body.event_name,
+        name: req.body.event_name,
         information: req.body.information,
-        location: req.body.location,
-        date_time: req.body.date_time,
+        start_date: req.body.date_time,
+        end_date: req.body.date_time,
+        location: req.body.location
       }).then(() => {
         res.status(200).send({
           message: 'event updated'

@@ -58,7 +58,6 @@ class UpdateEventPage extends Component {
       },
       headers: { Authorization: `JWT ${token}` },
     }).then((response) => {
-      // console.log(response.data);
       this.setState({
         loadingEvent: false,
         event_name: response.data.event_name ? response.data.event_name : '',
