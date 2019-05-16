@@ -95,11 +95,21 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   //and ended after userRangeEnd include it as it was happeneing in this range.
   // if event  is  (userRangeStart <= eventStartDate <= userRangeEnd) OR (userRangeStart <= eventEndDate <= userRangeEnd)  OR
   // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
+  let or_query = [
+    req.body.eventQuery !== '' ? { 'information':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+    req.body.eventQuery !== '' ? { 'name':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+  ];
+  let or_query_temp = []
+  for(let i of or_query) {
+    i && or_query_temp.push(i);
+  }
   let query = {
     $and:
       [
-        req.body.eventQuery !== '' ? { 'name':  {'$regex' : req.body.eventQuery, '$options' : 'i'}} : undefined,
-        { 'location.city': req.body.city_displayEvents },
+        or_query_temp.length > 0 ? {
+          $or: or_query_temp
+        } : undefined,
+        req.body.city_displayEvents !== '' ? { 'location.city': req.body.city_displayEvents } : undefined,
         {
           $or:
             [
@@ -130,7 +140,7 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
         }
       ]
   };
-  let tempQuery = { $and : []}
+  let tempQuery = { $and: [] }
   for(let i of query.$and) {
     i && tempQuery.$and.push(i);
   }
