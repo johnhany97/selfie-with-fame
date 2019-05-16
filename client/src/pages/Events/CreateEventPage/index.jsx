@@ -59,6 +59,7 @@ class CreateEventPage extends Component {
     this.setState({
       city: data,
     });
+    console.log("high level city change " + this.state.city)
 
   };
 

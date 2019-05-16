@@ -90,6 +90,63 @@ module.exports.getEventsByLocation = (req, res, next) => {
     });
 }
 
+
+module.exports.getEventsByLocationAndDate = (req, res, next) => {
+  let today =  new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59);
+  let lastWeek = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59)- (7 * 24 * 60 * 60 * 1000);
+  console.log("todate is" + today + "next week is " + nextWeek);
+
+  const mode = req.body.mode;
+  var query = {};
+  if (mode == "all") {
+    query = {};
+  }
+  else if (mode == "allLocation") {
+    query = {'location.city': req.body.city} 
+  }
+  else if (mode == "locationOngoing") {
+    query = {
+      'location.city': req.body.city,
+      'startDate' : {$lte: today},
+      'endDate': {$gte: today}
+    } 
+
+  }
+  else if (mode == "locationLastWeek") {
+    query = {
+      'location.city': req.body.city,
+      'startDate' : {$lte: today},
+      'endDate': {$gte: lastWeek}
+    } 
+
+  }
+
+  else if (mode == "locationSetDates") {
+    query = {
+      'location.city': req.body.city,
+      'startDate' : req.body.startDate,
+      'endDate': req.body.endDate
+    } 
+
+  }
+  else {
+    query = {};
+    console.log("no match");
+
+  }
+
+  Event.find(query)
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
 module.exports.updateEvent = (req, res, next) => {
   Event.findOne({
     _id: req.body._id,

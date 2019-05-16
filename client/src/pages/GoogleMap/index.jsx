@@ -25,9 +25,10 @@ import SubmitButton from '../../components/SubmitButton';
 import {
   saveButton,
 } from '../../styles/buttonStyles';
-import CurrentLocation from './Map';
+// import CurrentLocation from '../../components/Map/Map';
 import './index.css';
 import searchButton from './../../images/round-search.png';
+import CurrentLocation from '../../components/Map/Map';
 
 class GoogleMap extends Component {
   constructor(props) {
@@ -69,7 +70,7 @@ class GoogleMap extends Component {
     //  this.autocomplete.setFields(
     //     ['address_components', 'geometry']);
     this.geocoder = new google.maps.Geocoder;
-    this.getEventsLocation();
+    this.getEventsByLocationAndDate();
 
 
 
@@ -80,6 +81,7 @@ class GoogleMap extends Component {
     this.setState({
       city: data,
     });
+    console.log("local city change: " + this.state.city)
 
   };
 
@@ -107,7 +109,7 @@ class GoogleMap extends Component {
       handleLocationChange(this.state.selectedPlace);
       handleCityChange(this.state.city)
 
-      this.getEventsLocation();
+      this.getEventsByLocationAndDate();
 
 
 
@@ -183,7 +185,7 @@ class GoogleMap extends Component {
 
       handleLocationChange(this.state.selectedPlace);
       handleCityChange(this.state.city);
-      this.getEventsLocation();
+      this.getEventsByLocationAndDate();
 
     });
   }
@@ -219,7 +221,7 @@ class GoogleMap extends Component {
     });
   }
 
-  getEventsLocation = async () => {
+  getEventsByLocationAndDate = async () => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
@@ -233,10 +235,12 @@ class GoogleMap extends Component {
       location,
       city,
     } = this.state;
+    let mode = "locationOngoing"
     console.log("the city is!!!!!!!!!!" + city)
     axios.post('/api/events/getEventsByLocation',
       {
-        city
+        city,
+        mode
       },
       {
         headers: {
@@ -285,7 +289,7 @@ class GoogleMap extends Component {
         <div>
           <h3 className="search-location-title">Select Location</h3>
           <hr className="search-location-divider" />
-          <form onSubmit={this.getEventsLocation} className="panel-center">
+          <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
             <div className="search-location-row">  
               <TextField
                 style={inputStyle}
@@ -318,7 +322,7 @@ class GoogleMap extends Component {
           handleCityChange={this.props.handleCityChange}
           handleSelectedLocationChange={this.handleSelectedLocationChange}
           handleLocalCityChange={this.handleLocalCityChange}
-          getEventsLocation={this.getEventsLocation}
+          getEventsByLocationAndDate={this.getEventsByLocationAndDate}
           markers={displayedEvents}
         >
           
