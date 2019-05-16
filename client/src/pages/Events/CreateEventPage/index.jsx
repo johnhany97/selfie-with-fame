@@ -59,7 +59,6 @@ class CreateEventPage extends Component {
     this.setState({
       city: data,
     });
-    console.log("high level city change " + this.state.city)
 
   };
 
@@ -155,7 +154,6 @@ class CreateEventPage extends Component {
         // event_deleted,
       });
     }).catch((err) => {
-      console.error(err.response.data);
       this.setState({
         error: true,
       });

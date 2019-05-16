@@ -244,7 +244,6 @@ class GoogleMap extends Component {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
-        mode
       },
       {
         headers: {

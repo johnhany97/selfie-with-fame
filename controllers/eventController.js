@@ -89,22 +89,58 @@ module.exports.getEventsByLocation = (req, res, next) => {
 
 module.exports.getEventsByLocationAndDate = (req, res, next) => {
 
-
+  // did an event either start or end in these times? e.g. was it ongoing at any point between these dates
+  //so an event starts at DateA and ends on DateB. If it starts at any point in the range the user gave
+  // return it. If it ends at any point in the range return it, as it was happening in this range. if it started before the userRangeStart
+  //and ended after userRangeEnd include it as it was happeneing in this range.
+  // if event  is  (userRangeStart <= eventStartDate <= userRangeEnd) OR (userRangeStart <= eventEndDate <= userRangeEnd)  OR
+  // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
   let query = {
-    'location.city': req.body.city_displayEvents,
-    'start_date' : {$gte: req.body.start_date_displayEvents},
-    'end_date' : {$lte: req.body.end_date_displayEvents},
-
+    $and:
+    [
+      {'location.city': req.body.city_displayEvents},
+      {$or:
+        [
+          {'start_date': 
+            {$and:
+              [
+                {$gte: req.body.start_date_displayEvents}, 
+                {$lte: req.body.end_date_displayEvents}
+              ]
+            }
+          },
+          {'end_date' : 
+            {$and:
+              [
+                {$gte: req.body.start_date_displayEvents}, 
+                {$lte: req.body.end_date_displayEvents}
+              ] 
+            }
+          },
+          {$and:
+            [
+              {'start_date': {$lte: req.body.start_date_displayEvents}},
+              {'end_date': {$gte: req.body.end_date_displayEvents}}
+            ]
+          },
+        ]
+      }
+    ]
   };
+  // {
+  //   $and : [
+  //       { $or : [ { price : 0.99 }, { price : 1.99 } ] },
+  //       { $or : [ { sale : true }, { qty : { $lt : 20 } } ] }
+  //   ]
 
-  if (req.body.mode == "onGoing") {
-     query = {
-      'location.city': req.body.city_displayEvents,
-      'start_date' : {$gte: req.body.start_date_displayEvents},
-      'end_date' : {$gte: req.body.end_date_displayEvents},
+  // if (req.body.mode == "onGoing") {
+  //    query = {
+  //     'location.city': req.body.city_displayEvents,
+  //     'start_date' : {$gte: req.body.start_date_displayEvents},
+  //     'end_date' : {$gte: req.body.end_date_displayEvents},
   
-    };
-  }
+  //   };
+  // }
 
  
 
