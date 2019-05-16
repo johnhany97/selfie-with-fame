@@ -3,13 +3,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './index.css';
+import axios from 'axios';
 import userProfilePlaceholder from '../../../images/event-img-placeholder.jpg';
 import heartOutline from './heart-outline.png';
+import heartFilled from './heart-filled.png';
 import StoryStepper from '../../StoryStepper';
 
 class Story extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      liked: false,
+      text: '',
+      pictures: [],
+      event: '',
+      likes: [],
+      comments: [],
+      postedBy: '',
+      createdAt: '',
+      updatedAt: '',
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      ...this.props,
+    });
+    this.fetchStory();
+  }
+
+  fetchStory = () => {
+    console.log("Fetch Story Data");
+    const token = localStorage.getItem('JWT');
+    axios.get(`/api/stories/${this.props._id}`,
+     { headers: { Authorization: `JWT ${token}`} })
+      .then((res) => {
+        // TODO: Snackbar of success
+        console.log("Fetched Story");
+        console.log(res.data);
+        this.setState({
+          ...res.data,
+        });
+        // Redirect to other page?
+      }).catch((error) => {
+        console.log(error);
+      });
+  }
+
+  likeStory = (e) => {
+    console.log("Clicked");
+    const token = localStorage.getItem('JWT');
+    e.preventDefault();
+    axios.post(`/api/stories/${this.props._id}/like`, {},
+     { headers: { Authorization: `JWT ${token}`} })
+      .then(() => {
+        // TODO: Snackbar of success
+        this.fetchStory();
+        // Redirect to other page?
+      }).catch((error) => {
+        console.log(error);
+      });
   }
 
   convertDateFormat(date) {
@@ -28,6 +81,8 @@ class Story extends React.Component {
       createdAt,
       updatedAt,
       postedBy,
+      likes,
+      liked,
     } = this.props;
 
     let picBuffers = [];
@@ -35,6 +90,13 @@ class Story extends React.Component {
       for (let i = 0; i < pictures.length; i++) {
         picBuffers.push(new Buffer(pictures[i]).toString('base64'));
       }
+    }
+
+    let heartIcon;
+    if(this.state.liked){
+      heartIcon = <img onClick={this.likeStory} className="heart-story-btn" src={heartFilled} alt="Heart Story button" />;
+    } else{
+      heartIcon = <img onClick={this.likeStory} className="heart-story-btn" src={heartOutline} alt="Heart Story button" />;
     }
 
     if (picBuffers.length > 1) {
@@ -47,8 +109,8 @@ class Story extends React.Component {
           </div>
           {picBuffers && (<StoryStepper pictures={picBuffers} />)}
           <div className="story-btns">
-            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
-            <p className="story-likes">13</p>
+            {heartIcon}
+            <p className="story-likes">{this.state.likes.length}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
@@ -70,8 +132,8 @@ class Story extends React.Component {
             <img className="story-img" src={`data:image/jpeg;base64,${picBuffers[0]}`} alt="Story pic" />
           </React.Fragment>
           <div className="story-btns">
-            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
-            <p className="story-likes">13</p>
+            {heartIcon}
+            <p className="story-likes">{this.state.likes.length}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
@@ -89,8 +151,8 @@ class Story extends React.Component {
             <p className="story-date">{this.convertDateFormat(createdAt)}</p>
           </div>
           <div className="story-btns">
-            <img className="heart-story-btn" src={heartOutline} alt="Heart Story button" />
-            <p className="story-likes">13</p>
+            {heartIcon}
+            <p className="story-likes">{this.state.likes.length}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
