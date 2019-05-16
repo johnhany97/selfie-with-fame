@@ -20,6 +20,7 @@ import {
   errorMessage,
 } from '../../../styles/formStyles';
 import SubmitButton from '../../../components/SubmitButton';
+import './index.css';
 
 class CreateEventPage extends Component {
   constructor(props) {
@@ -182,8 +183,8 @@ class CreateEventPage extends Component {
         <Layout title="Create Event">
 
           <div className="container" style={mTop}>
-            <h3 style={formTitle}>Create Event</h3>
-            <hr style={formDividor} />
+            <h3 className="create-event-title">Create Event</h3>
+            <hr className="create-event-divider" />
             <form onSubmit={this.createEvent} className="panel-center">
               <TextField
                 style={inputStyle}
@@ -223,6 +224,11 @@ class CreateEventPage extends Component {
                   shrink: true,
                 }}
               />
+              <GoogleMap
+                handleLocationChange={this.handleLocationChange}
+                handleCityChange={this.handleCityChange}
+              />
+
               {showError === true && createEventError === true && (
                 <p
                   style={errorMessage}
@@ -230,16 +236,9 @@ class CreateEventPage extends Component {
                   *Event name, info, location and date/time are required fields.
                 </p>
               )}
-              <SubmitButton
-                buttonStyle={formSubmitButton}
-                buttonText="Create Event"
-              />
+              <button className="create-event-btn" type="submit">Submit</button>
               <a href="/events" style={cancelLink}>Cancel</a>
             </form>
-            <GoogleMap
-              handleLocationChange={this.handleLocationChange}
-              handleCityChange={this.handleCityChange}
-            />
           </div>
         </Layout>
       );

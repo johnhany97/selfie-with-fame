@@ -1,0 +1,34 @@
+.search-location-title{
+    color: #fe5355;
+    text-align: center;
+}
+
+.search-location-divider{
+    margin-top: 5px;
+    width: 200px;
+    background-color: #fe5355;
+    height: 1px;
+}
+
+.search-location-row{
+    display: flex;
+    flex-direction: row;
+}
+
+.search-location-row .MuiFormControl-root-1{
+    flex-grow: 1;
+}
+
+.round-search-btn{
+    background-color: #fe5355;
+    border-radius: 50%;
+    margin: 0;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    margin: auto 0;
+}
+
+.search-icon{
+    fill: #ffffff;
+}
