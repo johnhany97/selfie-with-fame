@@ -24,6 +24,7 @@ import GoogleMap from './pages/GoogleMap';
 import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
 import DB from './db/db';
+import DiscoverPage from './pages/DiscoverPage';
 
 // check for support indexeddb support;
 let db = null;
@@ -45,6 +46,7 @@ const routing = (
       <Route exact path="/userProfile/:username" component={ProfilePage} />
       <Route exact path="/updateUser/:username" component={UpdateProfilePage} />
       <Route exact path="/updatePassword/:username" component={UpdatePasswordPage} />
+      <Route exact path="/discover" component={DiscoverPage} />
       <Route exact path="/createEvent" component={CreateEventPage} />
       <Route exact path="/events" component={DisplayEventsPage} />
       <Route exact path="/updateEvent/:_id" component={UpdateEventPage} />

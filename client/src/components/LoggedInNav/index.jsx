@@ -16,7 +16,7 @@ class LoggedInNav extends Component {
   render() {
     return (
       <Nav className="logged-in-nav">
-        <Nav.Link href="#discover">Discover</Nav.Link>
+        <Nav.Link href="/discover">Discover</Nav.Link>
         <Nav.Link href="/events">Events</Nav.Link>
         <Nav.Link href="#about">About</Nav.Link>
         <Nav.Link href="#contact">Contact</Nav.Link>
