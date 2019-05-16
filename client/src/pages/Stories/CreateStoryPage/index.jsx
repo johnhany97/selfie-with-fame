@@ -77,7 +77,7 @@ class CreateStoryPage extends Component {
 
 
 
-    axios.put('/api/stories', {
+    axios.post('/api/stories', {
       text,
       pictures,
       event_id: _id,
@@ -89,7 +89,6 @@ class CreateStoryPage extends Component {
           error: false,
         });
         this.nextStep();
-        // Redirect to other page?
       }).catch((error) => {
         this.setState({
           isLoading: false,
