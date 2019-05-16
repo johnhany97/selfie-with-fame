@@ -14,14 +14,14 @@ const root = path.join(__dirname, '/');
 const apiProxy = proxy('/api', {
   target: `${uri}:${port + 1}`,
   changeOrigin: true,
-  secure: false
+  secure: false,
 });
 
 app.use(apiProxy);
 
 app.use(express.static(root));
 
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   if (req.method === 'GET' && req.accepts('html') && !req.is('json') && !req.path.includes('.')) {
     res.sendFile('index.html', { root });
   } else next();
@@ -32,14 +32,14 @@ app.set('port', port);
 /**
  * Create HTTPs server.
  */
-var options = {
+const options = {
   key: fs.readFileSync('./private_access/server.key'),
-  cert: fs.readFileSync('./private_access/server.crt')
+  cert: fs.readFileSync('./private_access/server.crt'),
 };
 
 /**
  * Create HTTPs server using the options
  */
-var server = https.createServer(options, app);
+const server = https.createServer(options, app);
 
 server.listen(port);

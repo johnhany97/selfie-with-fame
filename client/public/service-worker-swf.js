@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Copyright 2016 Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +13,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-const cacheName = 'selfieWithFame-v0.5';
+const cacheName = 'selfieWithFame-v0.1';
 const filesToCache = [
   '/',
   '/manifest.json',
-  // '/static/js/0.chunk.js',
-  // '/static/js/bundle.js',
-  // '/static/js/main.chunk.js',
 ];
 
 // Builds the full array of static urls to cache. the %FOO% is replaced with
@@ -26,9 +24,7 @@ const filesToCache = [
 // See: scripts/generate-sw.js.
 // let STATIC_URLS = filesToCache;
 
-// if (process.env.NODE_ENV !== 'development') { // production
 const STATIC_URLS = filesToCache.concat(JSON.parse('%MANIFESTURLS%'));
-// }
 
 /**
  * installation event: it adds all the files to be cached

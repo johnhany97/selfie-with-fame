@@ -1,4 +1,5 @@
 import socketIOClient from 'socket.io-client';
+import DB, { OFFLINE_STORIES_STORE_NAME } from '../db/db';
 
 export const SOCKET_IO_ENDPOINT = 'https://localhost:3001';
 // Events - Stuff we listen for
@@ -15,6 +16,11 @@ class IO {
         reconnection: true,
         secure: true,
       });
+      IO.attachToEvent(EVENT_CONNECT, () => {
+        IO.emit(EMIT_EVENT_CONNECTED, this.state.username);
+        // Check if any data in IDB offline stories store
+        if (DB.getOfflineStories()
+      })
     }
   }
 

@@ -14,8 +14,6 @@ import IO, { EVENT_CONNECT, EVENT_NEW_STORY, EMIT_EVENT_CONNECTED } from './io/i
 
 import './index.css';
 
-const socketIOEndpoint = 'https://localhost:3001';
-
 class App extends React.Component {
   constructor() {
     super();
