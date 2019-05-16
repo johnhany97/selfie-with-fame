@@ -84,7 +84,6 @@ class GoogleMap extends Component {
     this.setState({
       city: data,
     });
-    console.log("local city change: " + this.state.city)
 
   };
 
@@ -118,7 +117,6 @@ class GoogleMap extends Component {
 
     }
     else {
-      console.log("not an address")
     }
   }
 
@@ -217,7 +215,6 @@ class GoogleMap extends Component {
         showError: false,
       });
     }).catch((err) => {
-      console.error(err.response.data);
       this.setState({
         showError: true,
       });
@@ -242,7 +239,6 @@ class GoogleMap extends Component {
     let city_displayEvents = city
     let start_date_displayEvents = this.state.end_date
     let mode = "onGoing"
-    console.log("the city is!!!!!!!!!!" + city + " and end date " +this.state.end_date, " start, ", start_date_displayEvents)
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
@@ -265,7 +261,6 @@ class GoogleMap extends Component {
         });
 
       }).catch((err) => {
-        console.error(err.response.data);
         this.setState({
           showError: true,
         });

@@ -41,19 +41,15 @@ module.exports.getStory = (req, res, next) => {
 
 
 module.exports.deleteEvent = (req, res, next) => {
-  console.log("ATTEMPTED TO DELETE EVENT WITH ID" + req.query._id);
   Event.remove({
     _id: req.query._id,
   }).then((eventInfo) => {
     if (eventInfo) {
-      console.log('event deleted from db');
       res.status(200).send('event deleted from db');
     } else {
-      console.error('event not found in db');
       res.status(404).send('no event with that event_id to delete');
     }
   }).catch((error) => {
-    console.error('problem communicating with db');
     res.status(500).send(error);
   });
 }
