@@ -14,7 +14,7 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
       res.status(200).send({
         stories,
@@ -72,19 +72,20 @@ module.exports.getStoriesTimeline = (req, res) => {
 }
 
 module.exports.createStory = (req, res) => {
-  const pictureParam = req.body.picture;
-  let pictureBlob;
-  let pictureBuffer;
-  if(pictureParam != null){
-    pictureBlob = pictureParam.replace(/^data:image\/\w+;base64,/, '');
-    pictureBuffer = new Buffer(pictureBlob, 'base64');
+  const picturesParam = req.body.pictures;
+
+  let pictureBuffers = [];
+
+  if (picturesParam) {
+    for (let i = 0; i < picturesParam.length; i++) {
+      let pictureBlob = picturesParam[i].replace(/^data:image\/\w+;base64,/, '');
+      pictureBuffers.push(new Buffer(pictureBlob, 'base64'));
+    }
   }
-
-
 
   const story = new Story({
     text: req.body.text,
-    picture: pictureBuffer,
+    pictures: pictureBuffers,
     event: req.body.event_id,
     postedBy: req.user._id
   });

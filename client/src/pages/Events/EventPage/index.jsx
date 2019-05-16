@@ -18,6 +18,7 @@ import {
 import LinkButton from '../../../components/LinkButton';
 import Layout from '../../../components/Layout';
 import Story from '../../../components/Stories/Story';
+import './index.css';
 
 class EventPage extends Component {
   constructor() {
@@ -175,26 +176,22 @@ class EventPage extends Component {
 
     return (
       <Layout title="Event page">
-        <div className="container" style={mTop}>
-          <div style={cardPanel}>
-            <h3>{name}</h3>
-            <p>{information}</p>
-            <p>{location["city"]}</p>
-            <p>{start_date}</p>
-            <p>{end_date}</p>
-            <div>
-              <a href={`/updateEvent/${this.props.match.params._id}`} style={crudButton}>Update</a>
-              <button
-                onClick={this.deleteEvent}
-                style={crudButton}
-                type="button"
-              >
-                Delete
-              </button>
+        <div className="event-header-container">
+          <div className="event-center-bounds event-header">
+            <div className="event-cover-img">
+            </div>
+            <div className="event-header-info">
+              <h3 className="event-header-name">{name}</h3>
+              <p>{information}</p>
+              <p>{location["city"]}</p>
+              <p>{start_date}</p>
+              <p>{end_date}</p>
             </div>
           </div>
         </div>
-        {stories && stories.map(story => <Story {...story} />)}
+        <div className="event-center-bounds">
+          {stories && stories.map(story => <Story {...story} />)}
+        </div>
       </Layout>
     );
   }

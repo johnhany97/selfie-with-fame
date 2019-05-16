@@ -51,7 +51,6 @@ class CreateEventPage extends Component {
     this.setState({
       location: data,
     });
-    console.log("handle location change" + this.state.location)
 
   };
 
@@ -59,7 +58,6 @@ class CreateEventPage extends Component {
     this.setState({
       city: data,
     });
-    console.log("handle city change" + this.state.city)
 
   };
 
@@ -92,11 +90,7 @@ class CreateEventPage extends Component {
     }
     var i =  Math.random()* 100
     var a = 360.0 /i ;
-    console.log("location before")
-    console.log(location)
     location =  [location[0] + -.0004 * Math.cos((+a*i) / 180 * Math.PI), location[1]+ -.0004 * Math.cos((+a*i) / 180 * Math.PI)]
-    console.log("location after")
-    console.log(location)
 
     axios.post(
       '/api/events/createEvent',
@@ -158,8 +152,6 @@ class CreateEventPage extends Component {
         error: false,
         // event_deleted,
       });
-      console.log("displayed events all ones");
-      console.log(this.state.displayedEvents);
     }).catch((err) => {
       console.error(err.response.data);
       this.setState({

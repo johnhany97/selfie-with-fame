@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import Event from '../../Event';
-import{
+import {
   noWidthBtn,
 } from '../../../styles/formStyles';
 import './index.css';
+import leftArrow from './../../../images/left-arrow.png';
+import rightArrow from './../../../images/right-arrow.png';
+import FormProgress from '../../FormProgress';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
@@ -53,10 +56,19 @@ class CreateStoryEvent extends Component {
 
   render() {
     const { events } = this.state;
-    const { values, handleEventChange, nextStep, previousStep } = this.props;
+    const { values, handleEventChange, nextStep, previousStep, step } = this.props;
     return (
       <div className="select-event-container">
-        <h1 className="select-event-title">Select event</h1>
+        <div class="form-navigation">
+          <button onClick={previousStep} type="button" className="navigation-btn-back">
+            <img className="navigation-arrow" src={leftArrow} alt="Back" />
+            Back
+          </button>
+          <FormProgress size={4} step={step} />
+          <button onClick={nextStep} disabled={values.event === null} className="navigation-btn-next">Next
+            <img className="navigation-arrow" src={rightArrow} alt="Next" />
+          </button>
+        </div>
         {events && events.map((event, index) => (
           <React.Fragment>
             <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
@@ -64,8 +76,6 @@ class CreateStoryEvent extends Component {
           </React.Fragment>
         ))}
         {(events === null || (events && events.length === 0)) && <p>No events available</p>}
-        <button onClick={nextStep} type="button" disabled={values.event === null} style={noWidthBtn}>Next</button>
-        <button onClick={previousStep} type="button" style={noWidthBtn}>Back</button>
       </div>
     );
   }

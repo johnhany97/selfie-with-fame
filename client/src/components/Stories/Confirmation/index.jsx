@@ -7,23 +7,39 @@ import {
   noWidthBtn,
 } from '../../../styles/formStyles.js';
 import './index.css';
+import leftArrow from './../../../images/left-arrow.png';
+import FormProgress from '../../FormProgress';
+import Photo from '../../Photo';
 
 const Confirmation = (props) => {
   const {
     values,
     createStory,
     previousStep,
+    step,
   } = props;
 
   return (
     <React.Fragment>
       <div className="story-confirmation-container">
-        {values && values.picture && <img id="photo" src={values.picture} alt="Story taken" />}
-        {values && values.event && <Event {...values.event} />}
-        Title: {values && values.text && <p>{values.text}</p>}
+        <div class="form-navigation">
+          <button type="submit" className="navigation-btn-back" onClick={previousStep}>
+            <img className="navigation-arrow" src={leftArrow} alt="Back" />
+            Back
+          </button>
+          <FormProgress size={4} step={step} />
+        </div>
+        <div className="thumbnails-container">
+          {values.pictures.map((data, index) =>
+            <Photo key={index} data={data} confirmation={true}/>
+          )}
+        </div>
+        <h5 className="confirmation-event-heading">Event</h5>
+        {values && values.event && <p>{values.event.event_name} </p>}
+        <h5 className="confirmation-caption-heading">Caption</h5>
+        {values && values.text && <p>{values.text}</p>}
         <div>
-          <button type="button" onClick={createStory} style={noWidthBtn}>Submit</button>
-          <button type="button" onClick={previousStep} style={noWidthBtn}>Back</button>
+          <button type="button" onClick={createStory} className="submit-story-btn">Submit</button>
         </div>
       </div>
     </React.Fragment>

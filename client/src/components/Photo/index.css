@@ -1,3 +1,22 @@
 .create-story-img{
-    width: 100%;
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    margin: 0 0.1rem;
+}
+
+.thumbnail-container{
+    position: relative;
+}
+
+.remove-picture-btn{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding-right: 4px;
+    padding-top: 4px;
+    color: #fff;
+
 }
