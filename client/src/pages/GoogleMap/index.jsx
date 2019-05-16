@@ -321,21 +321,7 @@ class GoogleMap extends Component {
           getEventsLocation={this.getEventsLocation}
           markers={displayedEvents}
         >
-          <Marker
-            onClick={this.onMarkerClick}
-            position={{
-              lat: this.state.selectedPlace[0],
-              lng: this.state.selectedPlace[1]
-            }}
-            name="Selected Location"
-            info="Where the new event will be."
-            icon={
-              "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-            }
-            draggable
-            onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
-          />
-
+          
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
@@ -347,6 +333,23 @@ class GoogleMap extends Component {
             />
 
           ))}
+          <Marker
+            onClick={this.onMarkerClick}
+            position={{
+              lat: this.state.selectedPlace[0],
+              lng: this.state.selectedPlace[1]
+            }}
+            name="Selected Location"
+            info="Where the new event will be."
+            icon={
+              "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            }
+            optimized= {false}
+            zIndex={99999999}
+            draggable
+            onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
+          />
+
 
           <InfoWindow
             marker={this.state.activeMarker}

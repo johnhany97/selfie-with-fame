@@ -72,7 +72,7 @@ class CreateEventPage extends Component {
       return;
     }
     event.preventDefault();
-    const {
+    let {
       name,
       information,
       start_date,
@@ -90,6 +90,14 @@ class CreateEventPage extends Component {
 
       return;
     }
+    var i =  Math.random()* 100
+    var a = 360.0 /i ;
+    console.log("location before")
+    console.log(location)
+    location =  [location[0] + -.0004 * Math.cos((+a*i) / 180 * Math.PI), location[1]+ -.0004 * Math.cos((+a*i) / 180 * Math.PI)]
+    console.log("location after")
+    console.log(location)
+
     axios.post(
       '/api/events/createEvent',
       {

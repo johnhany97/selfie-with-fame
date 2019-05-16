@@ -21,6 +21,9 @@ module.exports.createEvent = (req, res, next) => {
     location: {"coordinates": req.body.location, "city": req.body.city}
   });
 
+  //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
+
+
   event.save()
     .then((event) => {
       //res.send(event);
