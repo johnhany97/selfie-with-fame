@@ -300,7 +300,10 @@ module.exports.like = async (req, res) => {
 
   story.save()
     .then(() => {
-      return res.status(200).send();
+      return res.status(200).send({
+        ...story,
+        liked: true
+      });
     })
     .catch((err) => {
       return res.status(500).send(err);
@@ -345,7 +348,10 @@ module.exports.unlike = async (req, res) => {
 
   story.save()
     .then(() => {
-      return res.status(200).send();
+      return res.status(200).send({
+        ...story,
+        liked: false
+      });
     })
     .catch((err) => {
       return res.status(500).send(err);
