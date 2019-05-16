@@ -86,10 +86,8 @@ class Story extends React.Component {
   }
 
   addComment = () => {
-    var updatedComments = this.state.comments.concat(this.state.commentText);
+    var updatedComments = this.state.comments.concat({text: this.state.commentText, postedBy: null});
     this.setState({
-      liked: true,
-      numLikes: (this.state.numLikes + 1),
       comments: updatedComments,
     });
     const token = localStorage.getItem('JWT');
@@ -99,8 +97,7 @@ class Story extends React.Component {
         console.log("Comment successful");
       }).catch((error) => {
         this.setState({
-          liked: false,
-          numLikes: (this.state.numLikes - 1),
+
         });
       });
   }
