@@ -20,6 +20,12 @@ module.exports.getAllStories = (req, res) => {
     .sort({ createdAt: -1 })
     .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
+      stories.map((story) => {
+        return {
+          ...story,
+          liked: story.likes.indexOf(req.user._id) !== -1
+        };
+      });
       res.status(200).send({
         stories,
       });
@@ -43,6 +49,12 @@ module.exports.getStoriesByUser = (req, res) => {
     .sort({ createdAt: -1 })
     .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
     .then((stories) => {
+      stories.map((story) => {
+        return {
+          ...story,
+          liked: story.likes.indexOf(req.user._id) !== -1
+        };
+      });
       res.status(200).send({
         stories
       });
@@ -66,6 +78,12 @@ module.exports.getStoriesByEvent = (req, res) => {
     .sort({ createdAt: -1 })
     .populate('postedBy', '_id first_name last_name username')
     .then((stories) => {
+      stories.map((story) => {
+        return {
+          ...story,
+          liked: story.likes.indexOf(req.user._id) !== -1
+        };
+      });
       res.status(200).send({
         stories
       });
@@ -92,7 +110,13 @@ module.exports.getStoriesTimeline = async (req, res) => {
         return entry.story;
       })
       // sort
-      stories = stories.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1)
+      stories = stories.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
+      stories.map((story) => {
+        return {
+          ...story,
+          liked: story.likes.indexOf(req.user._id) !== -1
+        };
+      });
       res.status(200).send({stories});
     });
 }
@@ -164,7 +188,10 @@ module.exports.getStory = (req, res) => {
       if (!story) {
         return res.status(404).send();
       }
-      res.send(story);
+      res.send({
+        ...story,
+        liked: story.likes.indexOf(req.user._id) !== -1
+      });
     });
 }
 
@@ -270,6 +297,51 @@ module.exports.like = async (req, res) => {
   }
   
   story.likes.push(currentUser);
+
+  story.save()
+    .then(() => {
+      return res.status(200).send();
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    });
+}
+
+/**
+ * POST /api/stories/:id/unlike
+ *
+ * Used to unlike a story as the currently logged in user.
+ *
+ * Parameters:
+ * - id   => provided in the link, refers to the story ID
+ *
+ * Returns:
+ * - Status 200 if successfully unliked
+ * - Status 400 if error with provided parameters
+ * - Status 404 if story not found
+ * - Status 500 if error with saving new story with unlike
+*/
+module.exports.unlike = async (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('Invalid ID');
+  }
+
+  const story = await Story.findById(id);
+  if (!story) {
+    return res.status(404).send('Story not found');
+  }
+
+  const currentUser = req.user._id;
+
+  if (story.likes.indexOf(currentUser) === -1) {
+    return res.status(400).send('already unliked');
+  }
+
+  story.likes = story.likes.filter((like) => {
+    return like !== req.user._id;
+  });
 
   story.save()
     .then(() => {

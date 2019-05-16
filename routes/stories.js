@@ -12,7 +12,7 @@ router.route('/').all(authMiddleware.authenticate).get(storyController.getStorie
 // GET all stories for a given event
 router.route('/event/:id').all(authMiddleware.authenticate).get(storyController.getStoriesByEvent);
 // PUT a new story by the logged in user
-router.route('/').all(authMiddleware.authenticate).put(storyController.createStory);
+router.route('/').all(authMiddleware.authenticate).post(storyController.createStory);
 // GET a story by it's id, doesn't have to be the user's atm
 router.route('/:id').all(authMiddleware.authenticate).get(storyController.getStory);
 // DELETE a story if you're the creator
@@ -23,5 +23,7 @@ router.route('/timeline').all(authMiddleware.authenticate).get(storyController.g
 router.route('/:id/comment').all(authMiddleware.authenticate).post(storyController.comment);
 // POST a like to a story
 router.route('/:id/like').all(authMiddleware.authenticate).post(storyController.like);
+// POST a unlike to a story
+router.route('/:id/unlike').all(authMiddleware.authenticate).post(storyController.unlike);
 
 module.exports = router;
