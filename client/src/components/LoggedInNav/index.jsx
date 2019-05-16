@@ -10,6 +10,7 @@ class LoggedInNav extends Component {
   logout = (event) => {
     event.preventDefault();
     localStorage.removeItem('JWT');
+    localStorage.removeItem('username');
     window.location.reload();
   }
 

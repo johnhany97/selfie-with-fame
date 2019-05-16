@@ -89,6 +89,10 @@
     padding-left: 1rem;
 }
 
+.comment-username{
+    font-weight: 700;
+}
+
 .comment-box{
     flex-grow: 1;
 }
