@@ -101,22 +101,20 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
       {'location.city': req.body.city_displayEvents},
       {$or:
         [
-          {'start_date': 
-            {$and:
-              [
-                {$gte: req.body.start_date_displayEvents}, 
-                {$lte: req.body.end_date_displayEvents}
-              ]
-            }
+          {$and:
+            [
+              {'start_date' :{$gte: req.body.start_date_displayEvents}}, 
+              {'start_date' : {$lte: req.body.end_date_displayEvents}}
+            ] 
           },
-          {'end_date' : 
-            {$and:
-              [
-                {$gte: req.body.start_date_displayEvents}, 
-                {$lte: req.body.end_date_displayEvents}
-              ] 
-            }
+
+          {$and:
+            [
+              {'end_date' :{$gte: req.body.start_date_displayEvents}}, 
+              {'end_date' : {$lte: req.body.end_date_displayEvents}}
+            ] 
           },
+
           {$and:
             [
               {'start_date': {$lte: req.body.start_date_displayEvents}},
@@ -127,6 +125,28 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
       }
     ]
   };
+
+  // let query = {
+  //   $and:
+  //   [
+  //     {'location.city': req.body.city_displayEvents},
+  //     {$or:
+  //       [
+  //         {'start_date': {$lte: req.body.start_date_displayEvents} },
+  //         {'end_date' : 
+  //           {$and:
+  //             [
+  //               {$gte: req.body.start_date_displayEvents}, 
+  //               {$lte: req.body.end_date_displayEvents}
+  //             ] 
+  //           }
+  //         },
+
+  //       ]
+  //     }
+  //   ]
+  // };
+
   // {
   //   $and : [
   //       { $or : [ { price : 0.99 }, { price : 1.99 } ] },

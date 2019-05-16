@@ -4,7 +4,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 
@@ -20,24 +19,19 @@ import './index.css';
 import searchButton from './../../images/round-search.png';
 import CurrentLocation from '../../components/Map/Map';
 
-class GoogleMap extends Component {
+class SearchEvents extends Component {
   constructor(props) {
     super(props);
     this.autocomplete = null;
-    this.mapElement = React.createRef();
     this.placeDetails = null
     this.geocoder = null
     /*global google*/
     this.state = {
-      showingInfoWindow: false,
-      activeMarker: {},
-      selectedPlace: [],
       query: '',
       city: 'Sheffield',
       showError: false,
       displayedEvents: [],
-      marker_clicked: ' ',
-      selected_event: [],
+      eventQuery: '',
 
       end_date: new Date(),
       start_date: new Date(),
@@ -69,12 +63,6 @@ class GoogleMap extends Component {
 
   }
 
-  handleLocalCityChange = (data) => {
-    this.setState({
-      city: data,
-    });
-
-  };
 
   handlePlaceSelect() {
 
@@ -111,21 +99,6 @@ class GoogleMap extends Component {
 
 
 
-  onMarkerClick = (props, marker, e) => this.setState({
-    activeMarker: marker,
-    showingInfoWindow: true,
-    marker_clicked: "my marker",
-    selected_event: props
-
-  });
-
-  onOtherMarkerClick = (props, marker, e) => this.setState({
-    activeMarker: marker,
-    showingInfoWindow: true,
-    marker_clicked: "other event marker",
-    selected_event: props,
-
-  });
 
   handleChange = name => (event) => {
     this.setState({
@@ -133,82 +106,9 @@ class GoogleMap extends Component {
     });
   };
 
-  onClose = (props) => {
-    if (this.state.showingInfoWindow) {
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null,
-      });
-    }
-  };
+  
 
-  handleMarkerDragEnd(props, marker, coord) {
-    const latitude = coord.latLng.lat();
-    const longitude = coord.latLng.lng();
-
-    //let place = this.placeDetails.getDetails(coord)
-    /*global google*/
-
-    var city_state = this.state.city
-
-    this.geocoder.geocode({ 'location': { "lat": latitude, "lng": longitude } }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          results[0].address_components.map(i => {
-            if (i.types[0] == "postal_town" || i.types[0] == "locality") {
-              city_state = i.long_name
-            }
-          });
-        }
-      }
-
-      this.setState({
-        selectedPlace: [latitude, longitude],
-        activeMarker: marker,
-        showingInfoWindow: true,
-        city: city_state,
-      });
-
-      const { handleLocationChange } = this.props;
-      const { handleCityChange } = this.props;
-
-
-      handleLocationChange(this.state.selectedPlace);
-      handleCityChange(this.state.city);
-      this.getEventsByLocationAndDate();
-
-    });
-  }
-
-  getEvents = async () => {
-    const token = localStorage.getItem('JWT');
-    if (token == null) {
-      this.setState({
-        showError: true,
-      });
-      return;
-    }
-    axios.get('/api/events/getEvents', {
-      params: {
-      },
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    }).then((res) => {
-      const { data } = res;
-      const {
-        events,
-      } = data;
-      this.setState({
-        displayedEvents: events,
-        showError: false,
-      });
-    }).catch((err) => {
-      this.setState({
-        showError: true,
-      });
-    });
-  }
+  
 
   getEventsByLocationAndDate = async () => {
     const token = localStorage.getItem('JWT');
@@ -221,13 +121,12 @@ class GoogleMap extends Component {
     const {
       start_date,
       end_date,
-      location,
+      mode,
       city,
     } = this.state;
-    let end_date_displayEvents = this.state.end_date
+    let end_date_displayEvents =start_date
     let city_displayEvents = city
-    let start_date_displayEvents = this.state.end_date
-    let mode = "onGoing"
+    let start_date_displayEvents = end_date
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
@@ -257,17 +156,9 @@ class GoogleMap extends Component {
   }
 
 
-  arrayTodict(array) {
-    var dictionary_loc = { lat: array[0], lng: array[1] };
-    return dictionary_loc;
-  }
+  
 
-  handleSelectedLocationChange = (data) => {
-    this.setState({
-      selectedPlace: data,
-    });
-  };
-
+  
 
   render() {
     const {
@@ -282,19 +173,46 @@ class GoogleMap extends Component {
           <h3 className="search-location-title">Select Location</h3>
           <hr className="search-location-divider" />
           <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
-            <div className="search-location-row">  
-              <TextField
+            <TextField
+                style={inputStyle}
+                label="Address"
+                value={this.state.eventQuery}
+                onChange={this.handleChange('eventQuery')}
+                placeholder="All"
+            />
+            <TextField
                 style={inputStyle}
                 id="autocomplete"
                 label="Address"
                 value={this.state.query}
                 onChange={this.handleChange('query')}
-                placeholder="Current Location"
+                placeholder="Sheffield"
+            />
+            <TextField
+                style={inputStyle}
+                id="start_date"
+                label="Date and Time of Event Start"
+                type="datetime-local"
+                onChange={this.handleChange('start_date')}
+                value={start_date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
               />
-              <button type="submit" className="round-search-btn">
+            <TextField
+                style={inputStyle}
+                id="end_date"
+                label="Date and Time of Event End"
+                type="datetime-local"
+                onChange={this.handleChange('end_date')}
+                value={end_date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+            />
+            <button type="submit" className="round-search-btn">
                 <img className="search-icon" src={searchButton} alt="Search Location Button"/>
-              </button>
-            </div>
+            </button>
             {showError &&  (
                 <p
                   style={errorMessage}
