@@ -102,80 +102,19 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-const Connection = require('../models/connection');
-const User = require('../models/user');
-const Story = require('../models/story');
-const NewsFeed = require('../models/newsfeed');
-const sanitizeHtml = require('sanitize-html');
+
+/**  
+ * Socket IO Event Handlers associations
+ * 
+ * Associate events with their relevant handlers
+ */
+
+const ioHandlers = require('../io-handlers/io-handlers');
 
 io.on('connect' , (socket) => {
-  socket.on('connected', async (username) => {
-    // Remove any of their old connections
-    await Connection.remove({user: username});
-    // Add new connection
-    const connection = new Connection({
-      socketId: socket.id,
-      user: username,
-    });
-    connection.save();
-  });
+  socket.on('connected', (username) => ioHandlers.onConnect(io, socket, username));
 
-  socket.on('disconnect', () => {
-    Connection.findOne({ socketId: socket.id }).remove().exec();
-  });
+  socket.on('disconnect', () => ioHandlers.onDisconnect(io, socket));
 
-  socket.on('post_story', async (body) => {
-    const username = body.username;
-    const user = await User.findOne({ username });
-
-    const picturesParam = body.pictures;
-
-    let pictureBuffers = [];
-
-    if (picturesParam) {
-      for (let i = 0; i < picturesParam.length; i++) {
-        let pictureBlob = picturesParam[i].replace(/^data:image\/\w+;base64,/, '');
-        pictureBuffers.push(new Buffer(pictureBlob, 'base64'));
-      }
-    }
-
-    const story = new Story({
-      text: sanitizeHtml(body.text),
-      pictures: pictureBuffers,
-      event: body.event_id,
-      postedBy: user._id
-    });
-
-    story.save()
-      .then((story) => {
-        // Add to news feed
-        User.findById(user._id)
-          .then(async (user) => {
-            // 1- Get Followers
-            let followers = user.followers;
-            // 2- Create entries for them
-            let newsFeed = followers.map((follower) => {
-              return {
-                owner: follower._id,
-                story: story._id
-              };
-            });
-            // 3- Save these entries
-            await NewsFeed.insertMany(newsFeed);
-            // 4- Inform the followers there's an update using Sockets
-            followers.map(async (follower) => {
-              const user = await User.findById(follower);
-              Connection.findOne({ user: user.username })
-                .then((connection) => {
-                  if (connection) {
-                    io.to(connection.socketId).emit('new_story');
-                  }
-                })
-            })
-          });
-      })
-      .catch((e) => {
-        res.status(400).send(e);
-      });
-  });
+  socket.on('post_story', (body) => ioHandlers.onPostStory(io, socket, body));
 });
