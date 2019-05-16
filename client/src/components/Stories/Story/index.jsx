@@ -18,6 +18,7 @@ class Story extends React.Component {
       pictures: [],
       event: '',
       likes: [],
+      numLikes: 0,
       comments: [],
       postedBy: '',
       createdAt: '',
@@ -29,6 +30,7 @@ class Story extends React.Component {
     this.setState({
       ...this.props,
     });
+    this.state.numLikes = this.props.likes.length;
     this.fetchStory();
   }
 
@@ -51,17 +53,21 @@ class Story extends React.Component {
   }
 
   likeStory = (e) => {
-    console.log("Clicked");
+    this.setState({
+      liked: true,
+      numLikes: (this.state.numLikes + 1),
+    });
     const token = localStorage.getItem('JWT');
     e.preventDefault();
     axios.post(`/api/stories/${this.props._id}/like`, {},
      { headers: { Authorization: `JWT ${token}`} })
       .then(() => {
-        // TODO: Snackbar of success
-        this.fetchStory();
-        // Redirect to other page?
+        console.log("Like successful");
       }).catch((error) => {
-        console.log(error);
+        this.setState({
+          liked: false,
+          numLikes: (this.state.numLikes - 1),
+        });
       });
   }
 
@@ -83,6 +89,7 @@ class Story extends React.Component {
       postedBy,
       likes,
       liked,
+      numLikes,
     } = this.props;
 
     let picBuffers = [];
@@ -110,7 +117,7 @@ class Story extends React.Component {
           {picBuffers && (<StoryStepper pictures={picBuffers} />)}
           <div className="story-btns">
             {heartIcon}
-            <p className="story-likes">{this.state.likes.length}</p>
+            <p className="story-likes">{this.state.numLikes}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
@@ -133,7 +140,7 @@ class Story extends React.Component {
           </React.Fragment>
           <div className="story-btns">
             {heartIcon}
-            <p className="story-likes">{this.state.likes.length}</p>
+            <p className="story-likes">{this.state.numLikes}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
@@ -152,7 +159,7 @@ class Story extends React.Component {
           </div>
           <div className="story-btns">
             {heartIcon}
-            <p className="story-likes">{this.state.likes.length}</p>
+            <p className="story-likes">{this.state.numLikes}</p>
           </div>
           <div className="story-info">
             <div className="story-caption">
