@@ -231,7 +231,7 @@ class GoogleMap extends Component {
       location,
       city,
     } = this.state;
-
+    console.log("the city is!!!!!!!!!!" + city)
     axios.post('/api/events/getEventsByLocation',
       {
         city
