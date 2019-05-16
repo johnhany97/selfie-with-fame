@@ -120,7 +120,7 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
               {'start_date': {$lte: req.body.start_date_displayEvents}},
               {'end_date': {$gte: req.body.end_date_displayEvents}}
             ]
-          },
+          }
         ]
       }
     ]
@@ -133,14 +133,8 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   //     {$or:
   //       [
   //         {'start_date': {$lte: req.body.start_date_displayEvents} },
-  //         {'end_date' : 
-  //           {$and:
-  //             [
-  //               {$gte: req.body.start_date_displayEvents}, 
-  //               {$lte: req.body.end_date_displayEvents}
-  //             ] 
-  //           }
-  //         },
+  //         {'end_date': {$lte: req.body.end_date_displayEvents} },
+
 
   //       ]
   //     }
