@@ -13,10 +13,11 @@ import './index.css';
 const Event = (props) => {
   const {
     _id,
-    event_name,
+    name,
     information,
-    date_time,
+    start_date,
     location,
+    end_date,
     selected,
   } = props;
 
@@ -27,9 +28,9 @@ const Event = (props) => {
       <div className="event-card-panel">
         <div className="event-card-img" />
         <div className="event-card-info">
-          <p className="event-card-date">{date_time}</p>
-          <h3 className="event-card-title">{event_name}</h3>
-          <p className="event-card-location">{location}</p>
+          <p className="event-card-date">{start_date + '-' + end_date}</p>
+          <h3 className="event-card-title">{name}</h3>
+          <p className="event-card-location">{location['city']}</p>
           {selected && (
             <p>
               Selected
@@ -44,9 +45,10 @@ const Event = (props) => {
 
 Event.propTypes = {
   _id: PropTypes.string,
-  event_name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   information: PropTypes.string.isRequired,
-  date_time: PropTypes.string.isRequired,
+  start_date: PropTypes.string.isRequired,
+  end_date: PropTypes.string.isRequired,
   location: PropTypes.object,
   selected: PropTypes.bool,
 };

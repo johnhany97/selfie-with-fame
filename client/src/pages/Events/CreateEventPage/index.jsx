@@ -7,6 +7,7 @@ import axios from 'axios';
 import Layout from '../../../components/Layout';
 import GoogleMap from '../../GoogleMap';
 
+
 import {
   inputStyle,
 } from '../../../styles/buttonStyles';
@@ -19,6 +20,7 @@ import {
   errorMessage,
 } from '../../../styles/formStyles';
 import SubmitButton from '../../../components/SubmitButton';
+import './index.css';
 
 class CreateEventPage extends Component {
   constructor(props) {
@@ -26,13 +28,16 @@ class CreateEventPage extends Component {
 
     this.state = {
       eventID: '',
-      event_name: '',
+      name: '',
       information: '',
-      date_time: '',
+      start_date: '',
+      end_date: '',
       location: [],
+      city: '',
       messageFromServer: '',
       showError: false,
       createEventError: false,
+      displayedEvents: [],
     };
   }
 
@@ -47,6 +52,15 @@ class CreateEventPage extends Component {
     this.setState({
       location: data,
     });
+
+  };
+
+  handleCityChange = (data) => {
+    this.setState({
+      city: data,
+    });
+    console.log("high level city change " + this.state.city)
+
   };
 
   createEvent = (event) => {
@@ -58,26 +72,37 @@ class CreateEventPage extends Component {
       return;
     }
     event.preventDefault();
-    const {
-      event_name,
+    let {
+      name,
       information,
-      date_time,
+      start_date,
+      end_date,
       location,
+      city,
     } = this.state;
-    if (event_name === '' || date_time === '' || location === '' || information === '') {
+    if (name === '' || information === ''||start_date === '' || end_date === '' || location === '' || city === '') {
       this.setState({
         showError: true,
         createEventError: true,
       });
+   
+
+
       return;
     }
+    var i =  Math.random()* 100
+    var a = 360.0 /i ;
+    location =  [location[0] + -.0004 * Math.cos((+a*i) / 180 * Math.PI), location[1]+ -.0004 * Math.cos((+a*i) / 180 * Math.PI)]
+
     axios.post(
       '/api/events/createEvent',
       {
-        event_name,
+        name,
         information,
-        date_time,
+        start_date,
+        end_date,
         location,
+        city,
       },
       {
         headers: {
@@ -99,34 +124,77 @@ class CreateEventPage extends Component {
     });
   }
 
+  getEvents = async () => {
+    const token = localStorage.getItem('JWT');
+    if (token == null) {
+      this.setState({
+        error: true,
+        // isLoading: false,
+      });
+      return;
+    }
+    axios.get('/api/events/getEvents', {
+      params: {
+      },
+      headers: {
+        Authorization: `JWT ${token}`,
+      },
+    }).then((res) => {
+      const { data } = res;
+      const {
+        events,
+        // showError,
+        // isLoading,
+        // error,
+        // event_deleted,
+      } = data;
+      this.setState({
+        displayedEvents: events,
+        // isLoading: false,
+        error: false,
+        // event_deleted,
+      });
+    }).catch((err) => {
+      console.error(err.response.data);
+      this.setState({
+        error: true,
+      });
+    });
+  }
+
+  async componentDidMount() {
+    await this.getEvents();
+  }
+
   // eslint-disable-next-line consistent-return
   render() {
     const {
       eventID,
-      event_name,
+      name,
       information,
+      start_date,
+      end_date,
       location,
-      date_time,
+      city,
       messageFromServer,
       showError,
       createEventError,
     } = this.state;
-    console.log(`the type of location is ${typeof (location)} ${location[0]} ${location[1]}`);
 
     if (messageFromServer === '') {
       return (
         <Layout title="Create Event">
 
           <div className="container" style={mTop}>
-            <h3 style={formTitle}>Create Event</h3>
-            <hr style={formDividor} />
+            <h3 className="create-event-title">Create Event</h3>
+            <hr className="create-event-divider" />
             <form onSubmit={this.createEvent} className="panel-center">
               <TextField
                 style={inputStyle}
-                id="event_name"
+                id="name"
                 label="Event Name"
-                value={event_name}
-                onChange={this.handleChange('event_name')}
+                value={name}
+                onChange={this.handleChange('name')}
                 placeholder="Event Name"
               />
               <TextField
@@ -139,15 +207,31 @@ class CreateEventPage extends Component {
               />
               <TextField
                 style={inputStyle}
-                id="date_time"
-                label="Date and Time of Event"
+                id="start_date"
+                label="Date and Time of Event Start"
                 type="datetime-local"
-                onChange={this.handleChange('date_time')}
-                value={date_time}
+                onChange={this.handleChange('start_date')}
+                value={start_date}
                 InputLabelProps={{
                   shrink: true,
                 }}
               />
+               <TextField
+                style={inputStyle}
+                id="end_date"
+                label="Date and Time of Event End"
+                type="datetime-local"
+                onChange={this.handleChange('end_date')}
+                value={end_date}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <GoogleMap
+                handleLocationChange={this.handleLocationChange}
+                handleCityChange={this.handleCityChange}
+              />
+
               {showError === true && createEventError === true && (
                 <p
                   style={errorMessage}
@@ -155,15 +239,9 @@ class CreateEventPage extends Component {
                   *Event name, info, location and date/time are required fields.
                 </p>
               )}
-              <SubmitButton
-                buttonStyle={formSubmitButton}
-                buttonText="Create Event"
-              />
+              <button className="create-event-btn" type="submit">Submit</button>
               <a href="/events" style={cancelLink}>Cancel</a>
             </form>
-            <GoogleMap
-              handleLocationChange={this.handleLocationChange}
-            />
           </div>
         </Layout>
       );
