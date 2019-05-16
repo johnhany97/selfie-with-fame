@@ -81,7 +81,7 @@ module.exports.getStoriesByEvent = (req, res) => {
       stories.map((story) => {
         return {
           ...story,
-          liked: story.likes.indexOf(req.user._id) !== -1
+          liked: story.likes.indexOf(req.user._id) !== -1,
         };
       });
       res.status(200).send({
@@ -190,7 +190,7 @@ module.exports.getStory = (req, res) => {
       }
       res.send({
         ...story,
-        liked: story.likes.indexOf(req.user._id) !== -1
+        liked: story.likes.indexOf(req.user._id) !== -1,
       });
     });
 }

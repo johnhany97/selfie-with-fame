@@ -27,9 +27,6 @@ class StoryStepper extends React.Component {
 
     render() {
         const { pictures } = this.props;
-        if(pictures.length > 0 ){
-            console.log(pictures[0]);
-        }
         const { activeStep } = this.state;
         const maxSteps = pictures ? pictures.length : 0;
 

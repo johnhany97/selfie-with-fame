@@ -94,7 +94,7 @@ class Story extends React.Component {
 
     let heartIcon;
     if(this.state.liked){
-      heartIcon = <img onClick={this.likeStory} className="heart-story-btn" src={heartFilled} alt="Heart Story button" />;
+      heartIcon = <img onClick={this.likeStory} className="heart-story-btn-filled" src={heartFilled} alt="Heart Story button" />;
     } else{
       heartIcon = <img onClick={this.likeStory} className="heart-story-btn" src={heartOutline} alt="Heart Story button" />;
     }

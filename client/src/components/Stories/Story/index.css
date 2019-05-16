@@ -60,6 +60,11 @@
     height: 35px;
 }
 
+.heart-story-btn-filled{
+    width: 28px;
+    height: 28px;
+}
+
 .story-info{
     padding: 0.5rem 1rem;
 }
