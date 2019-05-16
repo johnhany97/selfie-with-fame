@@ -93,15 +93,25 @@ module.exports.getEventsByLocation = (req, res, next) => {
 
 module.exports.getEventsByLocationAndDate = (req, res, next) => {
 
-  console.log("city and end date " + req.body.city_displayEvents + ", " + req.body.end_date_displayEvents)
 
-  var query = {
+  let query = {
     'location.city': req.body.city_displayEvents,
-    'end_date' : {$gte: req.body.end_date_displayEvents},
-
-    
+    'start_date' : {$gte: req.body.start_date_displayEvents},
+    'end_date' : {$lte: req.body.end_date_displayEvents},
 
   };
+
+  if (req.body.mode == "onGoing") {
+     query = {
+      'location.city': req.body.city_displayEvents,
+      'start_date' : {$gte: req.body.start_date_displayEvents},
+      'end_date' : {$gte: req.body.end_date_displayEvents},
+  
+    };
+  }
+
+ 
+
   // if (mode == "all") {
   //   query = {};
   // }
