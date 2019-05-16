@@ -8,6 +8,8 @@ import userProfilePlaceholder from '../../../images/event-img-placeholder.jpg';
 import heartOutline from './heart-outline.png';
 import heartFilled from './heart-filled.png';
 import StoryStepper from '../../StoryStepper';
+import { TextField } from '@material-ui/core';
+import classNames from 'classnames';
 
 class Story extends React.Component {
   constructor(props) {
@@ -23,7 +25,9 @@ class Story extends React.Component {
       postedBy: '',
       createdAt: '',
       updatedAt: '',
+      commentText: '',
     };
+
   }
 
   componentDidMount() {
@@ -80,6 +84,31 @@ class Story extends React.Component {
     var convertedDate = date + ' ' + month + ' ' + year;
     return convertedDate;
   }
+
+  addComment = () => {
+    var updatedComments = this.state.comments.concat(this.state.commentText);
+    this.setState({
+      liked: true,
+      numLikes: (this.state.numLikes + 1),
+      comments: updatedComments,
+    });
+    const token = localStorage.getItem('JWT');
+    axios.post(`/api/stories/${this.props._id}/comment`, {text: this.state.commentText},
+     { headers: { Authorization: `JWT ${token}`} })
+      .then(() => {
+        console.log("Comment successful");
+      }).catch((error) => {
+        this.setState({
+          liked: false,
+          numLikes: (this.state.numLikes - 1),
+        });
+      });
+  }
+
+  handleChange = (event) => {
+    this.setState({commentText: event.target.value});
+  }
+
   render() {
     const {
       text,
@@ -124,6 +153,23 @@ class Story extends React.Component {
               {text}
             </div>
           </div>
+          <div className="comments">
+            {this.state.comments.map(comment => 
+              <p>{comment.text}</p>
+            )}
+          </div>
+          <div className="comment-container">
+              <TextField
+                id="comment"
+                className="comment-box"
+                placeholder="Comment"
+                margin="normal"
+                onChange={this.handleChange}
+              />
+            <button className="comment-post-btn" onClick={this.addComment}>
+              Post
+            </button>
+          </div>
         </div>
       );
     }
@@ -147,6 +193,23 @@ class Story extends React.Component {
               {text}
             </div>
           </div>
+          <div className="comments">
+            {this.state.comments.map(comment => 
+              <p>{comment.text}</p>
+            )}
+          </div>
+          <div className="comment-container">
+              <TextField
+              id="comment"
+              className="comment-box"
+              placeholder="Comment"
+              margin="normal"
+              onChange={this.handleChange}
+            />
+            <button className="comment-post-btn" onClick={this.addComment}>
+              Post
+            </button>
+          </div>
         </div>
       );
     } else{
@@ -165,6 +228,23 @@ class Story extends React.Component {
             <div className="story-caption">
               {text}
             </div>
+          </div>
+          <div className="comments">
+            {this.state.comments.map(comment => 
+              <p>{comment.text}</p>
+            )}
+          </div>
+          <div className="comment-container">
+              <TextField
+              id="comment"
+              className="comment-box"
+              placeholder="Comment"
+              margin="normal"
+              onChange={this.handleChange}
+            />
+            <button className="comment-post-btn" onClick={this.addComment}>
+              Post
+            </button>
           </div>
         </div>
       );

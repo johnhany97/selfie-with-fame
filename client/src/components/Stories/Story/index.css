@@ -72,3 +72,31 @@
 .story-caption{
     color: #333232;
 }
+
+.comment-container{
+    padding: 0 0.5rem;
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0.2rem;
+    padding-left: 1rem;
+}
+
+.comments{
+    display: flex;
+    flex-direction: column;
+    max-height: 300px;
+    overflow-y: scroll;
+    padding-left: 1rem;
+}
+
+.comment-box{
+    flex-grow: 1;
+}
+
+.comment-post-btn{
+    color: #fc474a;
+    padding: 0.25rem 0.1rem;
+    background: transparent;
+    border: 0;
+    outline: none;
+}
