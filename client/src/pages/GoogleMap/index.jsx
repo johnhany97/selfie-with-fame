@@ -25,7 +25,6 @@ import SubmitButton from '../../components/SubmitButton';
 import {
   saveButton,
 } from '../../styles/buttonStyles';
-// import CurrentLocation from '../../components/Map/Map';
 import './index.css';
 import searchButton from './../../images/round-search.png';
 import CurrentLocation from '../../components/Map/Map';
@@ -237,7 +236,7 @@ class GoogleMap extends Component {
     } = this.state;
     let mode = "locationOngoing"
     console.log("the city is!!!!!!!!!!" + city)
-    axios.post('/api/events/getEventsByLocation',
+    axios.post('/api/events/getEventsByLocationAndDate',
       {
         city,
         mode

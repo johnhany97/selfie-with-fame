@@ -92,9 +92,10 @@ module.exports.getEventsByLocation = (req, res, next) => {
 
 
 module.exports.getEventsByLocationAndDate = (req, res, next) => {
-  let today =  new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59);
-  let lastWeek = new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59)- (7 * 24 * 60 * 60 * 1000);
-  console.log("todate is" + today + "next week is " + nextWeek);
+  let today = new Date();
+  // let today =  new Date(now.getFullYear(),now.getMonth(),now.getDate()+1,0,59,59);
+  let lastWeek = new Date(today.getTime() - (7 * 24 * 60 * 60 * 1000));
+  console.log("todate is" + today + "next week is " + lastWeek);
 
   const mode = req.body.mode;
   var query = {};
@@ -107,16 +108,17 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   else if (mode == "locationOngoing") {
     query = {
       'location.city': req.body.city,
-      'startDate' : {$lte: today},
-      'endDate': {$gte: today}
+      // 'startDate' : {$lte: today},
+      'end_date': {$gte: today}
     } 
+    console.log("location on going")
 
   }
   else if (mode == "locationLastWeek") {
     query = {
       'location.city': req.body.city,
-      'startDate' : {$lte: today},
-      'endDate': {$gte: lastWeek}
+      'start_date' : {$lte: today},
+      'end_date': {$gte: lastWeek}
     } 
 
   }
@@ -124,8 +126,8 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   else if (mode == "locationSetDates") {
     query = {
       'location.city': req.body.city,
-      'startDate' : req.body.startDate,
-      'endDate': req.body.endDate
+      'start_date' : req.body.startDate,
+      'end_date': req.body.endDate
     } 
 
   }
