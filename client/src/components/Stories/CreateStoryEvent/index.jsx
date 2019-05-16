@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
 import Event from '../../Event';
 import {
@@ -12,6 +13,8 @@ import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
 import rightArrow from './../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
+import SelectEventMap from '../../SelectEventMap';
+import SearchEvents from '../../Search/SearchEvents';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
@@ -54,6 +57,13 @@ class CreateStoryEvent extends Component {
     previousStep();
   }
 
+  handleDisplayedEventsChange = (data) => {
+    this.setState({
+      events: data,
+    });
+
+  };
+
   render() {
     const { events } = this.state;
     const { values, handleEventChange, nextStep, previousStep, step } = this.props;
@@ -69,13 +79,18 @@ class CreateStoryEvent extends Component {
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>
         </div>
-        {events && events.map((event, index) => (
+        <SearchEvents
+          handleDisplayedEventsChange = {this.handleDisplayedEventsChange}
+        >
+
+        </SearchEvents>
+        {/* {events && events.map((event, index) => (
           <React.Fragment>
             <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
             <button onClick={() => handleEventChange(event)} type="button" style={noWidthBtn}>Select</button>
           </React.Fragment>
         ))}
-        {(events === null || (events && events.length === 0)) && <p>No events available</p>}
+        {(events === null || (events && events.length === 0)) && <p>No events available</p>} */}
       </div>
     );
   }

@@ -98,6 +98,7 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   let query = {
     $and:
     [
+      {'name': req.body.eventQuery},
       {'location.city': req.body.city_displayEvents},
       {$or:
         [

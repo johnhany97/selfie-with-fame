@@ -6,18 +6,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
+import { GoogleApiWrapper, InfoWindow, Marker } from 'google-maps-react';
 
-import {
-  errorMessage,
-} from '../../styles/formStyles';
 
-import {
-  inputStyle,
-} from '../../styles/buttonStyles';
 
 import './index.css';
-import searchButton from './../../images/round-search.png';
-import CurrentLocation from '../../components/Map/Map';
+import searchButton from '../../../images/round-search.png';
+import { inputStyle } from '../../../styles/buttonStyles';
+import { errorMessage } from '../../../styles/formStyles';
 
 class SearchEvents extends Component {
   constructor(props) {
@@ -35,7 +31,6 @@ class SearchEvents extends Component {
 
       end_date: new Date(),
       start_date: new Date(),
-      mode: "onGoing",
       // start_date: new Date((new Date()).setFullYear( new Date().getFullYear() - 1 )),
 
     };
@@ -121,8 +116,8 @@ class SearchEvents extends Component {
     const {
       start_date,
       end_date,
-      mode,
       city,
+      eventQuery
     } = this.state;
     let end_date_displayEvents =start_date
     let city_displayEvents = city
@@ -132,7 +127,7 @@ class SearchEvents extends Component {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
-        mode
+        eventQuery,
       },
       {
         headers: {
@@ -175,7 +170,7 @@ class SearchEvents extends Component {
           <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
             <TextField
                 style={inputStyle}
-                label="Address"
+                label="Event"
                 value={this.state.eventQuery}
                 onChange={this.handleChange('eventQuery')}
                 placeholder="All"
@@ -183,7 +178,7 @@ class SearchEvents extends Component {
             <TextField
                 style={inputStyle}
                 id="autocomplete"
-                label="Address"
+                label="City"
                 value={this.state.query}
                 onChange={this.handleChange('query')}
                 placeholder="Sheffield"
@@ -191,10 +186,10 @@ class SearchEvents extends Component {
             <TextField
                 style={inputStyle}
                 id="start_date"
-                label="Date and Time of Event Start"
+                label="Event occuring between this date "
                 type="datetime-local"
                 onChange={this.handleChange('start_date')}
-                value={start_date}
+                value={this.state.start_date}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -202,10 +197,10 @@ class SearchEvents extends Component {
             <TextField
                 style={inputStyle}
                 id="end_date"
-                label="Date and Time of Event End"
+                label="and this date"
                 type="datetime-local"
                 onChange={this.handleChange('end_date')}
-                value={end_date}
+                value={this.state.end_date}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -223,75 +218,19 @@ class SearchEvents extends Component {
 
           </form>
         </div>
-
-        <CurrentLocation
-          ref={this.mapElement}
-          centerAroundCurrentLocation
-          google={this.props.google}
-          handleLocationChange={this.props.handleLocationChange}
-          handleCityChange={this.props.handleCityChange}
-          handleSelectedLocationChange={this.handleSelectedLocationChange}
-          handleLocalCityChange={this.handleLocalCityChange}
-          getEventsByLocationAndDate={this.getEventsByLocationAndDate}
-          markers={displayedEvents}
-        >
-          
-          {displayedEvents.map(event => (
-            <Marker key={event._id}
-              onClick={this.onOtherMarkerClick}
-              name={event.name}
-              info={event.information}
-              position={this.arrayTodict(event.location["coordinates"])}
-
-
-            />
-
-          ))}
-          <Marker
-            onClick={this.onMarkerClick}
-            position={{
-              lat: this.state.selectedPlace[0],
-              lng: this.state.selectedPlace[1]
-            }}
-            name="Selected Location"
-            info="Where the new event will be."
-            icon={
-              "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-            }
-            optimized= {false}
-            zIndex={99999999}
-            draggable
-            onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
-          />
-
-
-          <InfoWindow
-            marker={this.state.activeMarker}
-            visible={this.state.showingInfoWindow}
-            onClose={this.onClose}
-          >
-            <div>
-              <h4>{this.state.selected_event.name}</h4>
-              <p> {this.state.selected_event.info}</p>
-
-            </div>
-          </InfoWindow>
-        </CurrentLocation>
-
       </div>
     );
 
   }
 }
 
-GoogleMap.propTypes = {
+SearchEvents.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      handleLocationChange: PropTypes.func.isRequired,
-      handleCityChange: PropTypes.func.isRequired,
+      handleDisplayedEventsChange: PropTypes.func.isRequired,
     }),
   }),
 };
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyDwl44l9AwolJXOOTPgoVuFNFrgPeXSz7s',
-})(GoogleMap);
+})(SearchEvents);
