@@ -27,11 +27,31 @@ class CurrentLocation extends React.Component {
     } = initialCenter;
     this.state = {
       currentLocation: [lat, lng],
+      initialCity: "",
     };
   }
 
   componentDidMount() {
-    const { centerAroundCurrentLocation } = this.props;
+    this.state.initialCity = "Sheffield"
+
+    const {handleLocalCityChange} = this.props
+    handleLocalCityChange(this.state.initialCity)
+    const { handleCityChange } = this.props;
+    handleCityChange(this.state.initialCity)
+
+
+
+
+    const { handleLocationChange } = this.props;
+    const { currentLocation } = this.state;
+    const [lat, lng] = currentLocation;
+    handleLocationChange([lat, lng]);
+    const { handleSelectedLocationChange } = this.props;
+    handleSelectedLocationChange( [lat, lng])
+    const { getEventsLocation } = this.props;
+
+    
+    const {centerAroundCurrentLocation} = this.props
     if (centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
@@ -60,7 +80,8 @@ class CurrentLocation extends React.Component {
               window.alert('Geocoder failed due to: ' + status);
             }
           });
-          
+          const {handleLocalCityChange} = this.props
+          handleLocalCityChange(city_state)
           const { handleCityChange } = this.props;
           handleCityChange(city_state)
 
@@ -73,6 +94,9 @@ class CurrentLocation extends React.Component {
           handleLocationChange([lat, lng]);
           const { handleSelectedLocationChange } = this.props;
           handleSelectedLocationChange( [lat, lng])
+          const { getEventsLocation } = this.props;
+          getEventsLocation();
+
 
 
         });
@@ -179,7 +203,9 @@ CurrentLocation.propTypes = {
   zoom: PropTypes.number,
   handleLocationChange: PropTypes.func,
   handleCityChange: PropTypes.func,
+  handleLocalCityChange: PropTypes.func,
   handleSelectedLocationChange: PropTypes.func,
+  getEventsLocation: PropTypes.func,
   centerAroundCurrentLocation: PropTypes.bool,
   initialCenter: PropTypes.shape({
     lat: PropTypes.number,
@@ -194,8 +220,8 @@ export default CurrentLocation;
 CurrentLocation.defaultProps = {
   zoom: 14,
   initialCenter: {
-    lat: -1.2884,
-    lng: 36.8233,
+    lat: 53.3811,
+    lng: -1.4701,
   },
   centerAroundCurrentLocation: false,
 };

@@ -21,6 +21,9 @@ module.exports.createEvent = (req, res, next) => {
     location: {"coordinates": req.body.location, "city": req.body.city}
   });
 
+  //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
+
+
   event.save()
     .then((event) => {
       //res.send(event);
@@ -71,20 +74,19 @@ module.exports.findEvent = (req, res, next) => {
 }
 
 
-module.exports.getEventsByLocation = (req, res) => {
+module.exports.getEventsByLocation = (req, res, next) => {
 
-  const query = {
-    location: {
-      city: req.params.city,
-    } 
-  }
+  const query = { 'location.city': req.body.city };
 
-  Event.find(query, {})
+  Event.find(query)
     .sort({ createdAt: -1 })
     .then((events) => {
       res.status(200).send({
         events
       });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 }
 
