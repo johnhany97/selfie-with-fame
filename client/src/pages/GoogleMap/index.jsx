@@ -78,7 +78,6 @@ class GoogleMap extends Component {
     this.setState({
       city: data,
     });
-    console.log("handle local city change" + this.state.city)
 
   };
 
@@ -232,7 +231,6 @@ class GoogleMap extends Component {
       location,
       city,
     } = this.state;
-    console.log("get events by location. the city is " + city)
 
     axios.post('/api/events/getEventsByLocation',
       {
@@ -251,8 +249,6 @@ class GoogleMap extends Component {
           displayedEvents: events,
           showError: false,
         });
-        console.log("the events returned are: ")
-        console.log(events)
 
       }).catch((err) => {
         console.error(err.response.data);
