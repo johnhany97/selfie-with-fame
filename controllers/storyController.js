@@ -18,8 +18,8 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('comments', 'username')
-    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
@@ -48,7 +48,8 @@ module.exports.getStoriesByUser = (req, res) => {
   // no need to populate as current user is poster
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
@@ -77,8 +78,8 @@ module.exports.getStoriesByEvent = (req, res) => {
 
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('comments', '_id username')
     .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
@@ -107,7 +108,8 @@ module.exports.getStoriesTimeline = async (req, res) => {
 
   NewsFeed.find(query, {}, pagination)
     .populate('story')
-    .populate('comments.postedBy', 'username')
+    .populate('story.postedBy', '_id first_name last_name username')
+    .populate('story.comments.postedBy', 'username')
     .then((feed) => {
       let stories = feed.map((entry) => {
         return entry.story;
@@ -187,6 +189,8 @@ module.exports.getStory = (req, res) => {
   }
 
   Story.findById(id)
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((story) => {
       if (!story) {
         return res.status(404).send();
