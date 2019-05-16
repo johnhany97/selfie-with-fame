@@ -9,9 +9,8 @@ import PropTypes from 'prop-types';
 
 const mapStyles = {
   map: {
-    position: 'absolute',
     width: '100%',
-    height: '60%',
+    height: '600px',
   },
 };
 

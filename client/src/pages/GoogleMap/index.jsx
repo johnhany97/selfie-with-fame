@@ -26,6 +26,8 @@ import {
   saveButton,
 } from '../../styles/buttonStyles';
 import CurrentLocation from './Map';
+import './index.css';
+import searchButton from './../../images/round-search.png';
 
 class GoogleMap extends Component {
   constructor(props) {
@@ -267,29 +269,30 @@ class GoogleMap extends Component {
    
     return (
       <div>
-        <div className="container" style={mTop}>
-          <h3 style={formTitle}>Search</h3>
-          <hr style={formDividor} />
+        <div>
+          <h3 className="search-location-title">Select Location</h3>
+          <hr className="search-location-divider" />
           <form onSubmit={this.getEventsLocation} className="panel-center">
-            <TextField
-              style={inputStyle}
-              id="autocomplete"
-              label="Address"
-              value={this.state.query}
-              onChange={this.handleChange('query')}
-              placeholder="Current Location"
-            />
+            <div className="search-location-row">  
+              <TextField
+                style={inputStyle}
+                id="autocomplete"
+                label="Address"
+                value={this.state.query}
+                onChange={this.handleChange('query')}
+                placeholder="Current Location"
+              />
+              <button type="submit" className="round-search-btn">
+                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+              </button>
+            </div>
             {showError &&  (
-              <p
-                style={errorMessage}
-              >
-                *Address is a required field.
-              </p>
-            )}
-            <SubmitButton
-              buttonStyle={formSubmitButton}
-              buttonText="Search"
-            />
+                <p
+                  style={errorMessage}
+                >
+                  *Address is a required field.
+                </p>
+              )}
           </form>
         </div>
 
