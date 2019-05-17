@@ -612,7 +612,10 @@ module.exports.getUserByUsername = (req, res) => {
       if (!user) {
         return res.status(404).send();
       }
-      res.status(200).send(user);
+      res.status(200).send({
+        ...user,
+        currentlyFollowing: user.followers.indexOf(req.user._id) !== -1
+      });
     })
     .catch((err) => {
       return res.status(500).send(err);

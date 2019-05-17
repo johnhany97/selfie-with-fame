@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable default-case */
 import React, { Component } from 'react';
 import axios from 'axios';
@@ -8,7 +9,7 @@ import CreateStoryCamera from '../../../components/Stories/CreateStoryCamera';
 import CreateStoryEvent from '../../../components/Stories/CreateStoryEvent';
 import CreateStoryText from '../../../components/Stories/CreateStoryText';
 import Confirmation from '../../../components/Stories/Confirmation';
-import DB, { OFFLINE_STORIES_STORE_NAME, EVENTS_STORE_NAME } from '../../../db/db';
+import DB, { OFFLINE_STORIES_STORE_NAME } from '../../../db/db';
 
 class CreateStoryPage extends Component {
   constructor(props) {
@@ -48,8 +49,9 @@ class CreateStoryPage extends Component {
 
   removePicture = (index) => {
     if (index !== -1) {
-      this.state.pictures.splice(index, 1);
-      this.setState({ pictures: this.state.pictures });
+      const { pictures } = this.state;
+      pictures.splice(index, 1);
+      this.setState({ pictures });
     }
   };
 
