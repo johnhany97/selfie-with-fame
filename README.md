@@ -42,15 +42,27 @@ npm run start
 
 #### Running the frontend
 
+On Mac or Linux (Unix): 
 ```
-On mac or linux: 
-
 cd selfie-with-fame/client
 npm run start
+```
 
-On Windows
+On Windows:
+```
 cd selfie-with-fame/client
 npm run startW
+```
+
+## Building instructions
+This is concerned with the client.
+```
+cd selfie-with-fame/client
+npm run build
+# if you want to run the built project do the following three commands
+cd build
+npm i
+npm run start
 ```
 
 At this point, the frontend should be accessible from `localhost:3000` with the backend running at port `3001` but proxied into the frontend.
