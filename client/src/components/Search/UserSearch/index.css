@@ -1,0 +1,9 @@
+.user-search-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-search-results{
+    width: 100%;
+    max-width: 600px;
+}
