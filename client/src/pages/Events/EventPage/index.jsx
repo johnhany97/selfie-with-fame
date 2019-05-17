@@ -10,11 +10,6 @@ import { Redirect } from 'react-router-dom';
 import {
   loginButton,
 } from '../../../styles/buttonStyles';
-import {
-  crudButton,
-  cardPanel,
-  mTop,
-} from '../../../styles/formStyles';
 import LinkButton from '../../../components/LinkButton';
 import Layout from '../../../components/Layout';
 import Story from '../../../components/Stories/Story';
@@ -42,8 +37,8 @@ class EventPage extends Component {
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var year = createAtDate.getFullYear();
     var month = months[createAtDate.getMonth()];
-    var date = createAtDate.getDate();
-    var convertedDate = date + ' ' + month + ' ' + year;
+    var day = createAtDate.getDate();
+    var convertedDate = day + ' ' + month + ' ' + year;
     return convertedDate;
   }
 

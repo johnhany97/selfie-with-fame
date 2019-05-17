@@ -7,19 +7,14 @@ import axios from 'axios';
 import Layout from '../../../components/Layout';
 import GoogleMap from '../../GoogleMap';
 
-
 import {
   inputStyle,
 } from '../../../styles/buttonStyles';
 import {
-  formTitle,
-  formDividor,
-  formSubmitButton,
   mTop,
   cancelLink,
   errorMessage,
 } from '../../../styles/formStyles';
-import SubmitButton from '../../../components/SubmitButton';
 import './index.css';
 
 class CreateEventPage extends Component {
@@ -37,7 +32,6 @@ class CreateEventPage extends Component {
       messageFromServer: '',
       showError: false,
       createEventError: false,
-      displayedEvents: [],
       mapElement: React.createRef(),
     };
   }
@@ -80,19 +74,16 @@ class CreateEventPage extends Component {
       location,
       city,
     } = this.state;
-    if (name === '' || information === ''||start_date === '' || end_date === '' || location === '' || city === '') {
+    if (name === '' || information === '' || start_date === '' || end_date === '' || location === '' || city === '') {
       this.setState({
         showError: true,
         createEventError: true,
       });
-   
-
-
       return;
     }
-    var i =  Math.random()* 100
-    var a = 360.0 /i ;
-    location =  [location[0] + -.0004 * Math.cos((+a*i) / 180 * Math.PI), location[1]+ -.0004 * Math.cos((+a*i) / 180 * Math.PI)]
+    const i = Math.random() * 100;
+    const a = 360.0 / i;
+    location = [location[0] + -0.0004 * Math.cos((+a * i) / 180 * Math.PI), location[1] + -0.0004 * Math.cos((+a * i) / 180 * Math.PI)];
 
     axios.post(
       '/api/events/createEvent',
@@ -173,8 +164,6 @@ class CreateEventPage extends Component {
       information,
       start_date,
       end_date,
-      location,
-      city,
       messageFromServer,
       showError,
       createEventError,
@@ -215,7 +204,7 @@ class CreateEventPage extends Component {
                   shrink: true,
                 }}
               />
-               <TextField
+              <TextField
                 style={inputStyle}
                 id="end_date"
                 label="Date and Time of Event End"

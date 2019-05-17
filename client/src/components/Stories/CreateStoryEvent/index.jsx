@@ -4,17 +4,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-import Event from '../../Event';
-import {
-  noWidthBtn,
-} from '../../../styles/formStyles';
 import './index.css';
-import leftArrow from './../../../images/left-arrow.png';
-import rightArrow from './../../../images/right-arrow.png';
+import leftArrow from '../../../images/left-arrow.png';
+import rightArrow from '../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
 import SelectEventMap from '../../SelectEventMap';
-import SearchEvents from '../../Search/SearchEvents';
-import GoogleMap from '../../../pages/GoogleMap';
 import DB from '../../../db/db';
 
 class CreateStoryEvent extends Component {

@@ -1,14 +1,24 @@
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-plusplus */
+/* eslint-disable no-buffer-constructor */
+/* eslint-disable react/no-access-state-in-setstate */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable react/require-default-props */
 import React from 'react';
 import PropTypes from 'prop-types';
-import './index.css';
 import axios from 'axios';
+import { TextField } from '@material-ui/core';
+
 import userProfilePlaceholder from '../../../images/event-img-placeholder.jpg';
 import heartOutline from './heart-outline.png';
 import heartFilled from './heart-filled.png';
 import StoryStepper from '../../StoryStepper';
-import { TextField } from '@material-ui/core';
+
+import './index.css';
 
 class Story extends React.Component {
   constructor(props) {
@@ -31,19 +41,17 @@ class Story extends React.Component {
   componentDidMount() {
     this.setState({
       ...this.props,
+      numLikes: this.props.likes.length,
     });
-    this.state.numLikes = this.props.likes.length;
     this.fetchStory();
   }
 
   fetchStory = () => {
     const token = localStorage.getItem('JWT');
     axios.get(`/api/stories/${this.props._id}`,
-     { headers: { Authorization: `JWT ${token}`} })
+      { headers: { Authorization: `JWT ${token}` } })
       .then((res) => {
         // TODO: Snackbar of success
-        console.log("Fetched Story");
-        console.log(res.data);
         this.setState({
           ...res.data,
         });
@@ -61,9 +69,8 @@ class Story extends React.Component {
     const token = localStorage.getItem('JWT');
     e.preventDefault();
     axios.post(`/api/stories/${this.props._id}/like`, {},
-     { headers: { Authorization: `JWT ${token}`} })
+      { headers: { Authorization: `JWT ${token}` } })
       .then(() => {
-        console.log("Like successful");
       }).catch((error) => {
         this.setState({
           liked: false,
@@ -72,37 +79,30 @@ class Story extends React.Component {
       });
   }
 
-  convertDateFormat(date) {
-    let createAtDate = new Date(date);
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    var year = createAtDate.getFullYear();
-    var month = months[createAtDate.getMonth()];
-    var date = createAtDate.getDate();
-    var convertedDate = date + ' ' + month + ' ' + year;
+  convertDateFormat = (date) => {
+    const createdAtDate = new Date(date);
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const year = createdAtDate.getFullYear();
+    const month = months[createdAtDate.getMonth()];
+    const day = createdAtDate.getDate();
+    const convertedDate = [day, month, year].join(' ');
     return convertedDate;
   }
 
   addComment = () => {
     const username = localStorage.getItem('username');
-    var updatedComments = this.state.comments.concat({text: this.state.commentText, postedBy: {username: username}});
+    const updatedComments = this.state.comments.concat({ text: this.state.commentText, postedBy: { username } });
     this.setState({
       comments: updatedComments,
     });
     const token = localStorage.getItem('JWT');
-    axios.post(`/api/stories/${this.props._id}/comment`, {text: this.state.commentText, postedBy: username},
-     { headers: { Authorization: `JWT ${token}`} })
-      .then(() => {
-        console.log("Comment successful");
-      }).catch((error) => {
-        console.log("Comment Unsuccessful");
-        this.setState({
-
-        });
-      });
+    axios.post(`/api/stories/${this.props._id}/comment`, { text: this.state.commentText, postedBy: username },
+      { headers: { Authorization: `JWT ${token}` } })
+      .then(() => { }).catch(() => { });
   }
 
   handleChange = (event) => {
-    this.setState({commentText: event.target.value});
+    this.setState({ commentText: event.target.value });
   }
 
   render() {
@@ -110,13 +110,10 @@ class Story extends React.Component {
       text,
       pictures,
       createdAt,
-      updatedAt,
       postedBy,
-      likes,
-      liked,
-      numLikes,
     } = this.props;
 
+    // eslint-disable-next-line prefer-const
     let picBuffers = [];
     if (pictures) {
       for (let i = 0; i < pictures.length; i++) {
@@ -125,9 +122,9 @@ class Story extends React.Component {
     }
 
     let heartIcon;
-    if(this.state.liked){
+    if (this.state.liked) {
       heartIcon = <img onClick={this.likeStory} className="heart-story-btn-filled" src={heartFilled} alt="Heart Story button" />;
-    } else{
+    } else {
       heartIcon = <img onClick={this.likeStory} className="heart-story-btn" src={heartOutline} alt="Heart Story button" />;
     }
 
@@ -150,18 +147,18 @@ class Story extends React.Component {
             </div>
           </div>
           <div className="comments">
-            {this.state.comments.map(comment => 
+            {this.state.comments.map(comment =>
               <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">
-              <TextField
-                id="comment"
-                className="comment-box"
-                placeholder="Comment"
-                margin="normal"
-                onChange={this.handleChange}
-              />
+            <TextField
+              id="comment"
+              className="comment-box"
+              placeholder="Comment"
+              margin="normal"
+              onChange={this.handleChange}
+            />
             <button className="comment-post-btn" onClick={this.addComment}>
               Post
             </button>
@@ -169,7 +166,7 @@ class Story extends React.Component {
         </div>
       );
     }
-    else if (picBuffers.length == 1) {
+    else if (picBuffers.length === 1) {
       return (
         <div className="story-container">
           <div className="story-header">
@@ -190,12 +187,12 @@ class Story extends React.Component {
             </div>
           </div>
           <div className="comments">
-            {this.state.comments.map(comment => 
+            {this.state.comments.map(comment =>
               <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">
-              <TextField
+            <TextField
               id="comment"
               className="comment-box"
               placeholder="Comment"
@@ -208,7 +205,7 @@ class Story extends React.Component {
           </div>
         </div>
       );
-    } else{
+    } else {
       return (
         <div className="story-container">
           <div className="story-header">
@@ -226,12 +223,12 @@ class Story extends React.Component {
             </div>
           </div>
           <div className="comments">
-            {this.state.comments.map(comment => 
+            {this.state.comments.map(comment =>
               <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">
-              <TextField
+            <TextField
               id="comment"
               className="comment-box"
               placeholder="Comment"
