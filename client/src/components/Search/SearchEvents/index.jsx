@@ -163,6 +163,12 @@ class SearchEvents extends Component {
         });
         this.props.handleDisplayedEventsChange(events)
 
+        if (!events == undefined || !events.length == 0) {
+          this.props.mapElement.current.changeCurrentLoc([events[0].location['coordinates'][0], events[0].location['coordinates'][1]]);
+
+        
+        }
+
       }).catch((err) => {
         this.setState({
           showError: true,
