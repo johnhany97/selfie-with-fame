@@ -9,31 +9,21 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 
 import {
-  formTitle,
-  formDividor,
-  formSubmitButton,
-  mTop,
-  cancelLink,
   errorMessage,
-} from '../../styles/formStyles';
+} from '../../../styles/formStyles';
 
 import {
   inputStyle,
-} from '../../styles/buttonStyles';
+} from '../../../styles/buttonStyles';
 
-import SubmitButton from '../../components/SubmitButton';
-import {
-  saveButton,
-} from '../../styles/buttonStyles';
 import './index.css';
-import searchButton from './../../images/round-search.png';
-import CurrentLocation from '../../components/Map/Map';
+import SearchEvents from '../../Search/SearchEvents';
+import CurrentLocation from '../../Map/Map';
 
-class GoogleMap extends Component {
+class DiscoverSearchEvents extends Component {
   constructor(props) {
     super(props);
     this.autocomplete = null;
-    this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
     this.placeDetails = null
     this.geocoder = null
     /*global google*/
@@ -42,13 +32,16 @@ class GoogleMap extends Component {
       activeMarker: {},
       selectedPlace: [],
       query: '',
-      city: '',
+      city: 'Sheffield',
       showError: false,
       displayedEvents: [],
       marker_clicked: ' ',
       selected_event: [],
+      mapElement: React.createRef(),
+
       end_date: new Date(),
       start_date: new Date(),
+      mode: "onGoing",
       // start_date: new Date((new Date()).setFullYear( new Date().getFullYear() - 1 )),
 
     };
@@ -63,15 +56,11 @@ class GoogleMap extends Component {
 
     var options = { types: ['(cities)'] };
 
-    // To disable any eslint 'google not defined' errors
 
     this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options);
-    // Fire Event when a suggested name is selected
     this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
 
     this.placeDetails = new google.maps.places.PlacesService(this.props.google);
-    //  this.autocomplete.setFields(
-    //     ['address_components', 'geometry']);
     this.geocoder = new google.maps.Geocoder;
     this.getEventsByLocationAndDate();
 
@@ -105,7 +94,7 @@ class GoogleMap extends Component {
         }
       );
 
-      this.props.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
+      this.state.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
       const { handleLocationChange } = this.props;
       const { handleCityChange } = this.props;
       handleLocationChange(this.state.selectedPlace);
@@ -130,19 +119,30 @@ class GoogleMap extends Component {
 
   });
 
-  onOtherMarkerClick = (props, marker, e) => this.setState({
-    activeMarker: marker,
-    showingInfoWindow: true,
-    marker_clicked: "other event marker",
-    selected_event: props,
+  onOtherMarkerClick = (props, marker, e) => {
+    this.setState({
+      activeMarker: marker,
+      showingInfoWindow: true,
+      marker_clicked: "other event marker",
+      selected_event: props,
+      chosen_event: marker.event,
+    });
 
-  });
+  }
 
   handleChange = name => (event) => {
     this.setState({
       [name]: event.target.value,
     });
   };
+
+  handleDisplayedEventsChange = (data) => {
+    this.setState({
+      displayedEvents: data,
+    });
+
+  };
+
 
   onClose = (props) => {
     if (this.state.showingInfoWindow) {
@@ -153,45 +153,7 @@ class GoogleMap extends Component {
     }
   };
 
-  handleMarkerDragEnd(props, marker, coord) {
-    const latitude = coord.latLng.lat();
-    const longitude = coord.latLng.lng();
-
-    //let place = this.placeDetails.getDetails(coord)
-    /*global google*/
-
-    var city_state = this.state.city
-
-    this.geocoder.geocode({ 'location': { "lat": latitude, "lng": longitude } }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          results[0].address_components.map(i => {
-            if (i.types[0] == "postal_town" || i.types[0] == "locality") {
-              city_state = i.long_name
-            }
-          });
-        }
-      }
-
-      this.setState({
-        selectedPlace: [latitude, longitude],
-        activeMarker: marker,
-        showingInfoWindow: true,
-        city: city_state,
-      });
-
-      const { handleLocationChange } = this.props;
-      const { handleCityChange } = this.props;
-
-
-      handleLocationChange(this.state.selectedPlace);
-      handleCityChange(this.state.city);
-      this.getEventsByLocationAndDate();
-
-    });
-  }
-
-  getEvents = async () => {
+  getEventsById = (id) => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
@@ -199,28 +161,31 @@ class GoogleMap extends Component {
       });
       return;
     }
-    axios.get('/api/events/getEvents', {
-      params: {
-      },
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    }).then((res) => {
-      const { data } = res;
-      const {
-        events,
-      } = data;
-      this.setState({
-        displayedEvents: events,
-        showError: false,
+   
+    axios.get(`/api/events/${id}`,
+      {
+        headers: {
+          Authorization: `JWT ${token}`,
+        }
+      }).then((res) => {
+        const { data } = res;
+        const {
+          event,
+        } = data;
+        this.setState({
+          chosen_event: event,
+          showError: false,
+        });
+      }).catch((err) => {
+        this.setState({
+          showError: true,
+        });
       });
-    }).catch((err) => {
-      this.setState({
-        showError: true,
-      });
-    });
   }
 
+  
+
+  
   getEventsByLocationAndDate = async () => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
@@ -232,20 +197,18 @@ class GoogleMap extends Component {
     const {
       start_date,
       end_date,
-      location,
       city,
+      eventQuery
     } = this.state;
-    let end_date_displayEvents = this.state.end_date
+    let end_date_displayEvents =start_date
     let city_displayEvents = city
-    let start_date_displayEvents = this.state.start_date
-    let eventQuery = '';
+    let start_date_displayEvents = end_date
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
-        eventQuery
-        
+        eventQuery,
       },
       {
         headers: {
@@ -260,6 +223,7 @@ class GoogleMap extends Component {
           displayedEvents: events,
           showError: false,
         });
+        this.props.handleDisplayedEventsChange()
 
       }).catch((err) => {
         this.setState({
@@ -272,7 +236,7 @@ class GoogleMap extends Component {
   arrayTodict(array) {
     var dictionary_loc = { lat: array[0], lng: array[1] };
     return dictionary_loc;
-  }
+  };
 
   handleSelectedLocationChange = (data) => {
     this.setState({
@@ -287,39 +251,33 @@ class GoogleMap extends Component {
       address_search,
       showError
     } = this.state;
+    console.log("the displayed events")
+    console.log(displayedEvents)
 
+    
     return (
       <div>
-        <div>
-          <h3 className="search-location-title">Select Location</h3>
-          <hr className="search-location-divider" />
-          <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
-            <div className="search-location-row">  
-              <TextField
-                style={inputStyle}
-                id="autocomplete"
-                label="Address"
-                value={this.state.query}
-                onChange={this.handleChange('query')}
-                placeholder="Current Location"
-              />
-              <button type="submit" className="round-search-btn">
-                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
-              </button>
-            </div>
-            {showError &&  (
-                <p
-                  style={errorMessage}
-                >
-                  *Address is a required field.
-                </p>
-              )}
 
-          </form>
-        </div>
+        <h3 className="search-location-title">Selected Event</h3>
+        <hr className="search-location-divider" />
+          <TextField
+              style={inputStyle}
+              value={this.state.eventQuery }
+              onChange={this.handleChange('eventQuery')}
+              disabled
+          />
 
+
+        <SearchEvents
+          mapElement = {this.state.mapElement}
+          handleDisplayedEventsChange = {this.handleDisplayedEventsChange}
+          handleLocationChange={this.props.handleLocationChange}
+          handleCityChange={this.props.handleCityChange}
+
+
+        />
         <CurrentLocation
-          ref={this.props.mapElement}
+          ref={this.state.mapElement}
           centerAroundCurrentLocation
           google={this.props.google}
           handleLocationChange={this.props.handleLocationChange}
@@ -333,6 +291,7 @@ class GoogleMap extends Component {
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
+              event = {event}
               name={event.name}
               info={event.information}
               position={this.arrayTodict(event.location["coordinates"])}
@@ -341,23 +300,6 @@ class GoogleMap extends Component {
             />
 
           ))}
-          <Marker
-            onClick={this.onMarkerClick}
-            position={{
-              lat: this.state.selectedPlace[0],
-              lng: this.state.selectedPlace[1]
-            }}
-            name="Selected Location"
-            info="Where the new event will be."
-            icon={
-              "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-            }
-            optimized= {false}
-            zIndex={99999999}
-            draggable
-            onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
-          />
-
 
           <InfoWindow
             marker={this.state.activeMarker}
@@ -365,6 +307,7 @@ class GoogleMap extends Component {
             onClose={this.onClose}
           >
             <div>
+              <p style={{color:"blue"}}> Selected Event</p>
               <h4>{this.state.selected_event.name}</h4>
               <p> {this.state.selected_event.info}</p>
 
@@ -372,20 +315,24 @@ class GoogleMap extends Component {
           </InfoWindow>
         </CurrentLocation>
 
+
       </div>
     );
 
   }
 }
 
-GoogleMap.propTypes = {
+DiscoverSearchEvents.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       handleLocationChange: PropTypes.func.isRequired,
       handleCityChange: PropTypes.func.isRequired,
+      handleEventChange: PropTypes.func.isRequired,
+
+
     }),
   }),
 };
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyDwl44l9AwolJXOOTPgoVuFNFrgPeXSz7s',
-})(GoogleMap);
+})(DiscoverSearchEvents);

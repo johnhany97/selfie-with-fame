@@ -6,6 +6,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import DiscoverSearch from '../../components/Search/DiscoverSearch';
 import UserSearch from '../../components/Search/UserSearch';
+import DiscoverSearchEvents from '../../components/Search/DiscoverSearchEvents';
 
 class DiscoverPage extends React.Component {
     constructor(props) {
@@ -13,8 +14,25 @@ class DiscoverPage extends React.Component {
 
         this.state = {
             value: 0,
+            city: 'Sheffield',
+            
+
         }
     }
+
+    handleCityChange = (data) => {
+        this.setState({
+          city: data,
+        });
+    
+      };
+    
+      handleLocationChange = (data) => {
+        this.setState({
+          location: data,
+        });
+    
+      };
 
     handleChange = (event, value) => {
         this.setState({ value });
@@ -36,7 +54,11 @@ class DiscoverPage extends React.Component {
                         </div>
                     </AppBar>
                     {value === 0 && <DiscoverSearch />}
-                    {value === 1 && <div>Events</div>}
+                    {value === 1 && <DiscoverSearchEvents
+                        handleCityChange= {this.handleCityChange} 
+                        handleLocationChange = {this.handleLocationChange}
+                        handleEventChange = {this.props.handleEventChange}
+                        topLevelEvent = {this.props.topLevelEvent} />}
                     {value === 2 && <UserSearch />}
                     {value === 3 && <div>Stories</div>}
                 </div>
