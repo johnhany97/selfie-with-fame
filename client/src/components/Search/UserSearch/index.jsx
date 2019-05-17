@@ -1,8 +1,9 @@
 import React from 'react';
 import axios from 'axios';
 import UserCard from './../../UserCard';
-import './index.css';
 import { TextField } from '@material-ui/core';
+import searchButton from './../../../images/round-search.png';
+import './index.css';
 
 class UserSearch extends React.Component {
     constructor(props) {
@@ -19,6 +20,9 @@ class UserSearch extends React.Component {
 
     handleChange = (event) => {
         this.setState({userSearchQuery: event.target.value});
+    }
+
+    handleClick = (e) => {
         this.getUsers();
     }
 
@@ -33,7 +37,7 @@ class UserSearch extends React.Component {
         }
         axios.get('/api/users', {
             params: {
-                username: this.state.userSearchQuery,
+                text: this.state.userSearchQuery,
             },
             headers: {
                 Authorization: `JWT ${token}`,
@@ -60,13 +64,19 @@ class UserSearch extends React.Component {
         const {users} = this.state;
         return(
             <div className="container-lg user-search-container">
-                <TextField
-                id="user-search"
-                className="user-search"
-                placeholder="Search"
-                margin="normal"
-                onChange={this.handleChange}
-                />
+                <div className="user-search-row">
+
+                    <TextField
+                    id="user-search"
+                    className="user-search"
+                    placeholder="Search"
+                    margin="normal"
+                    onChange={this.handleChange}
+                    />
+                    <button className="search-btn-user" onClick={this.handleClick}>
+                        <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+                    </button>
+                </div>
                 <div className="user-search-results">
                     {users && users.map(user => <UserCard {...user} />)}
                 </div>

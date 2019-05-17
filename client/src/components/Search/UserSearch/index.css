@@ -7,3 +7,27 @@
     width: 100%;
     max-width: 600px;
 }
+
+.user-search{
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-btn-user{
+    background-color: #fe5355;
+    border-radius: 50%;
+    margin: 0;
+    width: 45px;
+    height: 40px;
+    border: 0;
+    margin: auto 0;
+}
+
+.search-icon{
+    fill: #ffffff;
+}
+
+.user-search-row{
+    display: flex;
+    flex-direction: row;
+}
