@@ -7,6 +7,7 @@ const sanitizeHtml = require('sanitize-html');
 
 const User = require('../models/user');
 const Story = require('../models/story');
+const NewsFeed = require('../models/newsfeed');
 
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -488,8 +489,20 @@ module.exports.followUser = (req, res) => {
             userToFollow.followers.push(currentUser._id);
             // Save
             currentUser.save().then(() => {
-              userToFollow.save().then(() => {
-                return res.status(200).send('successfully followed');
+              userToFollow.save().then(async () => {
+                res.status(200).send('successfully followed');
+                // Update their timeline
+                // 1- Get all the user that we just followed's stories
+                const userToFollowStories = await Story.find({postedBy: userToFollow._id});
+                // 2- Add entries for them in the newsfeed
+                let newsFeed = userToFollowStories.map((story) => {
+                  return {
+                    owner: currentUser._id,
+                    story: story._id
+                  };
+                });
+                // 3- Insert these entries in the db store
+                await NewsFeed.insertMany(newsFeed);
               });
             });
           } else {
@@ -547,8 +560,17 @@ module.exports.unfollowUser = (req, res) => {
           });
           // Save
           currentUser.save().then(() => {
-            userToUnfollow.save().then(() => {
-              return res.status(200).send('succesfully unfollowed');
+            userToUnfollow.save().then(async () => {
+              res.status(200).send('succesfully unfollowed');
+              // Remove all their stories from the current user's timeline
+              const unfollowedUserStories = await Story.find({postedBy: userToUnfollow._id});
+              // 1- remove every entry from the news feed store
+              unfollowedUserStories.forEach(async (story) => {
+                await NewsFeed.remove({
+                  owner: currentUser._id,
+                  story: story._id
+                });
+              });
             });
           });
         })
@@ -648,7 +670,14 @@ module.exports.getAll = (req, res) => {
     skip: (page - 1) * size
   };
 
-  const query = req.query;
+  const text = req.query.text;
+  const query = {
+    $or: [
+      { 'username': { $regex: text, $options: 'i' } },
+      { 'first_name': { $regex: text, $options: 'i' } },
+      { 'last_name': { $regex: text, $options: 'i' } },
+    ]
+  };
 
   User.find(query, {}, pagination)
     .populate('followers', 'first_name last_name username')
