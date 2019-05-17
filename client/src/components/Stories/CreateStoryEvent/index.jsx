@@ -74,10 +74,9 @@ class CreateStoryEvent extends Component {
 
   };
 
- 
+
   render() {
-    const { events } = this.state;
-    const { values, handleEventChange, nextStep, previousStep, step } = this.props;
+    const { values, nextStep, previousStep, step } = this.props;
     return (
       <div className="select-event-container">
         <div className="form-navigation">
@@ -92,12 +91,12 @@ class CreateStoryEvent extends Component {
         </div>
 
         <SelectEventMap
-          handleCityChange= {this.handleCityChange} 
-          handleLocationChange = {this.handleLocationChange}
-          handleEventChange = {this.props.handleEventChange}
-          topLevelEvent = {this.props.topLevelEvent}
+          handleCityChange={this.handleCityChange}
+          handleLocationChange={this.handleLocationChange}
+          handleEventChange={this.props.handleEventChange}
+          topLevelEvent={this.props.topLevelEvent}
         />
-        
+
 
         {/* {events && events.map((event, index) => (
           <React.Fragment>

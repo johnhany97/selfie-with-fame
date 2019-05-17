@@ -62,7 +62,7 @@ class SelectEvent extends Component {
     this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
 
     this.placeDetails = new google.maps.places.PlacesService(this.props.google);
-    this.geocoder = new google.maps.Geocoder;
+    this.geocoder = new google.maps.Geocoder();
     this.getEventsByLocationAndDate();
 
 

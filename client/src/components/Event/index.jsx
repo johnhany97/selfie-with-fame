@@ -21,10 +21,8 @@ class Event extends React.Component {
     const {
       _id,
       name,
-      information,
       start_date,
       location,
-      end_date,
       selected,
     } = this.props;
 
