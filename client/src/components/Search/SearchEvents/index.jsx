@@ -25,7 +25,7 @@ class SearchEvents extends Component {
     
     /*global google*/
     this.state = {
-      query: '',
+      query: 'Sheffield',
       city: 'Sheffield',
       showError: false,
       displayedEvents: [],
@@ -91,6 +91,7 @@ class SearchEvents extends Component {
 
     }
     else {
+      console.log("this is not an address");
     }
   }
 
@@ -102,6 +103,22 @@ class SearchEvents extends Component {
       [name]: event.target.value,
     });
   };
+
+  handleQueryChange= name => (event) => {
+    this.setState({
+      [name]: event.target.value,
+    });
+
+    if (event.target.value == "") {
+      this.setState({
+        city: "",
+      });
+
+
+    }
+
+  };
+
 
   
 
@@ -183,7 +200,7 @@ class SearchEvents extends Component {
                 id="autocomplete"
                 label="City"
                 value={this.state.query}
-                onChange={this.handleChange('query')}
+                onChange={this.handleQueryChange("query")}
                 placeholder="Sheffield"
             />
             <TextField
