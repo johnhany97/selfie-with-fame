@@ -207,10 +207,11 @@ class SearchEvents extends Component {
               <p style={errorMessage}>*Address is a required field.</p>
             )}
           </form>
-
-          <button className="round-search-btn" onClick={this.getEventsByLocationAndDate}>
-            <img className="search-icon" src={searchButton} alt="Search Location Button" />
-          </button>
+          <div className="search-event-btn-container">
+            <button className="round-search-btn-event" onClick={this.getEventsByLocationAndDate}>
+              <img className="search-icon" src={searchButton} alt="Search Location Button" />
+            </button>
+          </div>
         </div>
       </div>
     );
