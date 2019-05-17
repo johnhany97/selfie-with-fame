@@ -1,9 +1,19 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/no-unused-state */
+/* eslint-disable react/prop-types */
 /* eslint-disable react/forbid-prop-types */
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-
+import { withRouter } from 'react-router-dom';
+import {
+  MenuItem,
+  FormControl,
+  Select,
+  InputLabel,
+} from '@material-ui/core';
 import './index.css';
 import leftArrow from '../../../images/left-arrow.png';
 import rightArrow from '../../../images/right-arrow.png';
@@ -17,14 +27,14 @@ import DB from '../../../db/db';
  * handleEventChange
  * nextStep
  * previousStep
- * step 
- * 
+ * step
+ *
  * @summary
  * Displays page that allows the user to search and filter and select
  * an event from the map that they want to add a story to.
- * 
+ *
  * @returns
- * Returns JSX component to allow the user to select event 
+ * Returns JSX component to allow the user to select event
  * from GoogleMap component
  */
 class CreateStoryEvent extends Component {
@@ -34,14 +44,15 @@ class CreateStoryEvent extends Component {
       events: [],
       city: '',
       location: '',
+      isOffline: false,
     };
   }
 
   componentDidMount() {
     const token = localStorage.getItem('JWT');
-    if (token === null) {
-      console.log('unauthorized');
-      // TODO: REDIRET to login page
+    if (!token) {
+      const { history } = this.props;
+      history.replace('/login');
       return;
     }
     axios.get('/api/events/getEvents', {
@@ -54,10 +65,11 @@ class CreateStoryEvent extends Component {
       })
       .catch((err) => {
         console.log(err);
-        if (!err.status) {
+        if (!err.status) { // was offline
           DB.getAllEvents().then((events) => {
             this.setState({
               events,
+              isOffline: true,
             });
           });
         }
@@ -80,48 +92,87 @@ class CreateStoryEvent extends Component {
     this.setState({
       city: data,
     });
-
   };
 
   handleLocationChange = (data) => {
     this.setState({
       location: data,
     });
-
   };
 
 
   render() {
-    const { values, nextStep, previousStep, step } = this.props;
-    return (
-      <div className="select-event-container">
-        <div className="form-navigation">
-          <button onClick={previousStep} type="button" className="navigation-btn-back">
-            <img className="navigation-arrow" src={leftArrow} alt="Back" />
-            Back
-          </button>
-          <FormProgress size={4} step={step} />
-          <button onClick={nextStep} disabled={values.event === null} className="navigation-btn-next">Next
-            <img className="navigation-arrow" src={rightArrow} alt="Next" />
-          </button>
+    const {
+      values,
+      nextStep,
+      previousStep,
+      step,
+      topLevelEvent,
+      handleEventChange,
+      handleOfflineEventChange,
+    } = this.props;
+    const { isOffline, events } = this.state;
+    if (isOffline) {
+      return (
+        <div className="select-event-container">
+          <div className="form-navigation">
+            <button onClick={previousStep} type="button" className="navigation-btn-back">
+              <img className="navigation-arrow" src={leftArrow} alt="Back" />
+              Back
+            </button>
+            <FormProgress size={4} step={step} />
+            <button onClick={nextStep} disabled={values.event === null} className="navigation-btn-next">
+              Next
+              <img className="navigation-arrow" src={rightArrow} alt="Next" />
+            </button>
+          </div>
+
+          <SelectEventMap
+            handleCityChange={this.handleCityChange}
+            handleLocationChange={this.handleLocationChange}
+            handleEventChange={handleEventChange}
+            topLevelEvent={topLevelEvent}
+          />
         </div>
-
-        <SelectEventMap
-          handleCityChange={this.handleCityChange}
-          handleLocationChange={this.handleLocationChange}
-          handleEventChange={this.props.handleEventChange}
-          topLevelEvent={this.props.topLevelEvent}
-        />
-
-
-        {/* {events && events.map((event, index) => (
-          <React.Fragment>
-            <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
-            <button onClick={() => handleEventChange(event)} type="button" style={noWidthBtn}>Select</button>
-          </React.Fragment>
-        ))}
-        {(events === null || (events && events.length === 0)) && <p>No events available</p>} */}
-      </div>
+      );
+    }
+    return (
+      <React.Fragment>
+        {
+          events && (
+            <div className="select-event-container">
+              <div className="form-navigation">
+                <button onClick={previousStep} type="button" className="navigation-btn-back">
+                  <img className="navigation-arrow" src={leftArrow} alt="Back" />
+                  Back
+                </button>
+                <FormProgress size={4} step={step} />
+                <button onClick={nextStep} disabled={values.event === null} className="navigation-btn-next">
+                  Next
+                  <img className="navigation-arrow" src={rightArrow} alt="Next" />
+                </button>
+              </div>
+              <FormControl>
+                <InputLabel htmlFor="event">Event</InputLabel>
+                <Select
+                  value={topLevelEvent}
+                  fullWidth
+                  onChange={handleOfflineEventChange}
+                  inputProps={{
+                    name: 'event',
+                    id: 'event',
+                  }}
+                >
+                  {events.map(event => (
+                    <MenuItem key={event._id} value={event}>{event.name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
+          )
+        }
+        {(events === null || (events && events.length === 0)) && <p>No events available</p>}
+      </React.Fragment>
     );
   }
 }
@@ -134,4 +185,4 @@ CreateStoryEvent.propTypes = {
   values: PropTypes.object.isRequired,
 };
 
-export default CreateStoryEvent;
+export default withRouter(CreateStoryEvent);
