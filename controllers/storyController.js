@@ -7,6 +7,29 @@ const Connection = require('../models/connection');
 const User = require('../models/user');
 const NewsFeed = require('../models/newsfeed');
 
+
+/**
+ * GET /api/stories
+ *
+ * @summary
+ * Get all stories
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - size => Number   - number of users / page (Default: 10)
+ * - page => Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 500 if an error occurs when interacting with the db
+  * If successful, it returns a JSON of the following format:
+ * {
+ *  [ Stories ]
+ * }
+*/
+
 module.exports.getAllStories = (req, res) => {
   const size = req.query.size || 10;
   const page = req.query.page || 1;
@@ -32,6 +55,29 @@ module.exports.getAllStories = (req, res) => {
       });
     });
 }
+
+
+/**
+ * GET /api/stories/:user
+ *
+ * @summary
+ * Get stoires created by a user
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - user => User     - A user object
+ * - size => Number   - number of stories / page (Default: 10)
+ * - page => Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+* If successful, it returns a JSON of the following format:
+ * {
+ *  [ Stories ]
+ * 
+*/
 
 module.exports.getStoriesByUser = (req, res) => {
   const size = req.query.size || 10;
@@ -63,6 +109,30 @@ module.exports.getStoriesByUser = (req, res) => {
     });
 }
 
+
+/**
+ * GET /api/stories/event/:id
+ *
+ * @summary
+ * Get stories for an event
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - id => String     - An event's id
+ * - size => Number   - number of stories / page (Default: 10)
+ * - page => Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+* If successful, it returns a JSON of the following format:
+ * {
+ *  [ Stories ]
+ * 
+*/
+
+
 module.exports.getStoriesByEvent = (req, res) => {
   const size = req.query.size || 10;
   const page = req.query.page || 1;
@@ -92,6 +162,30 @@ module.exports.getStoriesByEvent = (req, res) => {
       });
     });
 }
+
+
+/**
+ * GET /api/stories/
+ *
+ * @summary
+ * Get stories for the timeline
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - User => User     - logged in user
+ * - size => Number   - number of stories / page (Default: 10)
+ * - page => Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+* If successful, it returns a JSON of the following format:
+ * {
+ *  [ Stories ]
+ * 
+*/
+
 
 module.exports.getStoriesTimeline = async (req, res) => {
   const size = req.query.size || 10;
@@ -125,6 +219,29 @@ module.exports.getStoriesTimeline = async (req, res) => {
       res.status(200).send({stories});
     });
 }
+
+
+
+/**
+ * POST '/api/stories/
+ *
+ * @summary
+ * Create a story
+ *
+ * @auth
+ * Does require authentication 
+ *
+ * @param
+ * - User => User     - logged in user
+ * - Event  => Evemt   - the Event the story belongs to
+ * - pictures => [ int ] = binary of pictures
+ * - text      => string   - info about story
+ *
+ * @returns:
+ * - Status 20 if event created successfully
+ * - Status 400 if bad request
+
+*/
 
 module.exports.createStory = (req, res) => {
   const picturesParam = req.body.pictures;
@@ -185,8 +302,27 @@ module.exports.createStory = (req, res) => {
     });
 }
 
-// This gets any story by it's id, not just ones a user created
-module.exports.getStory = (req, res) => {
+/**
+ * GET /api/stories/:id
+ *
+ * @summary
+ * Get an story by its id
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - id => String     - story id
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if invalid parameters
+ * - Status 404 if story not found
+ * * If successful, it returns a JSON of the following format:
+ * {
+ *  story
+ * 
+*/module.exports.getStory = (req, res) => {
   const id = req.params.id;
 
   if (!validator.isMongoId(id)) {
@@ -207,6 +343,24 @@ module.exports.getStory = (req, res) => {
     });
 }
 
+
+/**
+ * DELETE /api/stories/:id
+
+ * @summary
+ * Delete a story by its id
+ *
+ * @auth
+ * Requires signed in user and created the story
+ *
+ * @param
+ * - id => String   -story id
+ *
+ * @returns:
+ * - Status 400 if bad request
+ * - Status 404 if user not found
+ * - Status 401 not auurtherised to delete story
+*/
 module.exports.deleteStory = async (req, res) => {
   const id = req.params.id;
 
