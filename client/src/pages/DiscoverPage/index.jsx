@@ -55,7 +55,6 @@ class DiscoverPage extends React.Component {
                 <Tab label="Discover" />
                 <Tab label="Events" />
                 <Tab label="People" />
-                <Tab label="Stories" />
               </Tabs>
             </div>
           </AppBar>
@@ -69,7 +68,6 @@ class DiscoverPage extends React.Component {
             />
           )}
           {value === 2 && <UserSearch />}
-          {value === 3 && <div>Stories</div>}
         </div>
       </Layout>
     );
