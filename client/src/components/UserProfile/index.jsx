@@ -14,14 +14,14 @@ class UserProfile extends React.Component {
             _id: '',
             username: '',
             bio: '',
-            following: false,
+            currentlyFollowing: false,
             stories: [],
         }
     }
 
     followUser = (e) => {
         this.setState({
-          following: true,
+            currentlyFollowing: true,
         });
         const token = localStorage.getItem('JWT');
         e.preventDefault();
@@ -31,14 +31,14 @@ class UserProfile extends React.Component {
             console.log("Follow successful");
           }).catch((error) => {
             this.setState({
-              following: false,
+                currentlyFollowing: false,
             });
           });
       }
     
     unfollowUser = (e) => {
         this.setState({
-            following: false,
+            currentlyFollowing: false,
         });
         const token = localStorage.getItem('JWT');
         e.preventDefault();
@@ -48,7 +48,7 @@ class UserProfile extends React.Component {
             console.log("Unfollow successful");
             }).catch((error) => {
             this.setState({
-                following: true,
+                currentlyFollowing: true,
             });
             });
     }
@@ -67,12 +67,16 @@ class UserProfile extends React.Component {
         }).then((res) => {
             const { data } = res;
             const {
-                user,
-                following,
+                _id,
+                username,
+                bio,
+                currentlyFollowing,
             } = data;
             this.setState({
-                ...user,
-                following: following,
+                _id,
+                username: username,
+                bio: bio,
+                currentlyFollowing: currentlyFollowing,
             });
             console.log(this.state.username);
         }).catch((err) => {
@@ -103,10 +107,10 @@ class UserProfile extends React.Component {
 
     render() {
         let followStateBtn;
-        if (!this.state.following) {
+        if (!this.state.currentlyFollowing) {
             followStateBtn = <button onClick={this.followUser} className="follow-btn">Follow</button>;
         } else {
-            followStateBtn = <button onClick={this.unfollowUser} className="following-btn">Following</button>;
+            followStateBtn = <button onClick={this.unfollowUser} className="following-btn">Unfollow</button>;
         }
         const { username, bio, stories } = this.state;
         return (
