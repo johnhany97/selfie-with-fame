@@ -606,13 +606,23 @@ module.exports.getUserByUsername = (req, res) => {
   }
 
   User.findOne({ username })
-    .populate('followers', 'first_name last_name username')
+    .populate('followers', '_id first_name last_name username')
     .populate('following', 'first_name last_name username')
     .then((user) => {
       if (!user) {
         return res.status(404).send();
       }
-      res.status(200).send(user);
+      let currentlyFollowing = false;
+      for (let i = 0; i < user.followers.length; i++) {
+        if (user.followers[i]._id.equals(req.user._id)) {
+          currentlyFollowing = true;
+        }
+      }
+      user.currentlyFollowing = currentlyFollowing;
+      res.status(200).send({
+        ...user._doc,
+        currentlyFollowing
+      });
     })
     .catch((err) => {
       return res.status(500).send(err);
@@ -693,8 +703,32 @@ module.exports.getAll = (req, res) => {
 }
 
 
+/**
+ * GET /api/users/:username/stories
+ *
+ * @summary
+ * Get all stories for a user by username
+ *
+ * @auth
+ * Requires authentication
+ *
+ * @param
+ * - username => String   - username of user to get stories for
+ * - size =>     Number   - number of users / page (Default: 10)
+ * - page =>     Number   - which page we're at (Default: 1)
+ *
+ * @returns:
+ * - Status 200 if successful
+ * - Status 400 if username provided is invalid
+ * - Status 404 if user not found
+ * - Status 500 if an error occurs when interacting with the db
+*/
 module.exports.getUserStories = async (req, res) => {
   const username = sanitizeHtml(req.params.username);
+
+  if (!username || username === '') {
+    return res.status(400).send('invalid username');
+  }
 
   const user = await User.findOne({username});
   
@@ -702,7 +736,17 @@ module.exports.getUserStories = async (req, res) => {
     return res.status(404).send('user not found');
   }
 
-  Story.find({postedBy: user._id})
+  const size = req.query.size || 10;
+  const page = req.query.page || 1;
+
+  const pagination = {
+    limit: size * 1,
+    skip: (page - 1) * size
+  };
+
+  const query = { postedBy: user._id };
+
+  Story.find(query, {}, pagination)
     .then((stories) => {
       res.status(200).send(stories);
     })
