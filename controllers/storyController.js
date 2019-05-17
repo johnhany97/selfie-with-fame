@@ -23,7 +23,7 @@ module.exports.getAllStories = (req, res) => {
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -53,7 +53,7 @@ module.exports.getStoriesByUser = (req, res) => {
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -83,7 +83,7 @@ module.exports.getStoriesByEvent = (req, res) => {
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1,
         };
       });
@@ -118,7 +118,7 @@ module.exports.getStoriesTimeline = async (req, res) => {
       stories = stories.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -201,7 +201,7 @@ module.exports.getStory = (req, res) => {
         return res.status(404).send();
       }
       res.send({
-        ...story,
+        ...story._doc,
         liked: story.likes.indexOf(req.user._id) !== -1,
       });
     });
@@ -313,7 +313,7 @@ module.exports.like = async (req, res) => {
   story.save()
     .then(() => {
       return res.status(200).send({
-        ...story,
+        ...story._doc,
         liked: true
       });
     })
@@ -361,7 +361,7 @@ module.exports.unlike = async (req, res) => {
   story.save()
     .then(() => {
       return res.status(200).send({
-        ...story,
+        ...story._doc,
         liked: false
       });
     })
