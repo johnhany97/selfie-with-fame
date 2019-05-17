@@ -5,7 +5,7 @@ import profilePlaceholder from './../../images/event-img-placeholder.jpg';
 const UserCard = (props) => {
     const {_id, username, bio} = props;
     return(
-        <a href={`/users/${_id}`}>
+        <a href={`/user/${username}`}>
             <div className="user-card-container">
                 <img className="user-card-profile" src={profilePlaceholder} alt="User Profile Picture"/>
                 <div className="user-card-info">
