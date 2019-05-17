@@ -4,6 +4,11 @@
     flex-direction: row;
     background-color: #fff;
     height: 90px;
+
+    border-radius: 8px;
+    border: 0;
+    box-shadow: 0 0 2px 0 rgba(46,62,72,.12), 0 2px 4px 0 rgba(46,62,72,.12);
+    margin-bottom: 0.25rem;
 }
 
 .user-card-profile{

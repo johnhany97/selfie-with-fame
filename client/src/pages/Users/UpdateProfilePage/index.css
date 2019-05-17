@@ -21,7 +21,7 @@
 }
 
 .update-panel-title{
-    color: #FF9800;
+    color: #fe5355;
 }
 
 .update-user-form{
@@ -34,7 +34,7 @@
 .update-divider{
     margin-top: 5px;
     width: 200px;
-    background-color: #FF9800;
+    background-color: #fe5355;
     height: 1px;
 }
 
@@ -50,17 +50,22 @@
 
 .update-profile-btn{
     width: 100%;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    background-color: #FF9800;
+    background-color: #fe5355;
     color: #fff;
-    border: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
+    text-transform: uppercase;
+    border: 0;
+    border-radius: 50px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
     cursor: pointer;
+}
+
+.update-profile-btn:hover{
+    background-color: #fc6769;
 }
 
 .update-panel-img{

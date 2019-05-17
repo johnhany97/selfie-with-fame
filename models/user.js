@@ -25,12 +25,15 @@ let userSchema = new Schema({
     type: String,
     required: true
   },
+  bio: {
+    type: String,
+    default: ''
+  },
   following: [
     {
       type: Schema.Types.ObjectId,
       ref: 'User'
     },
-
   ],
   followers: [
     {

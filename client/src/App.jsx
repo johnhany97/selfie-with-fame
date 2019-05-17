@@ -2,17 +2,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
+
 import Layout from './components/Layout';
-import { STORIES_STORE_NAME } from './db/db';
-import './index.css';
-import {
-  homePageButton,
-} from './styles/buttonStyles';
 import Banner from './components/Banner';
 import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
-import UserCard from './components/UserCard';
+
+import DB, { STORIES_STORE_NAME, EVENTS_STORE_NAME } from './db/db';
+import IO, { EVENT_NEW_STORY } from './io/io';
+
+import './index.css';
 
 class App extends React.Component {
   constructor() {
@@ -22,7 +22,10 @@ class App extends React.Component {
       loggedIn: false,
       events: [],
       stories: [],
-    }
+      snackbarOpen: false,
+      snackbarVariant: 'info',
+      snackbarMessage: '',
+    };
   }
 
   async componentDidMount() {
@@ -33,7 +36,7 @@ class App extends React.Component {
       });
       return;
     }
-    await axios.get('/api/users/find', {
+    await axios.get('/api/users/me', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -46,8 +49,15 @@ class App extends React.Component {
         username,
         loggedIn: true,
       });
-    }).catch((err) => {
-      console.error(err.response.data);
+      IO.setup(this.state.username);
+      IO.attachToEvent(EVENT_NEW_STORY, () => {
+        this.setState({
+          snackbarOpen: true,
+          snackbarMessage: 'Refresh the page to see the latest stories.',
+          snackbarVariant: 'info',
+        });
+      });
+    }).catch(() => {
       this.setState({
         loggedIn: false,
       });
@@ -58,7 +68,7 @@ class App extends React.Component {
 
   getStories = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get(`/api/stories/all`, {
+    await axios.get('/api/stories/timeline', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -67,6 +77,8 @@ class App extends React.Component {
         this.setState({
           stories: res.data.stories,
         });
+        // Store locally in IndexedDB
+        res.data.stories.forEach(story => DB.set(STORIES_STORE_NAME, story));
       })
       .catch(() => {
         this.setState({
@@ -77,7 +89,7 @@ class App extends React.Component {
 
   getEvents = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get(`/api/events/getEvents`, {
+    await axios.get('/api/events/getEvents', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -86,6 +98,8 @@ class App extends React.Component {
         this.setState({
           events: res.data.events,
         });
+        // Store locally in IndexedDB
+        res.data.events.forEach(event => DB.set(EVENTS_STORE_NAME, event));
       })
       .catch(() => {
         this.setState({
@@ -94,13 +108,34 @@ class App extends React.Component {
       });
   }
 
+  snackbarHandleClose = () => {
+    this.setState({
+      snackbarOpen: false,
+      snackbarMessage: '',
+      snackbarVariant: 'info',
+    });
+  }
+
   render() {
     const { home } = this.props;
-    const { events, stories } = this.state;
+    const {
+      events,
+      stories,
+      snackbarOpen,
+      snackbarVariant,
+      snackbarMessage,
+    } = this.state;
 
     if (this.state.loggedIn) {
       return (
-        <Layout title="Festival" home={home}>
+        <Layout
+          title="Festival"
+          home={home}
+          snackbarOpen={snackbarOpen}
+          snackbarHandleClose={this.snackbarHandleClose}
+          snackbarVariant={snackbarVariant}
+          snackbarMessage={snackbarMessage}
+        >
           <div className="event-center-bounds">
             <div className="feed-create-btns">
               <a href="/createStory" className="create-btn">Share Story</a>
@@ -114,15 +149,13 @@ class App extends React.Component {
             {stories && stories.map(story => <Story key={story._id} {...story} />)}
           </div>
         </Layout>
-      )
-    } else {
-      return (
-        <Layout title="Festival" home={home}>
-          <Banner />
-          <Features />
-        </Layout>
       );
     }
+    return (
+      <Layout title="Festival" home={home}>
+        <Banner />
+      </Layout>
+    );
   }
 };
 

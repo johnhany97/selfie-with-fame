@@ -24,6 +24,7 @@ class UpdateProfilePage extends Component {
       email: '',
       username: '',
       password: '',
+      bio: '',
       loadingUser: false,
       updated: false,
       error: false,
@@ -42,10 +43,7 @@ class UpdateProfilePage extends Component {
         error: true,
       });
     }
-    axios.get('/api/users/find', {
-      params: {
-        username: this.props.match.params.username,
-      },
+    axios.get(`/api/users/${this.props.match.params.username}`, {
       headers: { Authorization: `JWT ${token}` },
     }).then((response) => {
       // console.log(response.data);
@@ -56,10 +54,10 @@ class UpdateProfilePage extends Component {
         email: response.data.email,
         username: response.data.username,
         password: response.data.password,
+        bio: response.data.bio,
         error: false,
       });
     }).catch((error) => {
-      console.log(error.response.data);
       this.setState({
         error: true,
       });
@@ -82,20 +80,18 @@ class UpdateProfilePage extends Component {
     }
 
     e.preventDefault();
-    axios.put('/api/users/updateUser', {
+    axios.put(`/api/users/${this.state.username}`, {
       first_name: this.state.first_name,
       last_name: this.state.last_name,
       email: this.state.email,
-      username: this.state.username,
+      bio: this.state.bio,
     }, { headers: { Authorization: `JWT ${accessString}` } })
       .then((res) => {
-        console.log(res.data);
         this.setState({
           updated: true,
           error: false,
         });
       }).catch((err) => {
-        console.log(err.response.data);
         this.setState({
           loadingUser: false,
           error: true,
@@ -111,6 +107,7 @@ class UpdateProfilePage extends Component {
       email,
       username,
       password,
+      bio,
       updated,
       error,
       loadingUser,
@@ -176,6 +173,14 @@ class UpdateProfilePage extends Component {
                       value={email}
                       onChange={this.handleChange('email')}
                       placeholder="Email"
+                    />
+                    <TextField
+                      style={inputStyle}
+                      id="bio"
+                      label="bio"
+                      value={bio}
+                      onChange={this.handleChange('bio')}
+                      placeholder="Biography"
                     />
                     <TextField
                       style={inputStyle}

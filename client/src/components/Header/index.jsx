@@ -1,18 +1,18 @@
-import React , {Component} from 'react';
-import PropTypes from 'prop-types';
-import { Navbar, Nav } from 'react-bootstrap';
+import React, { Component } from 'react';
+import { Navbar } from 'react-bootstrap';
 import axios from 'axios';
+
 import LoggedOutNav from '../LoggedOutNav';
 import LoggedInNav from '../LoggedInNav';
 import './index.css';
 
 class Header extends Component {
-  constructor(){
+  constructor() {
     super();
     this.state = {
       username: '',
       loggedIn: false,
-    }
+    };
   }
 
   async componentDidMount() {
@@ -23,7 +23,7 @@ class Header extends Component {
       });
       return;
     }
-    await axios.get('/api/users/find', {
+    await axios.get('/api/users/me', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -36,22 +36,21 @@ class Header extends Component {
         username,
         loggedIn: true,
       });
-    }).catch((err) => {
-      console.error(err.response.data);
+    }).catch(() => {
       this.setState({
         loggedIn: false,
       });
     });
   }
-  
+
   render() {
-    const loggedIn = this.state.loggedIn;
+    const { loggedIn, username } = this.state;
     let rightNav;
 
     if (!loggedIn) {
       rightNav = <LoggedOutNav />;
     } else {
-      rightNav = <LoggedInNav username={this.state.username} />;
+      rightNav = <LoggedInNav username={username} />;
     }
 
     return (
@@ -64,16 +63,8 @@ class Header extends Component {
           </Navbar.Collapse>
         </div>
       </Navbar>
-    )
+    );
   }
 }
-
-Header.propTypes = {
-  title: PropTypes.string,
-};
-
-Header.defaultProps = {
-  title: '',
-};
 
 export default Header;

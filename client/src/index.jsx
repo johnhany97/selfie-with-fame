@@ -25,11 +25,12 @@ import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
 import DB from './db/db';
 import DiscoverPage from './pages/DiscoverPage';
+import Teapot from './components/Teapot';
+import UserProfile from './components/UserProfile';
 
 // check for support indexeddb support;
 let db = null;
 if ('indexedDB' in window) {
-  console.log('another yet');
   db = new DB();
 } else {
   console.log('This browser doesn\'t support IndexedDB');
@@ -53,6 +54,8 @@ const routing = (
       <Route exact path="/eventPage/:_id" component={EventPage} />
       <Route path="/createStory" component={CreateStoryPage} />
       <Route exact path="/mapTest" component={GoogleMap} />
+      <Route exact path="/brewCoffee" component={Teapot} />
+      <Route exact path="/user/:username" component={UserProfile} />
       <Route component={NotFound} />
     </Switch>
   </Router>

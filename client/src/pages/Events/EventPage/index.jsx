@@ -37,6 +37,16 @@ class EventPage extends Component {
     };
   }
 
+  convertDateFormat(date) {
+    let createAtDate = new Date(date);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = createAtDate.getFullYear();
+    var month = months[createAtDate.getMonth()];
+    var date = createAtDate.getDate();
+    var convertedDate = date + ' ' + month + ' ' + year;
+    return convertedDate;
+  }
+
   componentWillMount() {
     const token = localStorage.getItem('JWT');
     if (token === null) {
@@ -184,8 +194,8 @@ class EventPage extends Component {
               <h3 className="event-header-name">{name}</h3>
               <p>{information}</p>
               <p>{location["city"]}</p>
-              <p>{start_date}</p>
-              <p>{end_date}</p>
+              <p>Start Date: {this.convertDateFormat(start_date)}</p>
+              <p>End Date: {this.convertDateFormat(end_date)}</p>
             </div>
           </div>
         </div>
