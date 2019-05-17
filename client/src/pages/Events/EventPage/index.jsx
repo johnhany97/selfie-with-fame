@@ -195,7 +195,7 @@ class EventPage extends Component {
           </div>
         </div>
         <div className="event-center-bounds">
-          {stories && stories.map(story => <Story {...story} />)}
+          {stories && stories.map(story => <Story key={story._id} {...story} />)}
         </div>
       </Layout>
     );
