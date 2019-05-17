@@ -3,6 +3,7 @@ import axios from 'axios';
 import Story from './../../components/Stories/Story';
 import './index.css';
 import Layout from './../../components/Layout';
+import placeholderAvatar from './placeholder-avatar.jpg';
 
 
 class UserProfile extends React.Component {
@@ -18,9 +19,22 @@ class UserProfile extends React.Component {
         }
     }
 
-    followUser = () => {
-        console.log("Hhfafsdf");
-    }
+    followUser = (e) => {
+        this.setState({
+          following: true,
+        });
+        const token = localStorage.getItem('JWT');
+        e.preventDefault();
+        axios.post(`/api/users/${this.state.username}/follow`, {},
+         { headers: { Authorization: `JWT ${token}`} })
+          .then(() => {
+            console.log("Follow successful");
+          }).catch((error) => {
+            this.setState({
+              following: false,
+            });
+          });
+      }
 
     async componentDidMount() {
         await this.getUserDetails();
@@ -36,12 +50,12 @@ class UserProfile extends React.Component {
         }).then((res) => {
             const { data } = res;
             const {
-                _id,
-                username,
-                bio,
+                user,
+                following,
             } = data;
             this.setState({
-                ...res.data,
+                ...user,
+                following: following,
             });
             console.log(this.state.username);
         }).catch((err) => {
@@ -53,8 +67,9 @@ class UserProfile extends React.Component {
 
     fetchUserStory = () => {
         const token = localStorage.getItem('JWT');
-        axios.get('/api/stories/', 
-            { headers: { Authorization: `JWT ${token}` } })
+        console.log(this.state._id);
+        axios.get('/api/stories/',
+            { params: {_id: this.state._id}, headers: { Authorization: `JWT ${token}`}})
             .then((res) => {
                 // TODO: Snackbar of success
                 console.log("Fetched Story");
@@ -71,18 +86,18 @@ class UserProfile extends React.Component {
 
     render() {
         let followStateBtn;
-        if (this.state.following) {
+        if (!this.state.following) {
             followStateBtn = <button onClick={this.followUser} className="follow-btn">Follow</button>;
         } else {
-            followStateBtn = <button onClick={this.followUser} className="follow-btn">Following</button>;
+            followStateBtn = <button onClick={this.followUser} className="following-btn">Following</button>;
         }
         const { username, bio, stories } = this.state;
         return (
             <Layout title="Profile Page">
                 <div className="container">
                     <div className="profile-container-user">
-                        <img className="profile-img" alt="Profile pic" />
-                        <div className="profile-user-info">
+                        <img src={placeholderAvatar} className="profile-img" alt="Profile pic" />
+                        <div>
                             <h4>{username}</h4>
                             <h5>BIO</h5>
                             <p>
@@ -91,7 +106,6 @@ class UserProfile extends React.Component {
                             {followStateBtn}
                         </div>
                     </div>
-                    <h3 className="profile-title">STORIES</h3>
                     {stories && stories.map(story => <Story {...story} />)}
                 </div>
             </Layout>
