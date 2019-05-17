@@ -113,6 +113,7 @@ module.exports.getEventsByLocationAndDate = (req, res, next) => {
   //and ended after userRangeEnd include it as it was happeneing in this range.
   // if event  is  (userRangeStart <= eventStartDate <= userRangeEnd) OR (userRangeStart <= eventEndDate <= userRangeEnd)  OR
   // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
+  // console.log(req.body);
   let or_query = [
     req.body.eventQuery !== '' ? { 'information':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
     req.body.eventQuery !== '' ? { 'name':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
