@@ -1,5 +1,7 @@
 const passport = require('passport');
 var Event = require('../models/event');
+const validator = require('validator');
+
 
 
 module.exports.getEvents = (req, res, next) => {
@@ -84,6 +86,22 @@ module.exports.getEventsByLocation = (req, res, next) => {
     .catch((err) => {
       res.status(500).send(err);
     });
+}
+
+module.exports.getEventById = (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('invalid id');
+  }
+
+  Event.findById(id)
+    .then((event) => {
+      return res.status(200).send(event);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    })
 }
 
 

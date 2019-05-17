@@ -19,8 +19,10 @@ class SearchEvents extends Component {
   constructor(props) {
     super(props);
     this.autocomplete = null;
+    this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
     this.placeDetails = null
     this.geocoder = null
+    
     /*global google*/
     this.state = {
       query: '',
@@ -77,7 +79,7 @@ class SearchEvents extends Component {
         }
       );
 
-      this.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
+      this.props.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
       const { handleLocationChange } = this.props;
       const { handleCityChange } = this.props;
       handleLocationChange(this.state.selectedPlace);
@@ -142,6 +144,7 @@ class SearchEvents extends Component {
           displayedEvents: events,
           showError: false,
         });
+        this.props.handleDisplayedEventsChange(events)
 
       }).catch((err) => {
         this.setState({
@@ -165,7 +168,7 @@ class SearchEvents extends Component {
     return (
       <div>
         <div>
-          <h3 className="search-location-title">Select Location</h3>
+          <h3 className="search-location-title">Search Events</h3>
           <hr className="search-location-divider" />
           <form  className="panel-center">
             <TextField
@@ -223,14 +226,13 @@ class SearchEvents extends Component {
     );
 
   }
-}
+} 
 
 SearchEvents.propTypes = {
-  match: PropTypes.shape({
-    params: PropTypes.shape({
-      handleDisplayedEventsChange: PropTypes.func.isRequired,
-    }),
-  }),
+
+    handleDisplayedEventsChange: PropTypes.func.isRequired,
+    mapElement: PropTypes.object,
+  
 };
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyDwl44l9AwolJXOOTPgoVuFNFrgPeXSz7s',

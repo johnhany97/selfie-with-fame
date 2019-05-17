@@ -14,12 +14,15 @@ import rightArrow from './../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
 import SelectEventMap from '../../SelectEventMap';
 import SearchEvents from '../../Search/SearchEvents';
+import GoogleMap from '../../../pages/GoogleMap';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       events: [],
+      city: '',
+      location: '',
     };
   }
 
@@ -56,13 +59,21 @@ class CreateStoryEvent extends Component {
     previousStep();
   }
 
-  handleDisplayedEventsChange = (data) => {
+  handleCityChange = (data) => {
     this.setState({
-      events: data,
+      city: data,
     });
 
   };
 
+  handleLocationChange = (data) => {
+    this.setState({
+      location: data,
+    });
+
+  };
+
+ 
   render() {
     const { events } = this.state;
     const { values, handleEventChange, nextStep, previousStep, step } = this.props;
@@ -78,11 +89,15 @@ class CreateStoryEvent extends Component {
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>
         </div>
-        <SearchEvents
-          handleDisplayedEventsChange = {this.handleDisplayedEventsChange}
-        >
 
-        </SearchEvents>
+        <SelectEventMap
+          handleCityChange= {this.handleCityChange} 
+          handleLocationChange = {this.handleLocationChange}
+          handleEventChange = {this.props.handleEventChange}
+          topLevelEvent = {this.props.topLevelEvent}
+        />
+        
+
         {/* {events && events.map((event, index) => (
           <React.Fragment>
             <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
@@ -99,6 +114,7 @@ CreateStoryEvent.propTypes = {
   nextStep: PropTypes.func.isRequired,
   previousStep: PropTypes.func.isRequired,
   handleEventChange: PropTypes.func.isRequired,
+  topLevelEvent: PropTypes.object,
   values: PropTypes.object.isRequired,
 };
 

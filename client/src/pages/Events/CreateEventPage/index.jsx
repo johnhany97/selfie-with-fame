@@ -38,6 +38,7 @@ class CreateEventPage extends Component {
       showError: false,
       createEventError: false,
       displayedEvents: [],
+      mapElement: React.createRef(),
     };
   }
 
@@ -228,6 +229,7 @@ class CreateEventPage extends Component {
               <GoogleMap
                 handleLocationChange={this.handleLocationChange}
                 handleCityChange={this.handleCityChange}
+                mapElement={this.state.mapElement}
               />
 
               {showError === true && createEventError === true && (
