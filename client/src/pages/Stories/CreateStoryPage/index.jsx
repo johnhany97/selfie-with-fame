@@ -1,13 +1,14 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Redirect } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
 import CreateStoryCamera from '../../../components/Stories/CreateStoryCamera';
 import CreateStoryEvent from '../../../components/Stories/CreateStoryEvent';
 import CreateStoryText from '../../../components/Stories/CreateStoryText';
 import Confirmation from '../../../components/Stories/Confirmation';
-import { Redirect } from 'react-router-dom';
+import DB, { OFFLINE_STORIES_STORE_NAME, EVENTS_STORE_NAME } from '../../../db/db';
 
 class CreateStoryPage extends Component {
   constructor(props) {
@@ -75,8 +76,6 @@ class CreateStoryPage extends Component {
       _id,
     } = event;
 
-
-
     axios.post('/api/stories', {
       text,
       pictures,
@@ -90,11 +89,21 @@ class CreateStoryPage extends Component {
         });
         this.nextStep();
       }).catch((error) => {
-        this.setState({
-          isLoading: false,
-          error: true,
-          errorMessage: error.response.data,
-        });
+        if (!error.status) { // was offline, use indexeddb
+          console.log('because I was offline');
+          // Store in IDB for later consumption
+          DB.set(OFFLINE_STORIES_STORE_NAME, {
+            text,
+            pictures,
+            event,
+          });
+        } else { // was not offline
+          this.setState({
+            isLoading: false,
+            error: true,
+            errorMessage: error.response.data,
+          });
+        }
       });
   }
 

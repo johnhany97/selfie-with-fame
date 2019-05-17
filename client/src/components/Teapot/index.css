@@ -1,0 +1,6 @@
+.teapot-img {
+  background-image: url("./teapot.jpg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: none;
+}

@@ -2,18 +2,17 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
-import socketIOClient from "socket.io-client";
 
 import Layout from './components/Layout';
-import DB, { STORIES_STORE_NAME, EVENTS_STORE_NAME } from './db/db';
-import './index.css';
 import Banner from './components/Banner';
 import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
-import UserCard from './components/UserCard';
 
-const socketIOEndpoint = 'https://localhost:3001';
+import DB, { STORIES_STORE_NAME, EVENTS_STORE_NAME } from './db/db';
+import IO, { EVENT_CONNECT, EVENT_NEW_STORY, EMIT_EVENT_CONNECTED } from './io/io';
+
+import './index.css';
 
 class App extends React.Component {
   constructor() {
@@ -23,7 +22,7 @@ class App extends React.Component {
       loggedIn: false,
       events: [],
       stories: [],
-    }
+    };
   }
 
   async componentDidMount() {
@@ -47,28 +46,23 @@ class App extends React.Component {
         username,
         loggedIn: true,
       });
-    }).catch((err) => {
-      console.error(err.response.data);
+      console.log(res.data);
+      IO.setup(this.state.username);
+      IO.attachToEvent(EVENT_NEW_STORY, () => {
+        console.log('New stories, refresh man');
+      });
+    }).catch(() => {
       this.setState({
         loggedIn: false,
       });
     });
     await this.getEvents();
     await this.getStories();
-    // Socket IO
-    const socket = socketIOClient(socketIOEndpoint, { reconnection: true, secure: true });
-    socket.on('connect', () => {
-      socket.emit('connected', this.state.username);
-    });
-    socket.on('new_story', () => {
-      // TODO: Snackbar? Update state? Top bar?
-      console.log('New stories, please refresh');
-    });
   }
 
   getStories = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get(`/api/stories/timeline`, {
+    await axios.get('/api/stories/timeline', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -78,7 +72,7 @@ class App extends React.Component {
           stories: res.data.stories,
         });
         // Store locally in IndexedDB
-        res.data.stories.forEach((story) => DB.set(STORIES_STORE_NAME, story));
+        res.data.stories.forEach(story => DB.set(STORIES_STORE_NAME, story));
       })
       .catch(() => {
         this.setState({
@@ -89,7 +83,7 @@ class App extends React.Component {
 
   getEvents = async () => {
     const token = localStorage.getItem('JWT');
-    await axios.get(`/api/events/getEvents`, {
+    await axios.get('/api/events/getEvents', {
       headers: {
         Authorization: `JWT ${token}`,
       },
@@ -99,7 +93,7 @@ class App extends React.Component {
           events: res.data.events,
         });
         // Store locally in IndexedDB
-        res.data.events.forEach((event) => DB.set(EVENTS_STORE_NAME, event));
+        res.data.events.forEach(event => DB.set(EVENTS_STORE_NAME, event));
       })
       .catch(() => {
         this.setState({
@@ -128,15 +122,14 @@ class App extends React.Component {
             {stories && stories.map(story => <Story key={story._id} {...story} />)}
           </div>
         </Layout>
-      )
-    } else {
-      return (
-        <Layout title="Festival" home={home}>
-          <Banner />
-          <Features />
-        </Layout>
       );
     }
+    return (
+      <Layout title="Festival" home={home}>
+        <Banner />
+        <Features />
+      </Layout>
+    );
   }
 };
 

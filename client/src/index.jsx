@@ -25,6 +25,7 @@ import CreateStoryPage from './pages/Stories/CreateStoryPage';
 
 import DB from './db/db';
 import DiscoverPage from './pages/DiscoverPage';
+import Teapot from './components/Teapot';
 
 // check for support indexeddb support;
 let db = null;
@@ -53,6 +54,7 @@ const routing = (
       <Route exact path="/eventPage/:_id" component={EventPage} />
       <Route path="/createStory" component={CreateStoryPage} />
       <Route exact path="/mapTest" component={GoogleMap} />
+      <Route exact path="/brewCoffee" component={Teapot} />
       <Route component={NotFound} />
     </Switch>
   </Router>
