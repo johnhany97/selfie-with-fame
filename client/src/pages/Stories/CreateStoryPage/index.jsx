@@ -71,9 +71,14 @@ class CreateStoryPage extends Component {
   };
 
   handleEventChange = (event) => {
+    console.log(event);
     this.setState({
       event,
     });
+  }
+
+  handleOfflineEventChange = (event) => {
+    this.setState({ event: event.target.value });
   }
 
   createStory = (e) => {
@@ -207,6 +212,7 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handleEventChange={this.handleEventChange}
+              handleOfflineEventChange={this.handleOfflineEventChange}
               topLevelEvent={this.state.event}
               values={values}
               step={step}

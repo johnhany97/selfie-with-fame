@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Navbar } from 'react-bootstrap';
-import axios from 'axios';
 
 import LoggedOutNav from '../LoggedOutNav';
 import LoggedInNav from '../LoggedInNav';
@@ -10,10 +9,10 @@ import './index.css';
 /**
  * @Params
  * none
- * 
+ *
  * @summary
  * Displays header / navbar at the top of the page with links to main pages
- * 
+ *
  * @returns
  * Returns JSX for header component
  */
@@ -28,29 +27,17 @@ class Header extends Component {
 
   async componentDidMount() {
     const token = localStorage.getItem('JWT');
-    if (token == null) {
+    const username = localStorage.getItem('username');
+    if (!token || !username) {
       this.setState({
         loggedIn: false,
+        username: '',
       });
       return;
     }
-    await axios.get('/api/users/me', {
-      headers: {
-        Authorization: `JWT ${token}`,
-      },
-    }).then((res) => {
-      const { data } = res;
-      const {
-        username,
-      } = data;
-      this.setState({
-        username,
-        loggedIn: true,
-      });
-    }).catch(() => {
-      this.setState({
-        loggedIn: false,
-      });
+    this.setState({
+      loggedIn: true,
+      username,
     });
   }
 
