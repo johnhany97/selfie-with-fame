@@ -606,15 +606,22 @@ module.exports.getUserByUsername = (req, res) => {
   }
 
   User.findOne({ username })
-    .populate('followers', 'first_name last_name username')
+    .populate('followers', '_id first_name last_name username')
     .populate('following', 'first_name last_name username')
     .then((user) => {
       if (!user) {
         return res.status(404).send();
       }
+      let currentlyFollowing = false;
+      for (let i = 0; i < user.followers.length; i++) {
+        if (user.followers[i]._id.equals(req.user._id)) {
+          currentlyFollowing = true;
+        }
+      }
+      user.currentlyFollowing = currentlyFollowing;
       res.status(200).send({
-        ...user,
-        currentlyFollowing: user.followers.indexOf(req.user._id) !== -1
+        ...user._doc,
+        currentlyFollowing
       });
     })
     .catch((err) => {
