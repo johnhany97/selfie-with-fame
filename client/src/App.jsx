@@ -5,7 +5,6 @@ import axios from 'axios';
 
 import Layout from './components/Layout';
 import Banner from './components/Banner';
-import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
 
