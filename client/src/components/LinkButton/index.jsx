@@ -5,6 +5,16 @@ import { Link } from 'react-router-dom';
 
 import { linkStyle } from '../../styles/buttonStyles';
 
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Link button with custom styling
+ * 
+ * @returns
+ * Returns JSX for custom link button
+ */
 const LinkButton = ({ buttonText, buttonStyle, link }) => (
   <Fragment>
     <Link

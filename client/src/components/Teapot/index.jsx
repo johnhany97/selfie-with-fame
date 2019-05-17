@@ -10,6 +10,16 @@ const styles = {
   width: '100%',
 };
 
+/**
+ * @Params
+ * none 
+ * 
+ * @summary
+ * Displays Teapot error message to user
+ * 
+ * @returns
+ * Returns JSX component to display Teapot error code
+ */
 const Teapot = () => (
   <Layout>
     <div className="container-fluid">

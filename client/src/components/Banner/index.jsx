@@ -3,6 +3,16 @@ import React from 'react';
 import './index.css';
 import appImg from './placeholder.png';
 
+/**
+ * @Params
+ * appImg => src for banner image
+ * 
+ * @summary
+ * Displays banner image on home page when logged out
+ * 
+ * @returns
+ * Returns JSX for banner component
+ */
 
 const Banner = () => (
   <div className="banner-background">

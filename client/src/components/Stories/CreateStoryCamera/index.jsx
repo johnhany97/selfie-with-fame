@@ -6,6 +6,19 @@ import './index.css';
 import rightArrow from './../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
 
+/**
+ * @Params
+ * nextStep => function passed down to handle changing to
+ * the next step in the create story process
+ * 
+ * @summary
+ * Displays page capturing images using the camera component 
+ * which uses WebRTC. It also allows the user to take multiple
+ * photos and remove multiple photos
+ * 
+ * @returns
+ * Returns JSX for capturing photos from the users camera
+ */
 class CreateStoryCamera extends Component {
   saveAndContinue = (e) => {
     e.preventDefault();

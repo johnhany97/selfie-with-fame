@@ -20,6 +20,18 @@ import './index.css';
 import SearchEvents from '../SearchEvents';
 import CurrentLocation from '../../Map/Map';
 
+
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays page for searching and filter events with a
+ * GoogleMap component for viewing events
+ * 
+ * @returns
+ * Returns JSX searching, filtering and viewing events
+ */
 class DiscoverSearchEvents extends Component {
   constructor(props) {
     super(props);

@@ -5,6 +5,18 @@ import { Nav, NavDropdown } from 'react-bootstrap';
 import './index.css';
 import avatar from './placeholder-avatar.jpg';
 
+/**
+ * @Params
+ * username => currently logged in username
+ *
+ * 
+ * @summary
+ * Displays nav menu for when user if logged in 
+ * with functionality to log user out
+ * 
+ * @returns
+ * Returns JSX for nav menu when user is logged in
+ */
 class LoggedInNav extends Component {
   logout = (event) => {
     event.preventDefault();

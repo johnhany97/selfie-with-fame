@@ -7,6 +7,22 @@ import {
 import './index.css';
 import crossBtn from './../../images/cross.png';
 
+
+/**
+ * @Params
+ * data => binary data to display image
+ * index => index of photo in array of user photos
+ * removePicture => method to remove picture from array of photos
+ * confirmation => bool : true if photo component is being used on confirmation
+ * screen
+ * 
+ * @summary
+ * Displays image passed through props in a custom photo component
+ * 
+ * @returns
+ * Returns JSX for custom image component
+ */
+
 const Photo = (props) => {
   const { handleSaveClick, data, index, removePicture, confirmation } = props;
   if(confirmation){

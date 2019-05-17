@@ -15,6 +15,17 @@ import searchButton from '../../../images/round-search.png';
 import { inputStyle } from '../../../styles/buttonStyles';
 import { errorMessage } from '../../../styles/formStyles';
 
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays page for searching and filter events with a
+ * GoogleMap component for viewing events
+ * 
+ * @returns
+ * Returns JSX searching, filtering and viewing events
+ */
 class SearchEvents extends Component {
   constructor(props) {
     super(props);

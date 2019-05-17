@@ -7,6 +7,19 @@ import Header from '../Header';
 import Footer from '../Footer';
 import CustomSnackbar from '../CustomSnackbar';
 
+/**
+ * @Params
+ * title => title of page
+ * children => components of child elements
+ * 
+ * @summary
+ * This component is a container to display child elements
+ * passed through props and also displays partials such
+ * as header and footer
+ * 
+ * @returns
+ * Returns JSX for layout container
+ */
 const Layout = (props) => {
   const {
     title,

@@ -2,6 +2,18 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 
+/**
+ * @Params
+ * buttonText => text to display on button
+ * buttonStyle => custom button styling
+ * 
+ * @summary
+ * Displays a custom submit button with custom styling
+ * 
+ * @returns
+ * Returns JSX for submit button
+ * a text field
+ */
 const SubmitButton = (props) => {
   const { buttonText, buttonStyle } = props;
   return (

@@ -6,6 +6,22 @@ import PropTypes from 'prop-types';
 
 import './index.css';
 
+/**
+ * @Params
+ * _id
+ * name
+ * start_date
+ * location
+ * information
+ * end_date
+ * selected
+ * 
+ * @summary
+ * Displays event summary on card
+ * 
+ * @returns
+ * Returns JSX for displaying event overview card
+ */
 class Event extends React.Component {
   convertDateFormat(date) {
     let createAtDate = new Date(date);

@@ -11,6 +11,22 @@ import FormProgress from '../../FormProgress';
 import SelectEventMap from '../../SelectEventMap';
 import DB from '../../../db/db';
 
+/**
+ * @Params
+ * values
+ * handleEventChange
+ * nextStep
+ * previousStep
+ * step 
+ * 
+ * @summary
+ * Displays page that allows the user to search and filter and select
+ * an event from the map that they want to add a story to.
+ * 
+ * @returns
+ * Returns JSX component to allow the user to select event 
+ * from GoogleMap component
+ */
 class CreateStoryEvent extends Component {
   constructor(props) {
     super(props);
