@@ -3,6 +3,7 @@
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/no-string-refs */
 /* eslint-disable consistent-return */
+/* eslint-disable array-callback-return */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
@@ -28,9 +29,6 @@ const mapStyles = {
 class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);
-    this.geocoder = null
-
-
     const { initialCenter } = this.props;
     const {
       lat,
@@ -38,34 +36,31 @@ class CurrentLocation extends React.Component {
     } = initialCenter;
     this.state = {
       currentLocation: [lat, lng],
-      initialCity: "Sheffield",
+      initialCity: 'Sheffield',
     };
   }
 
   componentDidMount() {
-    var initCity = this.state.initialCity;
+    const initCity = this.state.initialCity;
 
-    const {handleLocalCityChange} = this.props;
+    const { handleLocalCityChange } = this.props;
     handleLocalCityChange(initCity);
     const { handleCityChange } = this.props;
     handleCityChange(initCity);
-
-
-
 
     const { handleLocationChange } = this.props;
     const { currentLocation } = this.state;
     const [lat, lng] = currentLocation;
     handleLocationChange([lat, lng]);
     const { handleSelectedLocationChange } = this.props;
-    handleSelectedLocationChange( [lat, lng])
+    handleSelectedLocationChange([lat, lng]);
     const { getEventsByLocationAndDate } = this.props;
     getEventsByLocationAndDate();
 
+    const { centerAroundCurrentLocation } = this.props;
+    let city_state = 'Sheffield';
 
-    
-    const {centerAroundCurrentLocation} = this.props
-    var city_state = "Sheffield"
+    /* global google */
 
     if (centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
@@ -74,31 +69,26 @@ class CurrentLocation extends React.Component {
           this.setState({
             currentLocation: [coords.latitude, coords.longitude],
           });
-          
-          /*global google*/
-
-          this.geocoder =  new google.maps.Geocoder;
-          this.geocoder.geocode({'location': {"lat": coords.latitude, "lng":coords.longitude}}, function(results, status) {
+          this.geocoder = new google.maps.Geocoder();
+          this.geocoder.geocode({ location: { lat: coords.latitude, lng: coords.longitude } }, (results, status) => {
             if (status === 'OK') {
               if (results[0]) {
-                results[0].address_components.map(i => {
-                  if (i.types[0] == "postal_town" ||i.types[0] =="locality" )  {
-                    city_state = i.long_name
+                results[0].address_components.map((i) => {
+                  if (i.types[0] === 'postal_town' || i.types[0] === 'locality') {
+                    city_state = i.long_name;
                   }
                 });
               } else {
                 window.alert('No results found');
               }
             } else {
-              window.alert('Geocoder failed due to: ' + status);
+              window.alert(`Geocoder failed due to: ${status}`);
             }
           });
-          const {handleLocalCityChange} = this.props
-          handleLocalCityChange(city_state)
+          const { handleLocalCityChange } = this.props;
+          handleLocalCityChange(city_state);
           const { handleCityChange } = this.props;
-          handleCityChange(city_state)
-
-
+          handleCityChange(city_state);
 
 
           const { handleLocationChange } = this.props;
@@ -106,12 +96,9 @@ class CurrentLocation extends React.Component {
           const [lat, lng] = currentLocation;
           handleLocationChange([lat, lng]);
           const { handleSelectedLocationChange } = this.props;
-          handleSelectedLocationChange( [lat, lng])
+          handleSelectedLocationChange([lat, lng]);
           const { getEventsByLocationAndDate } = this.props;
           getEventsByLocationAndDate();
-
-
-
         });
       }
     }
@@ -153,6 +140,7 @@ class CurrentLocation extends React.Component {
       this.map = new maps.Map(node, mapConfig);
     }
   }
+
   recenterMap() {
     const { currentLocation } = this.state;
     const [lat, lng] = currentLocation;
@@ -173,6 +161,7 @@ class CurrentLocation extends React.Component {
     });
     this.recenterMap();
   }
+
   renderChildren() {
     const {
       children,

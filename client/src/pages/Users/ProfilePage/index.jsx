@@ -27,7 +27,7 @@ class ProfilePage extends Component {
 
   componentWillMount() {
     const token = localStorage.getItem('JWT');
-    if (token === null) {
+    if (!token) {
       // eslint-disable-next-line react/prop-types
       const { history } = this.props;
       history.replace('/login');

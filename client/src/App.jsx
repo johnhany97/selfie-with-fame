@@ -1,11 +1,10 @@
-/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import axios from 'axios';
 
 import Layout from './components/Layout';
 import Banner from './components/Banner';
-import Features from './components/Features';
 import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
 
@@ -49,7 +48,7 @@ class App extends React.Component {
         username,
         loggedIn: true,
       });
-      IO.setup(this.state.username);
+      IO.setup(username);
       IO.attachToEvent(EVENT_NEW_STORY, () => {
         this.setState({
           snackbarOpen: true,
@@ -124,9 +123,10 @@ class App extends React.Component {
       snackbarOpen,
       snackbarVariant,
       snackbarMessage,
+      loggedIn,
     } = this.state;
 
-    if (this.state.loggedIn) {
+    if (loggedIn) {
       return (
         <Layout
           title="Festival"

@@ -17,7 +17,7 @@ import {
 } from '../../../styles/buttonStyles';
 
 import './index.css';
-import SearchEvents from '../../Search/SearchEvents';
+import SearchEvents from '../SearchEvents';
 import CurrentLocation from '../../Map/Map';
 
 
@@ -50,51 +50,34 @@ class DiscoverSearchEvents extends Component {
       marker_clicked: ' ',
       selected_event: [],
       mapElement: React.createRef(),
-      
-
       end_date: new Date(),
       start_date: new Date(),
-      mode: "onGoing",
+      mode: 'onGoing',
       // start_date: new Date((new Date()).setFullYear( new Date().getFullYear() - 1 )),
-
     };
-
-
-
-
   }
 
   async componentDidMount() {
-
-
     var options = { types: ['(cities)'] };
-
 
     this.autocomplete = new google.maps.places.Autocomplete(document.getElementById('autocomplete'), options);
     this.autocomplete.addListener('place_changed', this.handlePlaceSelect);
 
     this.placeDetails = new google.maps.places.PlacesService(this.props.google);
-    this.geocoder = new google.maps.Geocoder;
+    this.geocoder = new google.maps.Geocoder();
     this.getEventsByLocationAndDate();
-
-
-
-
   }
 
   handleLocalCityChange = (data) => {
     this.setState({
       city: data,
     });
-
   };
 
   handlePlaceSelect() {
-
     // Extract City From Address Object
     let addressObject = this.autocomplete.getPlace();
     let address = addressObject.address_components;
-
 
     // Check if address is valid
     if (address) {
@@ -174,7 +157,7 @@ class DiscoverSearchEvents extends Component {
       });
       return;
     }
-   
+
     axios.get(`/api/events/${id}`,
       {
         headers: {
@@ -196,9 +179,9 @@ class DiscoverSearchEvents extends Component {
       });
   }
 
-  
 
-  
+
+
   getEventsByLocationAndDate = async () => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
@@ -213,7 +196,7 @@ class DiscoverSearchEvents extends Component {
       city,
       eventQuery
     } = this.state;
-    let end_date_displayEvents =start_date
+    let end_date_displayEvents = start_date
     let city_displayEvents = city
     let start_date_displayEvents = end_date
     axios.post('/api/events/getEventsByLocationAndDate',
@@ -267,23 +250,23 @@ class DiscoverSearchEvents extends Component {
     console.log("the displayed events")
     console.log(displayedEvents)
 
-    
+
     return (
       <div>
 
         <h3 className="search-location-title">Selected Event</h3>
         <hr className="search-location-divider" />
-          <TextField
-              style={inputStyle}
-              value={this.state.eventQuery }
-              onChange={this.handleChange('eventQuery')}
-              disabled
-          />
+        <TextField
+          style={inputStyle}
+          value={this.state.eventQuery}
+          onChange={this.handleChange('eventQuery')}
+          disabled
+        />
 
 
         <SearchEvents
-          mapElement = {this.state.mapElement}
-          handleDisplayedEventsChange = {this.handleDisplayedEventsChange}
+          mapElement={this.state.mapElement}
+          handleDisplayedEventsChange={this.handleDisplayedEventsChange}
           handleLocationChange={this.props.handleLocationChange}
           handleCityChange={this.props.handleCityChange}
 
@@ -300,14 +283,14 @@ class DiscoverSearchEvents extends Component {
           getEventsByLocationAndDate={this.getEventsByLocationAndDate}
           markers={displayedEvents}
         >
-          
+
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
-              event = {event}
+              event={event}
               name={event.name}
               info={event.information}
-              _id= {event._id}
+              _id={event._id}
               position={this.arrayTodict(event.location["coordinates"])}
 
 
@@ -323,7 +306,7 @@ class DiscoverSearchEvents extends Component {
             <div>
               <h4>{this.state.selected_event.name}</h4>
               <p> {this.state.selected_event.info}</p>
-              <a href= {`/eventPage/${this.state.selected_event._id}`} className="create-btn">View Event</a>
+              <a href={`/eventPage/${this.state.selected_event._id}`} className="create-btn">View Event</a>
 
 
             </div>

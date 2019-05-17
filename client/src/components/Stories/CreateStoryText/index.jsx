@@ -3,12 +3,9 @@ import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 
 import { inputStyle } from '../../../styles/buttonStyles';
-import {
-  noWidthBtn,
-} from '../../../styles/formStyles';
 import './index.css';
-import leftArrow from './../../../images/left-arrow.png';
-import rightArrow from './../../../images/right-arrow.png';
+import leftArrow from '../../../images/left-arrow.png';
+import rightArrow from '../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
 
 
@@ -35,7 +32,7 @@ const CreateStoryText = (props) => {
   } = props;
   return (
     <form className="story-text-form">
-      <div class="form-navigation">
+      <div className="form-navigation">
         <button onClick={previousStep} type="button" className="navigation-btn-back">
           <img className="navigation-arrow" src={leftArrow} alt="Back" />
           Back

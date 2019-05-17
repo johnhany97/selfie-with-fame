@@ -39,7 +39,7 @@ if ('indexedDB' in window) {
 const routing = (
   <Router>
     <Switch>
-      <Route exact path="/" component={() => <App db={db} home={true} />} />
+      <Route exact path="/" component={() => <App db={db} />} />
       <Route exact path="/login" component={LoginPage} />
       <Route exact path="/register" component={RegisterPage} />
       <Route exact path="/reset/:token" component={ResetPasswordPage} />

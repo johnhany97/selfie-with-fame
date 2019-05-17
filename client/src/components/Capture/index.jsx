@@ -1,5 +1,7 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/prop-types */
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import Camera from '../Camera';
 import Photo from '../Photo';
@@ -64,7 +66,6 @@ class Capture extends Component {
     const canvas = document.querySelector('canvas');
     const context = canvas.getContext('2d');
     const video = document.querySelector('video');
-    const photo = document.getElementById('photo');
     // eslint-disable-next-line react/destructuring-assignment
     const { width, height } = this.state.constraints.video;
 
@@ -74,15 +75,12 @@ class Capture extends Component {
 
     const data = canvas.toDataURL('image/png');
 
-    const { handlePhotoChange, onAddPicture, values } = this.props;
-    //handlePhotoChange(data);
+    const { onAddPicture } = this.props;
     onAddPicture(data);
-    //photo.setAttribute('src', data);
   }
 
   clearPhoto = () => {
     const canvas = document.querySelector('canvas');
-    const photo = document.getElementById('photo');
     const context = canvas.getContext('2d');
 
     const { constraints } = this.state;
@@ -92,8 +90,7 @@ class Capture extends Component {
     context.fillStyle = '#FFF';
     context.fillRect(0, 0, width, height);
 
-    const data = canvas.toDataURL('image/png');
-    //photo.setAttribute('src', data);
+    canvas.toDataURL('image/png');
   }
 
   render() {
@@ -109,9 +106,8 @@ class Capture extends Component {
           hidden
         />
         <div className="thumbnails-container-preview">
-          {this.props.values.pictures.map((data, index) =>
-            <Photo key={index} data={data} index={index} removePicture={removePicture}/>
-          )}
+          {this.props.values.pictures.map((data, index) => (
+            <Photo key={index} data={data} index={index} removePicture={removePicture} />))}
         </div>
       </div>
     );

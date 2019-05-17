@@ -1,5 +1,7 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable react/destructuring-assignment */
 import React, { Component } from 'react';
-import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Nav, NavDropdown } from 'react-bootstrap';
 import './index.css';
 import avatar from './placeholder-avatar.jpg';
 
@@ -16,9 +18,6 @@ import avatar from './placeholder-avatar.jpg';
  * Returns JSX for nav menu when user is logged in
  */
 class LoggedInNav extends Component {
-  constructor(props){
-    super(props);
-  }
   logout = (event) => {
     event.preventDefault();
     localStorage.removeItem('JWT');
@@ -35,15 +34,15 @@ class LoggedInNav extends Component {
         <Nav.Link href="#contact">Contact</Nav.Link>
         <NavDropdown.Divider />
         <div className="profile-container">
-          <img src={avatar} className="profile_img-header" />
-          <NavDropdown title={this.props.username} id="basic-nav-dropdown" drop='down' alignRight>
-            <NavDropdown.Item href={"/userProfile/" + this.props.username}>Profile</NavDropdown.Item>
+          <img src={avatar} className="profile_img-header" alt="avatar" />
+          <NavDropdown title={this.props.username} id="basic-nav-dropdown" drop="down" alignRight>
+            <NavDropdown.Item href={`/userProfile/${this.props.username}`}>Profile</NavDropdown.Item>
             <NavDropdown.Divider />
             <NavDropdown.Item href="#" onClick={this.logout}>Logout</NavDropdown.Item>
           </NavDropdown>
         </div>
       </Nav>
-    )
+    );
   }
 }
 
