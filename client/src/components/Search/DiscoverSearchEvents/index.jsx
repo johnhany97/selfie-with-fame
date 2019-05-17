@@ -38,6 +38,7 @@ class DiscoverSearchEvents extends Component {
       marker_clicked: ' ',
       selected_event: [],
       mapElement: React.createRef(),
+      
 
       end_date: new Date(),
       start_date: new Date(),
@@ -294,6 +295,7 @@ class DiscoverSearchEvents extends Component {
               event = {event}
               name={event.name}
               info={event.information}
+              _id= {event._id}
               position={this.arrayTodict(event.location["coordinates"])}
 
 
@@ -307,9 +309,10 @@ class DiscoverSearchEvents extends Component {
             onClose={this.onClose}
           >
             <div>
-              <p style={{color:"blue"}}> Selected Event</p>
               <h4>{this.state.selected_event.name}</h4>
               <p> {this.state.selected_event.info}</p>
+              <a href= {`/eventPage/${this.state.selected_event._id}`} className="create-btn">View Event</a>
+
 
             </div>
           </InfoWindow>
