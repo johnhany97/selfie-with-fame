@@ -112,7 +112,7 @@ class CreateStoryEvent extends Component {
       handleOfflineEventChange,
     } = this.props;
     const { isOffline, events } = this.state;
-    if (isOffline) {
+    if (!isOffline) {
       return (
         <div className="select-event-container">
           <div className="form-navigation">
