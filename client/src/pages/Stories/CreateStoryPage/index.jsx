@@ -51,6 +51,8 @@ class CreateStoryPage extends Component {
     this.setState({
       event,
     });
+    console.log("the event is being changed")
+    console.log(event)
   }
 
   createStory = (e) => {
@@ -171,6 +173,7 @@ class CreateStoryPage extends Component {
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handleEventChange={this.handleEventChange}
+              topLevelEvent = {this.state.event}
               values={values}
               step={step}
             />

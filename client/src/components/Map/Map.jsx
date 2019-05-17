@@ -71,7 +71,6 @@ class CurrentLocation extends React.Component {
             if (status === 'OK') {
               if (results[0]) {
                 results[0].address_components.map(i => {
-                //  console.log(i)
                   if (i.types[0] == "postal_town" ||i.types[0] =="locality" )  {
                     city_state = i.long_name
                   }

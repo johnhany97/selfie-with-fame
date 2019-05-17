@@ -34,7 +34,6 @@ class GoogleMap extends Component {
     super(props);
     this.autocomplete = null;
     this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
-    this.mapElement = React.createRef();
     this.placeDetails = null
     this.geocoder = null
     /*global google*/
@@ -105,7 +104,7 @@ class GoogleMap extends Component {
         }
       );
 
-      this.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
+      this.props.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
       const { handleLocationChange } = this.props;
       const { handleCityChange } = this.props;
       handleLocationChange(this.state.selectedPlace);
@@ -238,13 +237,14 @@ class GoogleMap extends Component {
     let end_date_displayEvents = this.state.end_date
     let city_displayEvents = city
     let start_date_displayEvents = this.state.end_date
-    let mode = "onGoing"
+    let eventQuery = '';
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
-        mode
+        eventQuery
+        
       },
       {
         headers: {
@@ -318,7 +318,7 @@ class GoogleMap extends Component {
         </div>
 
         <CurrentLocation
-          ref={this.mapElement}
+          ref={this.props.mapElement}
           centerAroundCurrentLocation
           google={this.props.google}
           handleLocationChange={this.props.handleLocationChange}
