@@ -15,6 +15,7 @@ import FormProgress from '../../FormProgress';
 import SelectEventMap from '../../SelectEventMap';
 import SearchEvents from '../../Search/SearchEvents';
 import GoogleMap from '../../../pages/GoogleMap';
+import DB from '../../../db/db';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
@@ -43,7 +44,13 @@ class CreateStoryEvent extends Component {
       })
       .catch((err) => {
         console.log(err);
-        // TODO: Snackbar the error
+        if (!err.status) {
+          DB.getAllEvents().then((events) => {
+            this.setState({
+              events,
+            });
+          });
+        }
       });
   }
 

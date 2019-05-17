@@ -30,7 +30,6 @@ import Teapot from './components/Teapot';
 // check for support indexeddb support;
 let db = null;
 if ('indexedDB' in window) {
-  console.log('another yet');
   db = new DB();
 } else {
   console.log('This browser doesn\'t support IndexedDB');
