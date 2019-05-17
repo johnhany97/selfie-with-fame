@@ -154,7 +154,6 @@ class App extends React.Component {
     return (
       <Layout title="Festival" home={home}>
         <Banner />
-        <Features />
       </Layout>
     );
   }

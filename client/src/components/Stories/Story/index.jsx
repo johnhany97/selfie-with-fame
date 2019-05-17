@@ -9,7 +9,6 @@ import heartOutline from './heart-outline.png';
 import heartFilled from './heart-filled.png';
 import StoryStepper from '../../StoryStepper';
 import { TextField } from '@material-ui/core';
-import classNames from 'classnames';
 
 class Story extends React.Component {
   constructor(props) {
@@ -27,7 +26,6 @@ class Story extends React.Component {
       updatedAt: '',
       commentText: '',
     };
-
   }
 
   componentDidMount() {
@@ -39,7 +37,6 @@ class Story extends React.Component {
   }
 
   fetchStory = () => {
-    console.log("Fetch Story Data");
     const token = localStorage.getItem('JWT');
     axios.get(`/api/stories/${this.props._id}`,
      { headers: { Authorization: `JWT ${token}`} })
@@ -86,16 +83,18 @@ class Story extends React.Component {
   }
 
   addComment = () => {
-    var updatedComments = this.state.comments.concat({text: this.state.commentText, postedBy: null});
+    const username = localStorage.getItem('username');
+    var updatedComments = this.state.comments.concat({text: this.state.commentText, postedBy: {username: username}});
     this.setState({
       comments: updatedComments,
     });
     const token = localStorage.getItem('JWT');
-    axios.post(`/api/stories/${this.props._id}/comment`, {text: this.state.commentText},
+    axios.post(`/api/stories/${this.props._id}/comment`, {text: this.state.commentText, postedBy: username},
      { headers: { Authorization: `JWT ${token}`} })
       .then(() => {
         console.log("Comment successful");
       }).catch((error) => {
+        console.log("Comment Unsuccessful");
         this.setState({
 
         });
@@ -152,7 +151,7 @@ class Story extends React.Component {
           </div>
           <div className="comments">
             {this.state.comments.map(comment => 
-              <p>{comment.text}</p>
+              <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">
@@ -192,7 +191,7 @@ class Story extends React.Component {
           </div>
           <div className="comments">
             {this.state.comments.map(comment => 
-              <p>{comment.text}</p>
+              <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">
@@ -228,7 +227,7 @@ class Story extends React.Component {
           </div>
           <div className="comments">
             {this.state.comments.map(comment => 
-              <p>{comment.text}</p>
+              <p><span className="comment-username">{comment.postedBy.username}</span> {comment.text}</p>
             )}
           </div>
           <div className="comment-container">

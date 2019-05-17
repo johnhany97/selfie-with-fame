@@ -670,7 +670,7 @@ module.exports.getAll = (req, res) => {
     skip: (page - 1) * size
   };
 
-  const query = {}
+  const query = req.query;
 
   User.find(query, {}, pagination)
     .populate('followers', 'first_name last_name username')

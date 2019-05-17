@@ -51,6 +51,7 @@ class LoginPage extends Component {
     }).then((res) => {
       console.log(res);
       localStorage.setItem('JWT', res.data.token);
+      localStorage.setItem('username', username);
       this.setState({
         loggedIn: true,
         showError: false,
