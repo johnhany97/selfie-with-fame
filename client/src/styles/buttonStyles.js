@@ -70,13 +70,12 @@ export const homePageButton = {
   textDecoration: 'none',
   display: 'inline-block',
   cursor: 'pointer',
-  textDecoration: 'none',
   marginLeft: 'auto',
   marginRight: 'auto',
   width: '180px',
   verticalAlign: 'middle',
   marginTop: '15rem',
-}
+};
 
 export default {
   deleteButton,

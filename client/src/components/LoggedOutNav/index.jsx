@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Nav } from 'react-bootstrap';
 import './index.css';
 
 const LoggedOutNav = () => (
@@ -8,7 +8,7 @@ const LoggedOutNav = () => (
     <Nav.Link href="/events">Events</Nav.Link>
     <Nav.Link href="#about">About</Nav.Link>
     <Nav.Link href="#contact">Contact</Nav.Link>
-    <hr className="menu-break"></hr>
+    <hr className="menu-break" />
     <Nav.Link href="/login">Log In</Nav.Link>
     <Nav.Link href="/register" className="sign-up-txt">Sign Up</Nav.Link>
     <a href="/register" className="sign-up-btn">Sign Up</a>
