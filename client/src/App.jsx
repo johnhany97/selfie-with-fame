@@ -56,9 +56,6 @@ class App extends React.Component {
           snackbarMessage: 'Refresh the page to see the latest stories.',
           snackbarVariant: 'info',
         });
-        // eslint-disable-next-line react/prop-types
-        const { history } = this.props;
-        history.replace('/');
       });
     }).catch(() => {
       this.setState({

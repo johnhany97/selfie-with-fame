@@ -155,6 +155,11 @@ module.exports.createStory = (req, res) => {
               story: story._id
             };
           });
+          // also add our own story to our own timeline
+          newsFeed.push({
+            owner: req.user._id,
+            story: story._id
+          });
           // 3- Save these entries
           await NewsFeed.insertMany(newsFeed);
           // 4- Inform the followers there's an update using Sockets
@@ -315,7 +320,7 @@ module.exports.like = async (req, res) => {
  *
  * Used to unlike a story as the currently logged in user.
  *
- * Parameters:
+ * @param:
  * - id   => provided in the link, refers to the story ID
  *
  * Returns:
