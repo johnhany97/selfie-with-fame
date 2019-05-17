@@ -53,6 +53,22 @@ const styles = theme => ({
   },
 });
 
+
+/**
+ * @Params
+ * classes => styling classes
+ * className => styling class names
+ * message => message for snackbar to display
+ * onClose => method passed through props
+ * variant => icon varient
+ * 
+ * @summary
+ * Displays snackbar containing a message passed to it. It has
+ * custom styling and icon depending on params passed through props.
+ * 
+ * @returns
+ * Returns JSX code to display snackbar to user.
+ */
 const CustomSnackbar = (props) => {
   const {
     classes,

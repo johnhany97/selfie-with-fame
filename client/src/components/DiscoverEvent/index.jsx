@@ -4,6 +4,20 @@ import '../../images/event-img-placeholder.jpg';
 
 export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
+
+/**
+ * @Params
+ * _id => id of event
+ * name => name of event
+ * start_date => start date of event
+ * 
+ * @summary
+ * Displays image and text to show summary of event on discover 
+ * page.
+ * 
+ * @returns
+ * Returns JSX for component to display event.
+ */
 class DiscoverEvent extends React.Component {
 
   convertDateFormat = (date) => {

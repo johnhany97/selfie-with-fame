@@ -9,6 +9,17 @@ import Layout from '../Layout';
 import placeholderAvatar from './placeholder-avatar.jpg';
 
 
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays page that shows the users profile page with user information
+ * and displays the stories the user has created
+ * 
+ * @returns
+ * Returns JSX component display a users information and stories
+ */
 class UserProfile extends React.Component {
   constructor(props) {
     super(props);

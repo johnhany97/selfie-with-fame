@@ -3,6 +3,16 @@ import PropTypes from 'prop-types';
 import './index.css';
 import appImg from './placeholder.png';
 
+/**
+ * @Params
+ * appImg => src for banner image
+ * 
+ * @summary
+ * Displays banner image on home page when logged out
+ * 
+ * @returns
+ * Returns JSX for banner component
+ */
 
 const Banner = (props) => {
     return(

@@ -10,6 +10,22 @@ import {
 } from '../../styles/formStyles';
 import './index.css';
 
+/**
+ * @Params
+ * _id
+ * name
+ * start_date
+ * location
+ * information
+ * end_date
+ * selected
+ * 
+ * @summary
+ * Displays event summary on card
+ * 
+ * @returns
+ * Returns JSX for displaying event overview card
+ */
 class Event extends React.Component {
   constructor(props) {
     super(props);

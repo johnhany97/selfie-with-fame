@@ -4,6 +4,18 @@ import './index.css';
 import rightArrow from './../../images/right-arrow.png';
 import leftArrow from './../../images/left-arrow.png';
 
+/**
+ * @Params
+ * pictures => array of binary for pictures
+ * 
+ * @summary
+ * Displays multiple pictures passed as props and allows the user
+ * to cycle through the images
+ * 
+ * @returns
+ * Returns JSX component to allow the user to cycle through
+ * multiple images
+ */
 class StoryStepper extends React.Component {
   constructor(props) {
     super(props);

@@ -11,6 +11,21 @@ import leftArrow from './../../../images/left-arrow.png';
 import FormProgress from '../../FormProgress';
 import Photo from '../../Photo';
 
+/**
+ * @Params
+ * values
+ * createStory
+ * previousStep
+ * step
+ * disableButton
+ * 
+ * @summary
+ * Displays confimation screen at the end of create story process
+ * 
+ * @returns
+ * Returns JSX component giving the user an overview of the story
+ * they are about to submit
+ */
 const Confirmation = (props) => {
   const {
     values,

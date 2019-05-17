@@ -5,6 +5,19 @@ import Camera from '../Camera';
 import Photo from '../Photo';
 import './index.css';
 
+
+/**
+ * @Params
+ * removePicture => remove picture method passed down through props
+ * 
+ * @summary
+ * Displays canvas that will display captured frame from video and saves it 
+ * as a PNG.
+ * 
+ * @returns
+ * Returns JSX component for displaying canvas element and thumbnail images
+ * of captured images.
+ */
 class Capture extends Component {
   constructor(props) {
     super(props);

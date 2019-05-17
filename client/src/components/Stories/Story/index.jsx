@@ -10,6 +10,22 @@ import heartFilled from './heart-filled.png';
 import StoryStepper from '../../StoryStepper';
 import { TextField } from '@material-ui/core';
 
+
+/**
+ * @Params
+ * story => story object containing story data,
+ * liked => boolean if current user has liked this story
+ * 
+ * @summary
+ * Displays a story component that can possibly contain a single image,
+ * multiple images or just text. It also allows the user to like the story and comment 
+ * on the story. This component also shows the user the total number of likes
+ * that the story has got and furthermore it shows a list of all the comment on that
+ * particular story.
+ * 
+ * @returns
+ * Returns JSX component to show story
+ */
 class Story extends React.Component {
   constructor(props) {
     super(props);
