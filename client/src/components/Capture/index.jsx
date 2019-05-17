@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Camera from '../Camera';
 import Photo from '../Photo';
+import './index.css';
 
 class Capture extends Component {
   constructor(props) {
@@ -12,8 +13,8 @@ class Capture extends Component {
       constraints: {
         audio: false,
         video: {
-          width: 380,
-          height: 600,
+          width: 300,
+          height: 400,
         },
       },
     };
@@ -60,9 +61,10 @@ class Capture extends Component {
 
     const data = canvas.toDataURL('image/png');
 
-    const { handlePhotoChange } = this.props;
-    handlePhotoChange(data);
-    photo.setAttribute('src', data);
+    const { handlePhotoChange, onAddPicture, values } = this.props;
+    //handlePhotoChange(data);
+    onAddPicture(data);
+    //photo.setAttribute('src', data);
   }
 
   clearPhoto = () => {
@@ -78,27 +80,29 @@ class Capture extends Component {
     context.fillRect(0, 0, width, height);
 
     const data = canvas.toDataURL('image/png');
-    photo.setAttribute('src', data);
+    //photo.setAttribute('src', data);
   }
 
   render() {
+    const { removePicture } = this.props;
     return (
-      <div>
+      <div className="camera-container">
         <Camera
           handleStartClick={this.handleStartClick}
         />
         <canvas
+          className="image-preview"
           id="canvas"
           hidden
         />
-        <Photo />
+        <div className="thumbnails-container-preview">
+          {this.props.values.pictures.map((data, index) =>
+            <Photo key={index} data={data} index={index} removePicture={removePicture}/>
+          )}
+        </div>
       </div>
     );
   }
 }
-
-Capture.propTypes = {
-  handlePhotoChange: PropTypes.func.isRequired,
-};
 
 export default Capture;

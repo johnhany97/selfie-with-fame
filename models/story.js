@@ -7,14 +7,31 @@ let storySchema = new Schema({
   text: {
     type: String
   },
-  picture: {
+  pictures: [{
     type: Buffer
-  },
+  }],
   event: {
     type: Schema.Types.ObjectId,
     ref: 'Event',
     required: true
   },
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  }],
+  comments: [
+    {
+      text: {
+        type: String,
+        required: true
+      },
+      postedBy: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+      }
+    }
+  ],
   postedBy: {
     type: Schema.Types.ObjectId,
     ref: 'User',

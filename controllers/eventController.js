@@ -1,5 +1,7 @@
 const passport = require('passport');
 var Event = require('../models/event');
+const validator = require('validator');
+
 
 
 module.exports.getEvents = (req, res, next) => {
@@ -14,11 +16,15 @@ module.exports.getEvents = (req, res, next) => {
 
 module.exports.createEvent = (req, res, next) => {
   const event = new Event({
-    event_name: req.body.event_name,
+    name: req.body.name,
     information: req.body.information,
-    date_time: req.body.date_time,
-    location: req.body.location
+    start_date: req.body.start_date,
+    end_date: req.body.end_date,
+    location: { "coordinates": req.body.location, "city": req.body.city }
   });
+
+  //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
+
 
   event.save()
     .then((event) => {
@@ -37,19 +43,15 @@ module.exports.getStory = (req, res, next) => {
 
 
 module.exports.deleteEvent = (req, res, next) => {
-  console.log("ATTEMPTED TO DELETE EVENT WITH ID" + req.query._id);
   Event.remove({
     _id: req.query._id,
   }).then((eventInfo) => {
     if (eventInfo) {
-      console.log('event deleted from db');
       res.status(200).send('event deleted from db');
     } else {
-      console.error('event not found in db');
       res.status(404).send('no event with that event_id to delete');
     }
   }).catch((error) => {
-    console.error('problem communicating with db');
     res.status(500).send(error);
   });
 }
@@ -70,16 +72,120 @@ module.exports.findEvent = (req, res, next) => {
 }
 
 
+module.exports.getEventsByLocation = (req, res, next) => {
+
+  const query = { 'location.city': req.body.city };
+
+  Event.find(query)
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
+module.exports.getEventById = (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('invalid id');
+  }
+
+  Event.findById(id)
+    .then((event) => {
+      return res.status(200).send(event);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    })
+}
+
+
+module.exports.getEventsByLocationAndDate = (req, res, next) => {
+
+  // did an event either start or end in these times? e.g. was it ongoing at any point between these dates
+  //so an event starts at DateA and ends on DateB. If it starts at any point in the range the user gave
+  // return it. If it ends at any point in the range return it, as it was happening in this range. if it started before the userRangeStart
+  //and ended after userRangeEnd include it as it was happeneing in this range.
+  // if event  is  (userRangeStart <= eventStartDate <= userRangeEnd) OR (userRangeStart <= eventEndDate <= userRangeEnd)  OR
+  // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
+  // console.log(req.body);
+  let or_query = [
+    req.body.eventQuery !== '' ? { 'information':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+    req.body.eventQuery !== '' ? { 'name':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+  ];
+  let or_query_temp = []
+  for(let i of or_query) {
+    i && or_query_temp.push(i);
+  }
+  let query = {
+    $and:
+      [
+        or_query_temp.length > 0 ? {
+          $or: or_query_temp
+        } : undefined,
+        req.body.city_displayEvents !== '' ? { 'location.city': req.body.city_displayEvents } : undefined,
+        {
+          $or:
+            [
+              {
+                $and:
+                  [
+                    { 'start_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'start_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
+
+              {
+                $and:
+                  [
+                    { 'end_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
+
+              {
+                $and:
+                  [
+                    { 'start_date': { $lte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $gte: req.body.end_date_displayEvents } }
+                  ]
+              }
+            ]
+        }
+      ]
+  };
+  let tempQuery = { $and: [] }
+  for(let i of query.$and) {
+    i && tempQuery.$and.push(i);
+  }
+  Event.find(tempQuery)
+    .sort({ createdAt: -1 })
+    .then((events) => {
+      res.status(200).send({
+        events
+      });
+    })
+    .catch((err) => {
+      res.status(500).send(err);
+    });
+}
+
 module.exports.updateEvent = (req, res, next) => {
   Event.findOne({
     _id: req.body._id,
   }).then((eventInfo) => {
     if (eventInfo != null) {
       eventInfo.update({
-        event_name: req.body.event_name,
+        name: req.body.event_name,
         information: req.body.information,
-        location: req.body.location,
-        date_time: req.body.date_time,
+        start_date: req.body.date_time,
+        end_date: req.body.date_time,
+        location: req.body.location
       }).then(() => {
         res.status(200).send({
           message: 'event updated'

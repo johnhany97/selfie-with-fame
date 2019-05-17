@@ -1,0 +1,43 @@
+.user-card-container{
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-direction: row;
+    background-color: #fff;
+    height: 90px;
+
+    border-radius: 8px;
+    border: 0;
+    box-shadow: 0 0 2px 0 rgba(46,62,72,.12), 0 2px 4px 0 rgba(46,62,72,.12);
+    margin-bottom: 0.25rem;
+}
+
+.user-card-profile{
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 1rem;
+}
+
+.user-card-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.user-card-username{
+    padding-top: 0.5rem;
+    font-size: 1rem;
+    color: #2e3e48;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.user-card-bio{
+    font-size: 0.8rem;
+    color: #888;
+    line-height: 1.05em;
+    max-height: 2.1em;
+    overflow: hidden;
+    margin-bottom: 0;
+}

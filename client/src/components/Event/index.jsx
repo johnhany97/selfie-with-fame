@@ -10,44 +10,60 @@ import {
 } from '../../styles/formStyles';
 import './index.css';
 
-const Event = (props) => {
-  const {
-    _id,
-    event_name,
-    information,
-    date_time,
-    location,
-    selected,
-  } = props;
+class Event extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-  return (
-    <div style={cardPanel}>
-      <a
-        href={`/eventPage/${_id}`}
-        className="event-title"
-      >
-        {event_name}
+  convertDateFormat(date) {
+    let createAtDate = new Date(date);
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var year = createAtDate.getFullYear();
+    var month = months[createAtDate.getMonth()];
+    var date = createAtDate.getDate();
+    var convertedDate = date + ' ' + month + ' ' + year;
+    return convertedDate;
+  };
+
+
+  render() {
+    const {
+      _id,
+      name,
+      information,
+      start_date,
+      location,
+      end_date,
+      selected,
+    } = this.props;
+
+    return (
+      <a href={`/eventPage/${_id}`}>
+        <div className="event-card-panel">
+          <div className="event-card-img" />
+          <div className="event-card-info">
+            <p className="event-card-date">{this.convertDateFormat(start_date)}</p>
+            <h3 className="event-card-title">{name}</h3>
+            <p className="event-card-location">{location['city']}</p>
+            {selected && (
+              <p>
+                Selected
+              </p>
+            )}
+            <p className="event-card-going">234 people going</p>
+          </div>
+        </div>
       </a>
-      <p>{information}</p>
-      <p>{location}</p>
-      <p>{date_time}</p>
-      {selected && (
-        <p>
-          Selected
-        </p>
-      )}
-      <div>
-        <a href={`/updateEvent/${_id}`} style={crudButton}>Update</a>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 Event.propTypes = {
   _id: PropTypes.string,
-  event_name: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   information: PropTypes.string.isRequired,
-  date_time: PropTypes.string.isRequired,
+  start_date: PropTypes.string.isRequired,
+  end_date: PropTypes.string.isRequired,
   location: PropTypes.object,
   selected: PropTypes.bool,
 };

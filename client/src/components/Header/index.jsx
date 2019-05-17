@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar } from 'react-bootstrap';
 import axios from 'axios';
+
 import LoggedOutNav from '../LoggedOutNav';
 import LoggedInNav from '../LoggedInNav';
 import './index.css';
@@ -22,7 +23,7 @@ class Header extends Component {
       });
       return;
     }
-    await axios.get('/api/users/find', {
+    await axios.get('/api/users/me', {
       headers: {
         Authorization: `JWT ${token}`,
       },

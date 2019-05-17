@@ -1,0 +1,40 @@
+.profile-container-user{
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    border-radius: 2px; /* 5px rounded corners */
+    align-items: center;
+    text-align: center;
+    padding: 1rem 0;
+    margin-bottom: 1.5rem;
+}
+
+.follow-btn{
+    background-color: transparent;
+    color: #fe5355;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 2px solid #fe5355;
+    padding: 0.4rem 1.2rem;
+    max-width: 150px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+.following-btn{
+    color: #ffffff;
+    background-color: #fe5355;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: 2px solid #fe5355;
+    padding: 0.4rem 1.2rem;
+    max-width: 150px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: center;
+}

@@ -31,8 +31,6 @@ code {
   max-width: 600px;
   margin-left: auto;
   margin-right: auto;
-  height: 80vh;
-  min-height: 600px;
 }
 
 .front-page{
@@ -47,6 +45,55 @@ code {
 .content{
   min-height: 80vh;
 }
+
+.feed-create-btns{
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.create-btn{
+  background-color: #fe5355;
+  color: #fff;
+  border: 0;
+  border-radius: 50px;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  margin-right: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.create-btn:hover{
+  color: #fff;
+  background-color: #fc686b;
+  text-decoration: none;
+}
+
+.discover-events-container{
+  max-width: 600px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.scrolling-wrapper{
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.scrolling-wrapper a{
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 
 @media(min-width: 992px){
   .container-lg{

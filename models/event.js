@@ -2,20 +2,30 @@ let mongoose = require('mongoose');
 // let validator = require('validator');
 
 let eventSchema = new mongoose.Schema({
-  event_name: {
+  name: {
     type: String,
     required: true
   },
   information: {
     type: String
   },
-  date_time: {
+  start_date: {
+    type: Date, 
+    default: Date.now
+  },
+  end_date: {
     type: Date, 
     default: Date.now
   },
   location: {
-    type: [Number],
-    required: true,
+    coordinates: {
+      type: [Number],
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true
+    }
   }
 });
 
