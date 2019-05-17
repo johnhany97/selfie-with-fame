@@ -14,6 +14,17 @@ const mapStyles = {
   },
 };
 
+/**
+ * @Params
+ * initialCenter => LatLng value for the intial center point of the map
+ * 
+ * @summary
+ * Displays a google map component initialised at a LatLng value
+ * passed through props
+ * 
+ * @returns
+ * Returns JSX for GoogleMap component
+ */
 class CurrentLocation extends React.Component {
   constructor(props) {
     super(props);

@@ -1,6 +1,17 @@
 import React from 'react';
 import './index.css';
 
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays footer at the bottom of the page with page links and address
+ * information
+ * 
+ * @returns
+ * Returns JSX for footer
+ */
 const Footer = () => (
   <footer>
     <div className="container-lg">

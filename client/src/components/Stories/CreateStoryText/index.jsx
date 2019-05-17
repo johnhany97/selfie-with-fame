@@ -11,6 +11,21 @@ import leftArrow from './../../../images/left-arrow.png';
 import rightArrow from './../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
 
+
+/**
+ * @Params
+ * handleChange,
+   nextStep,
+   previousStep,
+   step 
+ * 
+ * @summary
+ * Displays page that allows the user to add a caption to their story
+ * 
+ * @returns
+ * Returns JSX component to allow the user to add a caption using
+ * a text field
+ */
 const CreateStoryText = (props) => {
   const {
     handleChange,

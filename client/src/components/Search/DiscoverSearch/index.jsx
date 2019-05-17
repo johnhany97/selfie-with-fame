@@ -4,6 +4,17 @@ import DiscoverEvent from './../../DiscoverEvent';
 import Event from './../../Event';
 import './index.css';
 
+
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays discover page with most recent events
+ * 
+ * @returns
+ * Returns JSX for displaying most recent events
+ */
 class DiscoverSearch extends React.Component {
     constructor(props) {
         super(props);

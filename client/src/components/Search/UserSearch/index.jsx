@@ -5,6 +5,19 @@ import { TextField } from '@material-ui/core';
 import searchButton from './../../../images/round-search.png';
 import './index.css';
 
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays page for searching and viewing users, it contains a
+ * search bar that allows seraching users by username, firstname and lastname
+ * and displays results in a list with custom user card components.
+ * 
+ * @returns
+ * Returns JSX component that contains a search bar and
+ * filtered list of users.
+ */
 class UserSearch extends React.Component {
     constructor(props) {
         super(props);

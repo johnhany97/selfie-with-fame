@@ -21,6 +21,21 @@ import searchButton from './../../images/round-search.png';
 import CurrentLocation from '../../components/Map/Map';
 import SearchEvents from '../Search/SearchEvents';
 
+/**
+ * @Params
+ * handleLocationChange => method passed through props to handle 
+ * the locaiton change
+ * handleCityChange => method passed through props to handle
+ * the city change
+ * 
+ * @summary
+ * Displays map allowing the user to select an event 
+ * from a GoogleMap component
+ * 
+ * @returns
+ * Returns JSX component that contains a GoogleMap component 
+ * to select events from
+ */
 class SelectEvent extends Component {
   constructor(props) {
     super(props);

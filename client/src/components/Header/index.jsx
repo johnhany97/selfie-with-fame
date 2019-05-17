@@ -6,6 +6,17 @@ import LoggedOutNav from '../LoggedOutNav';
 import LoggedInNav from '../LoggedInNav';
 import './index.css';
 
+
+/**
+ * @Params
+ * none
+ * 
+ * @summary
+ * Displays header / navbar at the top of the page with links to main pages
+ * 
+ * @returns
+ * Returns JSX for header component
+ */
 class Header extends Component {
   constructor() {
     super();
