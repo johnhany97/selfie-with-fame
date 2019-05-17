@@ -38,6 +38,7 @@ class CreateEventPage extends Component {
       showError: false,
       createEventError: false,
       displayedEvents: [],
+      mapElement: React.createRef(),
     };
   }
 
@@ -59,7 +60,6 @@ class CreateEventPage extends Component {
     this.setState({
       city: data,
     });
-    console.log("high level city change " + this.state.city)
 
   };
 
@@ -155,7 +155,6 @@ class CreateEventPage extends Component {
         // event_deleted,
       });
     }).catch((err) => {
-      console.error(err.response.data);
       this.setState({
         error: true,
       });
@@ -230,6 +229,7 @@ class CreateEventPage extends Component {
               <GoogleMap
                 handleLocationChange={this.handleLocationChange}
                 handleCityChange={this.handleCityChange}
+                mapElement={this.state.mapElement}
               />
 
               {showError === true && createEventError === true && (

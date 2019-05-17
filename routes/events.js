@@ -17,5 +17,6 @@ router.route('/findEvent').all(authMiddleware.authenticate).get(eventController.
 router.route('/eventPage/:id').all(authMiddleware.authenticate).get(eventController.findEvent);
 router.route('/updateEvent/').all(authMiddleware.authenticate).put(eventController.updateEvent);
 
+router.route('/:id').all(authMiddleware.authenticate).get(eventController.getEventById);
 
 module.exports = router;
