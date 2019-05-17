@@ -5,7 +5,8 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const sanitizeHtml = require('sanitize-html');
 
-var User = require('../models/user');
+const User = require('../models/user');
+const Story = require('../models/story');
 
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -659,5 +660,24 @@ module.exports.getAll = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send(err);
+    });
+}
+
+
+module.exports.getUserStories = async (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+
+  const user = await User.findOne({username});
+  
+  if (!user) {
+    return res.status(404).send('user not found');
+  }
+
+  Story.find({postedBy: user._id})
+    .then((stories) => {
+      res.status(200).send(stories);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 }
