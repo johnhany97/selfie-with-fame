@@ -5,7 +5,9 @@ const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const sanitizeHtml = require('sanitize-html');
 
-var User = require('../models/user');
+const User = require('../models/user');
+const Story = require('../models/story');
+const NewsFeed = require('../models/newsfeed');
 
 const BCRYPT_SALT_ROUNDS = 12;
 
@@ -487,8 +489,20 @@ module.exports.followUser = (req, res) => {
             userToFollow.followers.push(currentUser._id);
             // Save
             currentUser.save().then(() => {
-              userToFollow.save().then(() => {
-                return res.status(200).send('successfully followed');
+              userToFollow.save().then(async () => {
+                res.status(200).send('successfully followed');
+                // Update their timeline
+                // 1- Get all the user that we just followed's stories
+                const userToFollowStories = await Story.find({postedBy: userToFollow._id});
+                // 2- Add entries for them in the newsfeed
+                let newsFeed = userToFollowStories.map((story) => {
+                  return {
+                    owner: currentUser._id,
+                    story: story._id
+                  };
+                });
+                // 3- Insert these entries in the db store
+                await NewsFeed.insertMany(newsFeed);
               });
             });
           } else {
@@ -546,8 +560,17 @@ module.exports.unfollowUser = (req, res) => {
           });
           // Save
           currentUser.save().then(() => {
-            userToUnfollow.save().then(() => {
-              return res.status(200).send('succesfully unfollowed');
+            userToUnfollow.save().then(async () => {
+              res.status(200).send('succesfully unfollowed');
+              // Remove all their stories from the current user's timeline
+              const unfollowedUserStories = await Story.find({postedBy: userToUnfollow._id});
+              // 1- remove every entry from the news feed store
+              unfollowedUserStories.forEach(async (story) => {
+                await NewsFeed.remove({
+                  owner: currentUser._id,
+                  story: story._id
+                });
+              });
             });
           });
         })
@@ -659,5 +682,24 @@ module.exports.getAll = (req, res) => {
     })
     .catch((err) => {
       return res.status(500).send(err);
+    });
+}
+
+
+module.exports.getUserStories = async (req, res) => {
+  const username = sanitizeHtml(req.params.username);
+
+  const user = await User.findOne({username});
+  
+  if (!user) {
+    return res.status(404).send('user not found');
+  }
+
+  Story.find({postedBy: user._id})
+    .then((stories) => {
+      res.status(200).send(stories);
+    })
+    .catch((err) => {
+      res.status(500).send(err);
     });
 }

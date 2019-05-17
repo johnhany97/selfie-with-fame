@@ -12,12 +12,18 @@ import './index.css';
 import leftArrow from './../../../images/left-arrow.png';
 import rightArrow from './../../../images/right-arrow.png';
 import FormProgress from '../../FormProgress';
+import SelectEventMap from '../../SelectEventMap';
+import SearchEvents from '../../Search/SearchEvents';
+import GoogleMap from '../../../pages/GoogleMap';
+import DB from '../../../db/db';
 
 class CreateStoryEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       events: [],
+      city: '',
+      location: '',
     };
   }
 
@@ -38,7 +44,13 @@ class CreateStoryEvent extends Component {
       })
       .catch((err) => {
         console.log(err);
-        // TODO: Snackbar the error
+        if (!err.status) {
+          DB.getAllEvents().then((events) => {
+            this.setState({
+              events,
+            });
+          });
+        }
       });
   }
 
@@ -54,12 +66,27 @@ class CreateStoryEvent extends Component {
     previousStep();
   }
 
+  handleCityChange = (data) => {
+    this.setState({
+      city: data,
+    });
+
+  };
+
+  handleLocationChange = (data) => {
+    this.setState({
+      location: data,
+    });
+
+  };
+
+ 
   render() {
     const { events } = this.state;
     const { values, handleEventChange, nextStep, previousStep, step } = this.props;
     return (
       <div className="select-event-container">
-        <div class="form-navigation">
+        <div className="form-navigation">
           <button onClick={previousStep} type="button" className="navigation-btn-back">
             <img className="navigation-arrow" src={leftArrow} alt="Back" />
             Back
@@ -69,13 +96,22 @@ class CreateStoryEvent extends Component {
             <img className="navigation-arrow" src={rightArrow} alt="Next" />
           </button>
         </div>
-        {events && events.map((event, index) => (
+
+        <SelectEventMap
+          handleCityChange= {this.handleCityChange} 
+          handleLocationChange = {this.handleLocationChange}
+          handleEventChange = {this.props.handleEventChange}
+          topLevelEvent = {this.props.topLevelEvent}
+        />
+        
+
+        {/* {events && events.map((event, index) => (
           <React.Fragment>
             <Event key={index} {...event} selected={values && values.event && values.event._id === event._id} />
             <button onClick={() => handleEventChange(event)} type="button" style={noWidthBtn}>Select</button>
           </React.Fragment>
         ))}
-        {(events === null || (events && events.length === 0)) && <p>No events available</p>}
+        {(events === null || (events && events.length === 0)) && <p>No events available</p>} */}
       </div>
     );
   }
@@ -85,6 +121,7 @@ CreateStoryEvent.propTypes = {
   nextStep: PropTypes.func.isRequired,
   previousStep: PropTypes.func.isRequired,
   handleEventChange: PropTypes.func.isRequired,
+  topLevelEvent: PropTypes.object,
   values: PropTypes.object.isRequired,
 };
 

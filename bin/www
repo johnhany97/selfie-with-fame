@@ -102,21 +102,23 @@ function onListening() {
   debug('Listening on ' + bind);
 }
 
-const Connection = require('../models/connection');
+
+/**  
+ * Socket IO Event Handlers associations
+ * 
+ * Associate events with their relevant handlers
+ */
+
+const ioHandlers = require('../io-handlers/io-handlers');
 
 io.on('connect' , (socket) => {
-  socket.on('connected', async (username) => {
-    // Remove any of their old connections
-    await Connection.remove({user: username});
-    // Add new connection
-    const connection = new Connection({
-      socketId: socket.id,
-      user: username,
-    });
-    connection.save();
-  });
+  socket.on('connected', (username) => ioHandlers.onConnect(io, socket, username));
 
-  socket.on('disconnect', () => {
-    Connection.findOne({ socketId: socket.id }).remove().exec();
-  });
+  socket.on('disconnect', () => ioHandlers.onDisconnect(io, socket));
+
+  socket.on('post_story', (body) => ioHandlers.onPostStory(io, socket, body));
+
+  socket.on('request_stories', (username) => ioHandlers.onRequestStories(io, socket, username));
+
+  socket.on('request_events', (username) => ioHandlers.onRequestEvents(io, socket, username));
 });

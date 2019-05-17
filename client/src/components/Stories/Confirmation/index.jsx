@@ -17,6 +17,7 @@ const Confirmation = (props) => {
     createStory,
     previousStep,
     step,
+    disableButton,
   } = props;
 
   return (
@@ -35,11 +36,11 @@ const Confirmation = (props) => {
           )}
         </div>
         <h5 className="confirmation-event-heading">Event</h5>
-        {values && values.event && <p>{values.event.event_name} </p>}
+        {values && values.event && <p>{values.event.name} </p>}
         <h5 className="confirmation-caption-heading">Caption</h5>
         {values && values.text && <p>{values.text}</p>}
         <div>
-          <button type="button" onClick={createStory} className="submit-story-btn">Submit</button>
+          <button type="button" onClick={createStory} className="submit-story-btn" disabled={disableButton}>Submit</button>
         </div>
       </div>
     </React.Fragment>

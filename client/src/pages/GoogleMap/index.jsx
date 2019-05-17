@@ -34,7 +34,6 @@ class GoogleMap extends Component {
     super(props);
     this.autocomplete = null;
     this.handlePlaceSelect = this.handlePlaceSelect.bind(this);
-    this.mapElement = React.createRef();
     this.placeDetails = null
     this.geocoder = null
     /*global google*/
@@ -74,10 +73,6 @@ class GoogleMap extends Component {
     //     ['address_components', 'geometry']);
     this.geocoder = new google.maps.Geocoder;
     this.getEventsByLocationAndDate();
-
-
-
-
   }
 
   handleLocalCityChange = (data) => {
@@ -105,7 +100,7 @@ class GoogleMap extends Component {
         }
       );
 
-      this.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
+      this.props.mapElement.current.changeCurrentLoc([addressObject.geometry.location.lat(), addressObject.geometry.location.lng()]);
       const { handleLocationChange } = this.props;
       const { handleCityChange } = this.props;
       handleLocationChange(this.state.selectedPlace);
@@ -238,13 +233,14 @@ class GoogleMap extends Component {
     let end_date_displayEvents = this.state.end_date
     let city_displayEvents = city
     let start_date_displayEvents = this.state.end_date
-    let mode = "onGoing"
+    let eventQuery = '';
     axios.post('/api/events/getEventsByLocationAndDate',
       {
         city_displayEvents,
         end_date_displayEvents,
         start_date_displayEvents,
-        mode
+        eventQuery
+
       },
       {
         headers: {
@@ -293,7 +289,7 @@ class GoogleMap extends Component {
           <h3 className="search-location-title">Select Location</h3>
           <hr className="search-location-divider" />
           <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
-            <div className="search-location-row">  
+            <div className="search-location-row">
               <TextField
                 style={inputStyle}
                 id="autocomplete"
@@ -303,22 +299,22 @@ class GoogleMap extends Component {
                 placeholder="Current Location"
               />
               <button type="submit" className="round-search-btn">
-                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+                <img className="search-icon" src={searchButton} alt="Search Location Button" />
               </button>
             </div>
-            {showError &&  (
-                <p
-                  style={errorMessage}
-                >
-                  *Address is a required field.
+            {showError && (
+              <p
+                style={errorMessage}
+              >
+                *Address is a required field.
                 </p>
-              )}
+            )}
 
           </form>
         </div>
 
         <CurrentLocation
-          ref={this.mapElement}
+          ref={this.props.mapElement}
           centerAroundCurrentLocation
           google={this.props.google}
           handleLocationChange={this.props.handleLocationChange}
@@ -328,7 +324,7 @@ class GoogleMap extends Component {
           getEventsByLocationAndDate={this.getEventsByLocationAndDate}
           markers={displayedEvents}
         >
-          
+
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
@@ -351,7 +347,7 @@ class GoogleMap extends Component {
             icon={
               "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
             }
-            optimized= {false}
+            optimized={false}
             zIndex={99999999}
             draggable
             onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
@@ -373,7 +369,6 @@ class GoogleMap extends Component {
 
       </div>
     );
-
   }
 }
 
