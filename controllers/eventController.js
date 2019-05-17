@@ -1,5 +1,7 @@
 const passport = require('passport');
 var Event = require('../models/event');
+const validator = require('validator');
+
 
 
 module.exports.getEvents = (req, res, next) => {
@@ -18,7 +20,7 @@ module.exports.createEvent = (req, res, next) => {
     information: req.body.information,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
-    location: {"coordinates": req.body.location, "city": req.body.city}
+    location: { "coordinates": req.body.location, "city": req.body.city }
   });
 
   //    location: {"coordinates": [req.body.location[0] + -.00004 * Math.cos((+a*i) / 180 * Math.PI),req.body.location[1]+ -.00004 * Math.cos((+a*i) / 180 * Math.PI)] "city": req.body.city}
@@ -86,68 +88,81 @@ module.exports.getEventsByLocation = (req, res, next) => {
     });
 }
 
+module.exports.getEventById = (req, res) => {
+  const id = req.params.id;
+
+  if (!validator.isMongoId(id)) {
+    return res.status(400).send('invalid id');
+  }
+
+  Event.findById(id)
+    .then((event) => {
+      return res.status(200).send(event);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    })
+}
+
 
 module.exports.getEventsByLocationAndDate = (req, res, next) => {
 
-
-  let query = {
-    'location.city': req.body.city_displayEvents,
-    'start_date' : {$gte: req.body.start_date_displayEvents},
-    'end_date' : {$lte: req.body.end_date_displayEvents},
-
-  };
-
-  if (req.body.mode == "onGoing") {
-     query = {
-      'location.city': req.body.city_displayEvents,
-      'start_date' : {$gte: req.body.start_date_displayEvents},
-      'end_date' : {$gte: req.body.end_date_displayEvents},
-  
-    };
+  // did an event either start or end in these times? e.g. was it ongoing at any point between these dates
+  //so an event starts at DateA and ends on DateB. If it starts at any point in the range the user gave
+  // return it. If it ends at any point in the range return it, as it was happening in this range. if it started before the userRangeStart
+  //and ended after userRangeEnd include it as it was happeneing in this range.
+  // if event  is  (userRangeStart <= eventStartDate <= userRangeEnd) OR (userRangeStart <= eventEndDate <= userRangeEnd)  OR
+  // (eventStartDate <= userRangeStart AND eventEndDate >= userRangeEnd)
+  let or_query = [
+    req.body.eventQuery !== '' ? { 'information':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+    req.body.eventQuery !== '' ? { 'name':  {'$regex' : '.*' + req.body.eventQuery + '.*' }} : undefined,
+  ];
+  let or_query_temp = []
+  for(let i of or_query) {
+    i && or_query_temp.push(i);
   }
+  let query = {
+    $and:
+      [
+        or_query_temp.length > 0 ? {
+          $or: or_query_temp
+        } : undefined,
+        req.body.city_displayEvents !== '' ? { 'location.city': req.body.city_displayEvents } : undefined,
+        {
+          $or:
+            [
+              {
+                $and:
+                  [
+                    { 'start_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'start_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
 
- 
+              {
+                $and:
+                  [
+                    { 'end_date': { $gte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $lte: req.body.end_date_displayEvents } }
+                  ]
+              },
 
-  // if (mode == "all") {
-  //   query = {};
-  // }
-  // else if (mode == "allLocation") {
-  //   query = {'location.city': req.body.city} 
-  // }
-  // else if (mode == "locationOngoing") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     // 'startDate' : {$lte: today},
-  //     'end_date': 
-      
-  //   } 
-  //   console.log("location on going")
-
-  // }
-  // else if (mode == "locationLastWeek") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     'start_date' : {$lte: today},
-  //     'end_date': {$gte: lastWeek}
-  //   } 
-
-  // }
-
-  // else if (mode == "locationSetDates") {
-  //   query = {
-  //     'location.city': req.body.city,
-  //     'start_date' : req.body.startDate,
-  //     'end_date': req.body.endDate
-  //   } 
-
-  // }
-  // else {
-  //   query = {};
-  //   console.log("no match");
-
-  // }
-
-  Event.find(query)
+              {
+                $and:
+                  [
+                    { 'start_date': { $lte: req.body.start_date_displayEvents } },
+                    { 'end_date': { $gte: req.body.end_date_displayEvents } }
+                  ]
+              }
+            ]
+        }
+      ]
+  };
+  let tempQuery = { $and: [] }
+  for(let i of query.$and) {
+    i && tempQuery.$and.push(i);
+  }
+  Event.find(tempQuery)
     .sort({ createdAt: -1 })
     .then((events) => {
       res.status(200).send({
