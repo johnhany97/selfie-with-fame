@@ -31,5 +31,7 @@ router.route('/:username/password').all(authMiddleware.authenticate).put(userCon
 router.route('/:username/follow').all(authMiddleware.authenticate).post(userController.followUser);
 // POST unfollow a user
 router.route('/:username/unfollow').all(authMiddleware.authenticate).post(userController.unfollowUser);
+// POST unfollow a user
+router.route('/:username/stories').all(authMiddleware.authenticate).get(userController.getUserStories);
 
 module.exports = router;

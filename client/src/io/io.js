@@ -18,6 +18,7 @@ class IO {
       secure: true,
     });
     IO.attachToEvent(EVENT_CONNECT, async () => {
+      console.log(username);
       IO.emit(EMIT_EVENT_CONNECTED, username);
       // Check if any data in IDB offline stories store
       const stories = await DB.getOfflineStories();

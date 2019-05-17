@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Story = require('../models/story');
 const NewsFeed = require('../models/newsfeed');
 
-module.exports.onConnect = async (io, socket, usrname) => {
+module.exports.onConnect = async (io, socket, username) => {
   // Remove any of their old connections
   await Connection.remove({ user: username });
   // Add new connection

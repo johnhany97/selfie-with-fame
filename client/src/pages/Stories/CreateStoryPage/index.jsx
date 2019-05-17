@@ -1,7 +1,7 @@
 /* eslint-disable default-case */
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Redirect } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 
 import Layout from '../../../components/Layout';
 import CreateStoryCamera from '../../../components/Stories/CreateStoryCamera';
@@ -21,12 +21,16 @@ class CreateStoryPage extends Component {
       isLoading: false,
       error: false,
       errorMessage: '',
+      snackbarOpen: false,
+      snackbarVariant: 'info',
+      snackbarMessage: '',
+      disableButton: false,
     };
   }
 
   onAddPicture = (data) => {
     // not allowed AND not working
-    this.setState(state => {
+    this.setState((state) => {
       const pictures = state.pictures.concat(data);
       return {
         pictures,
@@ -34,10 +38,18 @@ class CreateStoryPage extends Component {
     });
   };
 
+  snackbarHandleClose = () => {
+    this.setState({
+      snackbarOpen: false,
+      snackbarMessage: '',
+      snackbarVariant: 'info',
+    });
+  }
+
   removePicture = (index) => {
     if (index !== -1) {
       this.state.pictures.splice(index, 1);
-      this.setState({pictures: this.state.pictures});
+      this.setState({ pictures: this.state.pictures });
     }
   };
 
@@ -51,14 +63,9 @@ class CreateStoryPage extends Component {
     this.setState({
       event,
     });
-    console.log("the event is being changed")
-    console.log(event)
   }
 
   createStory = (e) => {
-    this.setState({
-      isLoading: true,
-    });
     const token = localStorage.getItem('JWT');
     if (token === null) {
       this.setState({
@@ -82,7 +89,7 @@ class CreateStoryPage extends Component {
       text,
       pictures,
       event_id: _id,
-    }, { headers: { Authorization: `JWT ${token}`} })
+    }, { headers: { Authorization: `JWT ${token}` } })
       .then(() => {
         // TODO: Snackbar of success
         this.setState({
@@ -92,12 +99,18 @@ class CreateStoryPage extends Component {
         this.nextStep();
       }).catch((error) => {
         if (!error.status) { // was offline, use indexeddb
-          console.log('because I was offline');
           // Store in IDB for later consumption
           DB.set(OFFLINE_STORIES_STORE_NAME, {
             text,
             pictures,
             event,
+          });
+          this.setState({
+            isLoading: false,
+            snackbarOpen: true,
+            snackbarMessage: 'You are offline. This will be posted once you are back online',
+            snackbarVariant: 'warning',
+            disableButton: true,
           });
         } else { // was not offline
           this.setState({
@@ -133,6 +146,10 @@ class CreateStoryPage extends Component {
       error,
       errorMessage,
       event,
+      snackbarOpen,
+      snackbarVariant,
+      snackbarMessage,
+      disableButton,
     } = this.state;
     const values = { text, pictures, event };
 
@@ -148,7 +165,7 @@ class CreateStoryPage extends Component {
       return (
         <Layout title="Create Story">
           <h1>{errorMessage}</h1>
-        </Layout>        
+        </Layout>
       );
     }
     switch (step) {
@@ -168,12 +185,18 @@ class CreateStoryPage extends Component {
         );
       case 2: // Event selection
         return (
-          <Layout title="Create Story">
+          <Layout
+            title="Create Story"
+            snackbarOpen={snackbarOpen}
+            snackbarHandleClose={this.snackbarHandleClose}
+            snackbarVariant={snackbarVariant}
+            snackbarMessage={snackbarMessage}
+          >
             <CreateStoryEvent
               nextStep={this.nextStep}
               previousStep={this.previousStep}
               handleEventChange={this.handleEventChange}
-              topLevelEvent = {this.state.event}
+              topLevelEvent={this.state.event}
               values={values}
               step={step}
             />
@@ -181,7 +204,13 @@ class CreateStoryPage extends Component {
         );
       case 3: // Adding text
         return (
-          <Layout title="Create Story">
+          <Layout
+            title="Create Story"
+            snackbarOpen={snackbarOpen}
+            snackbarHandleClose={this.snackbarHandleClose}
+            snackbarVariant={snackbarVariant}
+            snackbarMessage={snackbarMessage}
+          >
             <CreateStoryText
               nextStep={this.nextStep}
               previousStep={this.previousStep}
@@ -192,11 +221,18 @@ class CreateStoryPage extends Component {
         );
       case 4: // Confirmation
         return (
-          <Layout title="Create Story">
+          <Layout
+            title="Create Story"
+            snackbarOpen={snackbarOpen}
+            snackbarHandleClose={this.snackbarHandleClose}
+            snackbarVariant={snackbarVariant}
+            snackbarMessage={snackbarMessage}
+          >
             <Confirmation
               createStory={this.createStory}
               previousStep={this.previousStep}
               handleChange={this.handleChange}
+              disableButton={disableButton}
               values={values}
               step={step}
             />
@@ -212,4 +248,4 @@ class CreateStoryPage extends Component {
   }
 }
 
-export default CreateStoryPage;
+export default withRouter(CreateStoryPage);

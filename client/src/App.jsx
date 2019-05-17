@@ -10,7 +10,7 @@ import DiscoverEvent from './components/DiscoverEvent';
 import Story from './components/Stories/Story';
 
 import DB, { STORIES_STORE_NAME, EVENTS_STORE_NAME } from './db/db';
-import IO, { EVENT_CONNECT, EVENT_NEW_STORY, EMIT_EVENT_CONNECTED } from './io/io';
+import IO, { EVENT_NEW_STORY } from './io/io';
 
 import './index.css';
 
@@ -22,6 +22,9 @@ class App extends React.Component {
       loggedIn: false,
       events: [],
       stories: [],
+      snackbarOpen: false,
+      snackbarVariant: 'info',
+      snackbarMessage: '',
     };
   }
 
@@ -46,10 +49,16 @@ class App extends React.Component {
         username,
         loggedIn: true,
       });
-      console.log(res.data);
       IO.setup(this.state.username);
       IO.attachToEvent(EVENT_NEW_STORY, () => {
-        console.log('New stories, refresh man');
+        this.setState({
+          snackbarOpen: true,
+          snackbarMessage: 'Refresh the page to see the latest stories.',
+          snackbarVariant: 'info',
+        });
+        // eslint-disable-next-line react/prop-types
+        const { history } = this.props;
+        history.replace('/');
       });
     }).catch(() => {
       this.setState({
@@ -102,13 +111,34 @@ class App extends React.Component {
       });
   }
 
+  snackbarHandleClose = () => {
+    this.setState({
+      snackbarOpen: false,
+      snackbarMessage: '',
+      snackbarVariant: 'info',
+    });
+  }
+
   render() {
     const { home } = this.props;
-    const { events, stories } = this.state;
+    const {
+      events,
+      stories,
+      snackbarOpen,
+      snackbarVariant,
+      snackbarMessage,
+    } = this.state;
 
     if (this.state.loggedIn) {
       return (
-        <Layout title="Festival" home={home}>
+        <Layout
+          title="Festival"
+          home={home}
+          snackbarOpen={snackbarOpen}
+          snackbarHandleClose={this.snackbarHandleClose}
+          snackbarVariant={snackbarVariant}
+          snackbarMessage={snackbarMessage}
+        >
           <div className="event-center-bounds">
             <div className="feed-create-btns">
               <a href="/createStory" className="create-btn">Share Story</a>
