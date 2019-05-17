@@ -36,7 +36,7 @@ class DiscoverPage extends React.Component {
                         </div>
                     </AppBar>
                     {value === 0 && <DiscoverSearch />}
-                    {value === 1 && <div>People</div>}
+                    {value === 1 && <div>Events</div>}
                     {value === 2 && <UserSearch />}
                     {value === 3 && <div>Stories</div>}
                 </div>

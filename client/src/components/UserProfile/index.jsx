@@ -35,6 +35,23 @@ class UserProfile extends React.Component {
             });
           });
       }
+    
+    unfollowUser = (e) => {
+        this.setState({
+            following: false,
+        });
+        const token = localStorage.getItem('JWT');
+        e.preventDefault();
+        axios.post(`/api/users/${this.state.username}/unfollow`, {},
+            { headers: { Authorization: `JWT ${token}`} })
+            .then(() => {
+            console.log("Unfollow successful");
+            }).catch((error) => {
+            this.setState({
+                following: true,
+            });
+            });
+    }
 
     async componentDidMount() {
         await this.getUserDetails();
@@ -89,7 +106,7 @@ class UserProfile extends React.Component {
         if (!this.state.following) {
             followStateBtn = <button onClick={this.followUser} className="follow-btn">Follow</button>;
         } else {
-            followStateBtn = <button onClick={this.followUser} className="following-btn">Following</button>;
+            followStateBtn = <button onClick={this.unfollowUser} className="following-btn">Following</button>;
         }
         const { username, bio, stories } = this.state;
         return (
