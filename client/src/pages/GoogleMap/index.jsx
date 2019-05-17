@@ -74,10 +74,6 @@ class GoogleMap extends Component {
     //     ['address_components', 'geometry']);
     this.geocoder = new google.maps.Geocoder;
     this.getEventsByLocationAndDate();
-
-
-
-
   }
 
   handleLocalCityChange = (data) => {
@@ -245,7 +241,7 @@ class GoogleMap extends Component {
         end_date_displayEvents,
         start_date_displayEvents,
         eventQuery
-        
+
       },
       {
         headers: {
@@ -294,7 +290,7 @@ class GoogleMap extends Component {
           <h3 className="search-location-title">Select Location</h3>
           <hr className="search-location-divider" />
           <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
-            <div className="search-location-row">  
+            <div className="search-location-row">
               <TextField
                 style={inputStyle}
                 id="autocomplete"
@@ -304,16 +300,16 @@ class GoogleMap extends Component {
                 placeholder="Current Location"
               />
               <button type="submit" className="round-search-btn">
-                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+                <img className="search-icon" src={searchButton} alt="Search Location Button" />
               </button>
             </div>
-            {showError &&  (
-                <p
-                  style={errorMessage}
-                >
-                  *Address is a required field.
+            {showError && (
+              <p
+                style={errorMessage}
+              >
+                *Address is a required field.
                 </p>
-              )}
+            )}
 
           </form>
         </div>
@@ -329,7 +325,7 @@ class GoogleMap extends Component {
           getEventsByLocationAndDate={this.getEventsByLocationAndDate}
           markers={displayedEvents}
         >
-          
+
           {displayedEvents.map(event => (
             <Marker key={event._id}
               onClick={this.onOtherMarkerClick}
@@ -352,7 +348,7 @@ class GoogleMap extends Component {
             icon={
               "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
             }
-            optimized= {false}
+            optimized={false}
             zIndex={99999999}
             draggable
             onDragend={(t, map, coord) => this.handleMarkerDragEnd(t, map, coord)}
@@ -374,7 +370,6 @@ class GoogleMap extends Component {
 
       </div>
     );
-
   }
 }
 

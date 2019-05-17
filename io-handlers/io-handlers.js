@@ -3,9 +3,10 @@ const sanitizeHtml = require('sanitize-html');
 const Connection = require('../models/connection');
 const User = require('../models/user');
 const Story = require('../models/story');
+const Event = require('../models/event');
 const NewsFeed = require('../models/newsfeed');
 
-module.exports.onConnect = async (io, socket, usrname) => {
+module.exports.onConnect = async (io, socket, username) => {
   // Remove any of their old connections
   await Connection.remove({ user: username });
   // Add new connection
@@ -73,4 +74,14 @@ module.exports.onPostStory = async (io, socket, body) => {
     .catch((e) => {
       res.status(400).send(e);
     });
+}
+
+module.exports.onRequestStories = async (io, socket, username) => {
+  const stories = await Story.find({});
+  io.to(socket.id).emit('receive_stories', stories);
+}
+
+module.exports.onRequestEvents = async (io, socket, username) => {
+  const events = await Event.find({});
+  io.to(socket.id).emit('receive_events', events);
 }
