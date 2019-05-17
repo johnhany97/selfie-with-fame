@@ -30,6 +30,14 @@ class RegisterPage extends Component {
     };
   }
 
+  componentWillMount() {
+    const token = localStorage.getItem('JWT');
+    if (token) {
+      const { history } = this.props;
+      history.replace('/');
+    }
+  }
+
   handleChange = name => (event) => {
     this.setState({
       [name]: event.target.value,

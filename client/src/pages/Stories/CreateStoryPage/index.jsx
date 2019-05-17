@@ -29,6 +29,15 @@ class CreateStoryPage extends Component {
     };
   }
 
+  componentWillMount() {
+    const token = localStorage.getItem('JWT');
+    if (!token) {
+      // eslint-disable-next-line react/prop-types
+      const { history } = this.props;
+      history.replace('/login');
+    }
+  }
+
   onAddPicture = (data) => {
     // not allowed AND not working
     this.setState((state) => {

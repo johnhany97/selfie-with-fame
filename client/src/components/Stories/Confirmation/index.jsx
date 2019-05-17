@@ -2,12 +2,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Event from '../../Event';
-import {
-  noWidthBtn,
-} from '../../../styles/formStyles.js';
 import './index.css';
-import leftArrow from './../../../images/left-arrow.png';
+import leftArrow from '../../../images/left-arrow.png';
 import FormProgress from '../../FormProgress';
 import Photo from '../../Photo';
 

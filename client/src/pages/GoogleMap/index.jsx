@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/require-default-props */
 /* eslint-disable react/prop-types */
@@ -18,15 +19,13 @@ import {
 } from '../../styles/formStyles';
 
 import {
+  saveButton,
   inputStyle,
 } from '../../styles/buttonStyles';
 
 import SubmitButton from '../../components/SubmitButton';
-import {
-  saveButton,
-} from '../../styles/buttonStyles';
 import './index.css';
-import searchButton from './../../images/round-search.png';
+import searchButton from '../../images/round-search.png';
 import CurrentLocation from '../../components/Map/Map';
 
 class GoogleMap extends Component {
@@ -72,7 +71,7 @@ class GoogleMap extends Component {
     this.placeDetails = new google.maps.places.PlacesService(this.props.google);
     //  this.autocomplete.setFields(
     //     ['address_components', 'geometry']);
-    this.geocoder = new google.maps.Geocoder;
+    this.geocoder = new google.maps.Geocoder();
     this.getEventsByLocationAndDate();
   }
 
@@ -162,7 +161,7 @@ class GoogleMap extends Component {
       if (status === 'OK') {
         if (results[0]) {
           results[0].address_components.map(i => {
-            if (i.types[0] == "postal_town" || i.types[0] == "locality") {
+            if (i.types[0] === "postal_town" || i.types[0] === "locality") {
               city_state = i.long_name
             }
           });

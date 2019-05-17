@@ -1,9 +1,12 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import './index.css';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import { withRouter } from 'react-router-dom';
+
 import Layout from '../../components/Layout';
 import DiscoverSearch from '../../components/Search/DiscoverSearch';
 import UserSearch from '../../components/Search/UserSearch';
@@ -15,6 +18,14 @@ class DiscoverPage extends React.Component {
     this.state = {
       value: 0,
     };
+  }
+
+  componentWillMount() {
+    const token = localStorage.getItem('JWT');
+    if (!token) {
+      const { history } = this.props;
+      history.replace('/');
+    }
   }
 
   handleCityChange = (data) => {
@@ -66,4 +77,4 @@ class DiscoverPage extends React.Component {
 }
 
 
-export default DiscoverPage;
+export default withRouter(DiscoverPage);

@@ -4,9 +4,6 @@ import PropTypes from 'prop-types';
 import Capture from '../../Capture';
 import './index.css';
 import rightArrow from './../../../images/right-arrow.png';
-import {
-  crudButton,
-} from '../../../styles/formStyles';
 import FormProgress from '../../FormProgress';
 
 /**
@@ -29,7 +26,7 @@ class CreateStoryCamera extends Component {
     nextStep();
   }
   render() {
-    const { handlePhotoChange, step, onAddPicture, removePicture, values} = this.props;
+    const { handlePhotoChange, step, onAddPicture, removePicture, values } = this.props;
     return (
       <form onSubmit={this.saveAndContinue} className="create-story-form">
         <div className="form-navigation">

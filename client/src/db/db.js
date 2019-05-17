@@ -15,8 +15,10 @@ class DB {
         const storiesStore = db.createObjectStore(STORIES_STORE_NAME, { keyPath: '_id', unique: true });
         storiesStore.createIndex('by-username', 'postedBy', { unique: false });
 
+        // eslint-disable-next-line no-unused-vars
         const eventsStore = db.createObjectStore(EVENTS_STORE_NAME, { keyPath: '_id', unique: true });
 
+        // eslint-disable-next-line no-unused-vars
         const offlineStoriesStore = db.createObjectStore(OFFLINE_STORIES_STORE_NAME, { keyPath: 'id', autoIncrement: true });
       },
     });

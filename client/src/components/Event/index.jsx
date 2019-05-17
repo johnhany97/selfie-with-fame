@@ -4,10 +4,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import {
-  cardPanel,
-  crudButton,
-} from '../../styles/formStyles';
 import './index.css';
 
 /**
@@ -27,29 +23,22 @@ import './index.css';
  * Returns JSX for displaying event overview card
  */
 class Event extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   convertDateFormat(date) {
     let createAtDate = new Date(date);
     var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     var year = createAtDate.getFullYear();
     var month = months[createAtDate.getMonth()];
-    var date = createAtDate.getDate();
-    var convertedDate = date + ' ' + month + ' ' + year;
+    var day = createAtDate.getDate();
+    var convertedDate = day + ' ' + month + ' ' + year;
     return convertedDate;
   };
-
 
   render() {
     const {
       _id,
       name,
-      information,
       start_date,
       location,
-      end_date,
       selected,
     } = this.props;
 

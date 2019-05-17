@@ -1,8 +1,9 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from 'react';
 import MobileStepper from '@material-ui/core/MobileStepper';
 import './index.css';
-import rightArrow from './../../images/right-arrow.png';
-import leftArrow from './../../images/left-arrow.png';
+import rightArrow from '../../images/right-arrow.png';
+import leftArrow from '../../images/left-arrow.png';
 
 /**
  * @Params
