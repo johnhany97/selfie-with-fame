@@ -25,6 +25,7 @@ class StoryStepper extends React.Component {
     }));
   };
 
+
   render() {
     const { pictures } = this.props;
     const { activeStep } = this.state;

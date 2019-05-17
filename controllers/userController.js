@@ -680,7 +680,14 @@ module.exports.getAll = (req, res) => {
     skip: (page - 1) * size
   };
 
-  const query = {}
+  const text = req.query.text;
+  const query = {
+    $or: [
+      { 'username': { $regex: text, $options: 'i' } },
+      { 'first_name': { $regex: text, $options: 'i' } },
+      { 'last_name': { $regex: text, $options: 'i' } },
+    ]
+  };
 
   User.find(query, {}, pagination)
     .populate('followers', 'first_name last_name username')

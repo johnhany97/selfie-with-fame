@@ -14,9 +14,9 @@ router.route('/event/:id').all(authMiddleware.authenticate).get(storyController.
 // PUT a new story by the logged in user
 router.route('/').all(authMiddleware.authenticate).post(storyController.createStory);
 // GET a story by it's id, doesn't have to be the user's atm
-router.route('/story/:id').all(authMiddleware.authenticate).get(storyController.getStory);
+router.route('/:id').all(authMiddleware.authenticate).get(storyController.getStory);
 // DELETE a story if you're the creator
-router.route('/story/:id').all(authMiddleware.authenticate).delete(storyController.deleteStory);
+router.route('/:id').all(authMiddleware.authenticate).delete(storyController.deleteStory);
 // GET the logged in user's timeline
 router.route('/timeline').all(authMiddleware.authenticate).get(storyController.getStoriesTimeline);
 // POST a comment to a story

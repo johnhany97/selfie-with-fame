@@ -18,11 +18,12 @@ module.exports.getAllStories = (req, res) => {
 
   Story.find({}, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -47,11 +48,12 @@ module.exports.getStoriesByUser = (req, res) => {
   // no need to populate as current user is poster
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
-    .populate('postedBy', '_id first_name last_name username') // TODO: _id to be changed!!!! // name virtual property not working?
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -77,11 +79,12 @@ module.exports.getStoriesByEvent = (req, res) => {
   Story.find(query, {}, pagination)
     .sort({ createdAt: -1 })
     .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((stories) => {
       stories.map((story) => {
         return {
-          ...story,
-          liked: story.likes.indexOf(req.user._id) !== -1
+          ...story._doc,
+          liked: story.likes.indexOf(req.user._id) !== -1,
         };
       });
       res.status(200).send({
@@ -105,6 +108,8 @@ module.exports.getStoriesTimeline = async (req, res) => {
 
   NewsFeed.find(query, {}, pagination)
     .populate('story')
+    .populate('story.postedBy', '_id first_name last_name username')
+    .populate('story.comments.postedBy', 'username')
     .then((feed) => {
       let stories = feed.map((entry) => {
         return entry.story;
@@ -113,7 +118,7 @@ module.exports.getStoriesTimeline = async (req, res) => {
       stories = stories.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
       stories.map((story) => {
         return {
-          ...story,
+          ...story._doc,
           liked: story.likes.indexOf(req.user._id) !== -1
         };
       });
@@ -189,13 +194,15 @@ module.exports.getStory = (req, res) => {
   }
 
   Story.findById(id)
+    .populate('postedBy', '_id first_name last_name username')
+    .populate('comments.postedBy', 'username')
     .then((story) => {
       if (!story) {
         return res.status(404).send();
       }
       res.send({
-        ...story,
-        liked: story.likes.indexOf(req.user._id) !== -1
+        ...story._doc,
+        liked: story.likes.indexOf(req.user._id) !== -1,
       });
     });
 }
@@ -306,7 +313,7 @@ module.exports.like = async (req, res) => {
   story.save()
     .then(() => {
       return res.status(200).send({
-        ...story,
+        ...story._doc,
         liked: true
       });
     })
@@ -354,7 +361,7 @@ module.exports.unlike = async (req, res) => {
   story.save()
     .then(() => {
       return res.status(200).send({
-        ...story,
+        ...story._doc,
         liked: false
       });
     })
