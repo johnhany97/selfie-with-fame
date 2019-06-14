@@ -9,9 +9,8 @@ import PropTypes from 'prop-types';
 
 const mapStyles = {
   map: {
-    position: 'absolute',
     width: '100%',
-    height: '60%',
+    height: '600px',
   },
 };
 
@@ -28,17 +27,17 @@ class CurrentLocation extends React.Component {
     } = initialCenter;
     this.state = {
       currentLocation: [lat, lng],
-      initialCity: "",
+      initialCity: "Sheffield",
     };
   }
 
   componentDidMount() {
-    this.state.initialCity = "Sheffield"
+    var initCity = this.state.initialCity;
 
-    const {handleLocalCityChange} = this.props
-    handleLocalCityChange(this.state.initialCity)
+    const {handleLocalCityChange} = this.props;
+    handleLocalCityChange(initCity);
     const { handleCityChange } = this.props;
-    handleCityChange(this.state.initialCity)
+    handleCityChange(initCity);
 
 
 
@@ -49,10 +48,14 @@ class CurrentLocation extends React.Component {
     handleLocationChange([lat, lng]);
     const { handleSelectedLocationChange } = this.props;
     handleSelectedLocationChange( [lat, lng])
-    const { getEventsLocation } = this.props;
+    const { getEventsByLocationAndDate } = this.props;
+    getEventsByLocationAndDate();
+
 
     
     const {centerAroundCurrentLocation} = this.props
+    var city_state = "Sheffield"
+
     if (centerAroundCurrentLocation) {
       if (navigator && navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
@@ -64,7 +67,6 @@ class CurrentLocation extends React.Component {
           /*global google*/
 
           this.geocoder =  new google.maps.Geocoder;
-          var city_state = "Sheffield"
           this.geocoder.geocode({'location': {"lat": coords.latitude, "lng":coords.longitude}}, function(results, status) {
             if (status === 'OK') {
               if (results[0]) {
@@ -95,8 +97,8 @@ class CurrentLocation extends React.Component {
           handleLocationChange([lat, lng]);
           const { handleSelectedLocationChange } = this.props;
           handleSelectedLocationChange( [lat, lng])
-          const { getEventsLocation } = this.props;
-          getEventsLocation();
+          const { getEventsByLocationAndDate } = this.props;
+          getEventsByLocationAndDate();
 
 
 
@@ -206,7 +208,7 @@ CurrentLocation.propTypes = {
   handleCityChange: PropTypes.func,
   handleLocalCityChange: PropTypes.func,
   handleSelectedLocationChange: PropTypes.func,
-  getEventsLocation: PropTypes.func,
+  getEventsByLocationAndDate: PropTypes.func,
   centerAroundCurrentLocation: PropTypes.bool,
   initialCenter: PropTypes.shape({
     lat: PropTypes.number,

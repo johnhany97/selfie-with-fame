@@ -25,7 +25,9 @@ import SubmitButton from '../../components/SubmitButton';
 import {
   saveButton,
 } from '../../styles/buttonStyles';
-import CurrentLocation from './Map';
+import './index.css';
+import searchButton from './../../images/round-search.png';
+import CurrentLocation from '../../components/Map/Map';
 
 class GoogleMap extends Component {
   constructor(props) {
@@ -46,6 +48,9 @@ class GoogleMap extends Component {
       displayedEvents: [],
       marker_clicked: ' ',
       selected_event: [],
+      end_date: new Date(),
+      // start_date: new Date((new Date()).setFullYear( new Date().getFullYear() - 1 )),
+
     };
 
 
@@ -54,6 +59,7 @@ class GoogleMap extends Component {
   }
 
   async componentDidMount() {
+
 
     var options = { types: ['(cities)'] };
 
@@ -67,7 +73,7 @@ class GoogleMap extends Component {
     //  this.autocomplete.setFields(
     //     ['address_components', 'geometry']);
     this.geocoder = new google.maps.Geocoder;
-    this.getEventsLocation();
+    this.getEventsByLocationAndDate();
 
 
 
@@ -105,13 +111,12 @@ class GoogleMap extends Component {
       handleLocationChange(this.state.selectedPlace);
       handleCityChange(this.state.city)
 
-      this.getEventsLocation();
+      this.getEventsByLocationAndDate();
 
 
 
     }
     else {
-      console.log("not an address")
     }
   }
 
@@ -181,7 +186,7 @@ class GoogleMap extends Component {
 
       handleLocationChange(this.state.selectedPlace);
       handleCityChange(this.state.city);
-      this.getEventsLocation();
+      this.getEventsByLocationAndDate();
 
     });
   }
@@ -210,14 +215,13 @@ class GoogleMap extends Component {
         showError: false,
       });
     }).catch((err) => {
-      console.error(err.response.data);
       this.setState({
         showError: true,
       });
     });
   }
 
-  getEventsLocation = async () => {
+  getEventsByLocationAndDate = async () => {
     const token = localStorage.getItem('JWT');
     if (token == null) {
       this.setState({
@@ -231,10 +235,16 @@ class GoogleMap extends Component {
       location,
       city,
     } = this.state;
-    console.log("the city is!!!!!!!!!!" + city)
-    axios.post('/api/events/getEventsByLocation',
+    let end_date_displayEvents = this.state.end_date
+    let city_displayEvents = city
+    let start_date_displayEvents = this.state.end_date
+    let mode = "onGoing"
+    axios.post('/api/events/getEventsByLocationAndDate',
       {
-        city
+        city_displayEvents,
+        end_date_displayEvents,
+        start_date_displayEvents,
+        mode
       },
       {
         headers: {
@@ -251,7 +261,6 @@ class GoogleMap extends Component {
         });
 
       }).catch((err) => {
-        console.error(err.response.data);
         this.setState({
           showError: true,
         });
@@ -280,29 +289,31 @@ class GoogleMap extends Component {
 
     return (
       <div>
-        <div className="container" style={mTop}>
-          <h3 style={formTitle}>Search</h3>
-          <hr style={formDividor} />
-          <form onSubmit={this.getEventsLocation} className="panel-center">
-            <TextField
-              style={inputStyle}
-              id="autocomplete"
-              label="Address"
-              value={this.state.query}
-              onChange={this.handleChange('query')}
-              placeholder="Current Location"
-            />
-            {showError && (
-              <p
-                style={errorMessage}
-              >
-                *Address is a required field.
-              </p>
-            )}
-            <SubmitButton
-              buttonStyle={formSubmitButton}
-              buttonText="Search"
-            />
+        <div>
+          <h3 className="search-location-title">Select Location</h3>
+          <hr className="search-location-divider" />
+          <form onSubmit={this.getEventsByLocationAndDate} className="panel-center">
+            <div className="search-location-row">  
+              <TextField
+                style={inputStyle}
+                id="autocomplete"
+                label="Address"
+                value={this.state.query}
+                onChange={this.handleChange('query')}
+                placeholder="Current Location"
+              />
+              <button type="submit" className="round-search-btn">
+                <img className="search-icon" src={searchButton} alt="Search Location Button"/>
+              </button>
+            </div>
+            {showError &&  (
+                <p
+                  style={errorMessage}
+                >
+                  *Address is a required field.
+                </p>
+              )}
+
           </form>
         </div>
 
@@ -314,7 +325,7 @@ class GoogleMap extends Component {
           handleCityChange={this.props.handleCityChange}
           handleSelectedLocationChange={this.handleSelectedLocationChange}
           handleLocalCityChange={this.handleLocalCityChange}
-          getEventsLocation={this.getEventsLocation}
+          getEventsByLocationAndDate={this.getEventsByLocationAndDate}
           markers={displayedEvents}
         >
           
